@@ -37,7 +37,7 @@ cd antsbin
 
 ccmake ../ANTs
 
-# (type "c", “c” and then “g” )
+(type "c", “c” and then “g” )
 
 sudo make -j 4
 
