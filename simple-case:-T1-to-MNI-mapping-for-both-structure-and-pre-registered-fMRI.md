@@ -7,10 +7,10 @@ User asked how to:
 
 "2) applying the T1_to_MNI matrix to T1.nii "
 
-*  `antsApplyTransforms -d 3 -r MNI.nii.gz -i T1.nii.gz -e 0 -t XXX1Warp.nii.gz -t XXX0GenericAffine.mat ` 
+*  `antsApplyTransforms -d 3 -r MNI.nii.gz -i T1.nii.gz -e 0 -t XXX1Warp.nii.gz -t XXX0GenericAffine.mat  -o out1.nii.gz` 
 
 "3) applying the T1_to_MNI matrix to the fMRI.nii data from the same patient (that have already been pre-registered to the respective T1.nii) "
 
-*  `antsApplyTransforms -d 3 -r MNI.nii.gz -i fMRI.nii.gz -e 3 -t -t XXX1Warp.nii.gz -t XXX0GenericAffine.mat `   
+*  `antsApplyTransforms -d 3 -r MNI.nii.gz -i fMRI.nii.gz -e 3 -t XXX1Warp.nii.gz -t XXX0GenericAffine.mat -o out2.nii.gz `   
 
 see documentation for details, e.g. the links at the [top of this page](http://stnava.github.io/ANTs/)
