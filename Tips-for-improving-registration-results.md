@@ -6,7 +6,7 @@
 
 * Provide a good initialization for deformable registration by running rigid and affine stages first. 
 
-* Pad the fixed image with empty space, if necessary. This allows image similarity to be better formulated, because less of the moving image will be outside of the fixed image volume. Usually, 10 voxels of background around a head or brain template in all directions is sufficient. 
+* Pad the fixed image with empty space, if necessary. If the fixed image foreground extends all the way to the boundary of the image volume, the image similarity at the edge becomes unstable because points outside the image volume are ignored. Adding extra space allows the edges of the images to be aligned better. You can also pad the moving images if necessary, but in many cases it's sufficient to have at least 10 voxels of background on all sides of the fixed image.
 
 
 # Debugging registration failures
