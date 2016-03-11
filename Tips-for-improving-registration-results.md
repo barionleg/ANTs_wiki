@@ -2,6 +2,8 @@
 
 * Formulate a registration problem that ANTs can solve (at least to a good approximation). More theory [here](http://www.ncbi.nlm.nih.gov/pubmed/17659998) but basically there needs to be a sensible mapping between points in the moving and the fixed image. This requirement is violated when the same anatomy doesn't exist in both images, for example if you register a brain-extracted image to another image including the whole head.
 
+* Check the images have the same basic orientation. The exact position and orientation will vary (eg, due to head position) but they should not be upside down or back to front, and both the fixed and moving images should agree on left-right orientation. You can check this with [ITK-SNAP](http://itksnap.org), which uses the same ITK I/O as ANTs.
+
 * Provide a good initialization for affine registration with `-r`. 
 
 * Provide a good initialization for deformable registration by running rigid and affine stages first. 
@@ -25,4 +27,3 @@ antsRegistration -d 3 -r [ fixed.nii.gz , moving.nii.gz , 1] -t Rigid[0.1] \
 The initialization should provide a sensible translation of the moving image. 
 
 * With good initialization, begin running the rigid registration, then the affine. Isolate where the registration converges too soon (fails to improve) or diverges (moving image gets further away from the correct solution).
-
