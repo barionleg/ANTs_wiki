@@ -10,7 +10,7 @@ Run `antsRegistration` or `antsRegistrationSyN[quick].sh`, registering the DT (b
 Apply these transforms to deform the tensor image. After this the tensors will be correctly located in the fixed space, but they retain their original orientation.
 
 ```
-antsApplyTransforms -d 3 -e 2 -r fixed.nii.gz -i dt.nii.gz -o dtDeformed.nii.gz \
+antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
 -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
 
