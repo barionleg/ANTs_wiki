@@ -3,7 +3,7 @@ Fixed image: `fixed.nii.gz`
 
 ## Compute the warp
 
-Run `antsRegistration` or `antsRegistrationSyN[quick].sh`, registering the DT (by proxy, eg using FA, B0, or some other scalar image in the DT space) to the fixed image. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`.
+Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT (by proxy, eg using FA, B0, or some other scalar image in the DT space) to the fixed image. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`.
 
 ## Apply the transform to the DT image
 
