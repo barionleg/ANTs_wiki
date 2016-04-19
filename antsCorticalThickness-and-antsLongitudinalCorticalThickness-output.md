@@ -5,6 +5,7 @@
 Definitions
 
 **Subject space**
+
 **Template space**
 
 Some files are produced only if optional input parameters are set. The full file name will be `${outputPrefix}description${outputSuffix}`, the prefix and suffix are set at run time by the user.
