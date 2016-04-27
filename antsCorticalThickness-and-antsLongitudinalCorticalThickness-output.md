@@ -52,3 +52,12 @@ antsApplyTransforms -d 3 -i imageInTemplateSpace.nii.gz -o imageInSubjectSpace.n
 ```
 
 Note that the ordering of the affine and warp field are reversed, but the numbering is consistent (1 then 0, reading left to right). 
+
+
+# antsLongitudinalCorticalThickness.sh
+
+`antsLongitudinalCorticalThickness.sh` first builds a single-subject template (SST) out of all available time points, and then runs `antsCorticalThickness.sh` on the SST as though it was an individual image, normalizing it to a group template. The SST and the output of `antsCorticalThickness.sh` are used to generate segmentation priors in the SST. Then `antsCorticalThickness.sh` is run on the individual time point images, using the SST as the template.
+
+The outputs are organized in one folder per input time point, plus one folder for the SST. The output within each folder is similar to that of `antsCorticalThickness.sh`
+
+There are additional warps, suffixed "SubjectToGroupTemplateWarp.nii.gz" and "SubjectToTemplate0GenericAffine.mat", that can be used to warp each time point image to the group template. These are a combination of the subject to SST warp, and the SST to group template warp.
