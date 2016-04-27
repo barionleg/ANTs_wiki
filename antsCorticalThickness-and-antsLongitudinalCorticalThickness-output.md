@@ -30,11 +30,25 @@ Some files are produced only if optional input parameters are set. The full file
 
 * `SubjectToTemplateLogJacobian` - Log of the determinant of the Jacobian, quantifies volume changes in the subject to template warp.
 
-* `TemplateToSubject0Warp`, `TemplateToSubject0GenericAffine.mat` - Transforms to be used when warping images from the template to the subject space (see below).
+* `TemplateToSubject0Warp`, `TemplateToSubject1GenericAffine.mat` - Transforms to be used when warping images from the template to the subject space (see below).
 
 
 ## Applying the warps
 
+The warps produced by `antsCorticalThickness.sh` are named differently to the usual `antsRegistration` convention. The inverse affine transform is written to disk, so users do not need to invert the affine transform explicitly in the call to `antsApplyTransforms`. 
+
 To warp an image from the subject to template space:
 
+```
+antsApplyTransforms -d 3 -i imageInSubjectSpace.nii.gz -o imageInTemplateSpace.nii.gz \
+-t outputPrefixSubjectToTemplate1Warp.nii.gz -t SubjectToTemplate0GenericAffine.mat -r template.nii.gz
+```
+
 To warp an image from the template to subject space:
+
+```
+antsApplyTransforms -d 3 -i imageInTemplateSpace.nii.gz -o imageInSubjectSpace.nii.gz \
+-t outputPrefixTemplateToSubject1Affine.mat -t outputPrefixTemplateToSubject0Warp.nii.gz -r template.nii.gz
+```
+
+Note that the ordering of the affine and warp field are reversed, but the numbering is consistent (1 then 0, reading left to right). 
