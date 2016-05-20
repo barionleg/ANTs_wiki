@@ -1,0 +1,1 @@
+A detailed walkthrough of an example ANTs registration, with options explained in detail.
