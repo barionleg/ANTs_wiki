@@ -49,12 +49,24 @@ The system will build ITK and then ANTs. Using these default settings, installat
 
 ## Copy scripts 
 
-If you want to use ANTs scripts, copy them from the source directory to the bin directory.
+If you want to use ANTs scripts, copy them from the source directory `Scripts/` to the bin directory where `antsRegistration` etc are located.
 
 
 ## Control multi-threading at run time
 
-ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
+Not all ANTs programs multi-thread, but many do. There is some cost to threading so running N threads won't make the programs run N times faster and the performance benefit diminishes with larger numbers of threads. By default, the number of available threads is set to the number of virtual cores, which may degrade system performance for relatively little benefit. You probably want to set the environment variable
+
+```ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS```
+
+to be at most the number of physical cores. So on an iMac with a quad-core CPU (8 virtual cores), set this variable to 4, or less than 4 if you want to save more CPU time for other processes - 2 delivers a substantial speed increase without degrading desktop performance.
 
 
 ## (Optional) relocate binaries and record version information. 
+
+If you built with static libraries (the default, and usually what you want), you can copy the binaries directory
+
+```
+~/bin/ants/bin
+```
+
+elsewhere on your system, or to another Mac with the same architecture. You can then clean up the rest of the binaries in your compile directory. Before doing this, record the version of ANTs you just built. 
