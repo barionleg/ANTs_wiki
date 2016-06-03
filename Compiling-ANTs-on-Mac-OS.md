@@ -56,7 +56,9 @@ If you want to use ANTs scripts, copy them from the source directory `Scripts/` 
 
 Not all ANTs programs multi-thread, but many do. There is some cost to threading so running N threads won't make the programs run N times faster and the performance benefit diminishes with larger numbers of threads. By default, the number of available threads is set to the number of virtual cores, which may degrade system performance for relatively little benefit. You probably want to set the environment variable
 
-```ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS```
+```
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
+```
 
 to be at most the number of physical cores. So on an iMac with a quad-core CPU (8 virtual cores), set this variable to 4, or less than 4 if you want to save more CPU time for other processes - 2 delivers a substantial speed increase without degrading desktop performance.
 
