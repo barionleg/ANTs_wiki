@@ -151,6 +151,7 @@ the speed of change each iterations (step size) is again 0.1
   
 >############################################  
 START THE THIRD TRANSFORMATION: SyN  
+FIXME: description of SyN[patemeters] not yet available
   
         --transform SyN[0.1,3,0] \
 |  
