@@ -71,8 +71,8 @@ t1brain=Subject1.nii.gz
 		--winsorize-image-intensities [0.005,0.995] \
 |  
   
-> boolean if histogram of input and output images should be matched.  
-> If registering T1 on T2 is not good to set to 0, because they are not in same modality.
+> Histogram matching is a pre-processing step, transforming the input intensities such that the histogram matches as much as possible the histogram of the target image. It's designed to make registration work better but it is independent of the alignment of the two images.  
+Set to 0 if registering across modalities (T1 on T2) and 1 for within modalities  
   
 		--use-histogram-matching 0 \
 |  
@@ -117,10 +117,8 @@ for an image with 256x256x256 voxels, the levels will work at 32mm, 64mm, 128mm,
 |  
   
 > Here are the smoothing values for each step: sigma 3,2,1,0.  
-To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond to 7mm, 5mm, 2mm and no smoothing  
-Need to check if the factor is correct. ANTs uses simple Gaussian, not FWHM  
-Note, smoothing occurs before shrinking to lower resolution.  
-Phil, sigmas are in vox here, why is that?  
+To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond roughly to 7mm, 5mm, 2mm and 0mm (no smoothing).
+Smoothing occurs before shrinking to lower resolution.  
   
         --smoothing-sigmas 3x2x1x0vox \
 |  
@@ -177,7 +175,7 @@ the call is [fixed,moving,weight,radius]
 |  
   
 > mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.  
- why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
+why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
 this is a problem for patients with lesions: the lesion is drawn on the subject's image.  
 don't worry, just flip the order, make your subject fixed and move the template on it.  
 This is the reason why all above calls show template as moving
