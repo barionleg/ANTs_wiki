@@ -46,36 +46,45 @@ t1brain=Subject1.nii.gz
 
 ***
 ## Inline code explained  
-first two arguments tells the images are 3D, no floating point will be use (double instead)  
+> first two arguments tells the images are 3D, no floating point will be use (double instead)  
   
-> antsRegistration --dimensionality 3 --float 0 \  
+		antsRegistration --dimensionality 3 --float 0 \  
+|  
   
-|  		# save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_
-|  		# save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
->        --output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \
-        
-        # The interpolation type used when saving the warped image.
-		# Applies just to the output image (from moving), nothing else
-        --interpolation Linear \
-        
-        # deal with outlier voxels. Clips values <5/1000 and >995/1000. 
-		# Range can be restricted for bad images, but be careful because it may destroy contrast in image.
-		# This helps because images may have a few voxels with high value that impact badly the registration
-        --winsorize-image-intensities [0.005,0.995] \
-        
-        # boolean if histogram of input and output images should be matched.
-		# If registering T1 on T2 is not good to set to 0, because they are not in same modality.
-        --use-histogram-matching 0 \
-        
-		# registration works in real coordinates given by the scanner. So images can start quite far from each other (e.g., one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other)
-        # options are:
-		# 0-match by mid-point (i.e., center voxel of each image
-		# 1-match by center of mass
-		# 2-match by point of origin (i.e. coordinates 0,0,0)
-        # One can also point to a .mat file obtained with antsAI, but there is no need. The AI solution is implemented in antsCortThicknes.sh and runs an affine with several random changes to check if one "unsual" solution is better. Useful if there are strong orientation issues.
-		# the command tells [fixed,moving,option]
-		# don't get confused 
-        --initial-moving-transform [$t1brain,$template,1] \
+> save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_  
+> save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
+  
+		--output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \
+|  
+  
+> The interpolation type used when saving the warped image.  
+> Applies just to the output image (from moving), nothing else
+  
+		--interpolation Linear \
+|  
+  
+> deal with outlier voxels. Clips values <5/1000 and >995/1000.  
+> Range can be restricted for bad images, but be careful because it may destroy contrast in image.  
+> This helps because images may have a few voxels with high value that impact badly the registration
+  
+		--winsorize-image-intensities [0.005,0.995] \
+ |  
+  
+> boolean if histogram of input and output images should be matched.  
+> If registering T1 on T2 is not good to set to 0, because they are not in same modality.
+  
+		--use-histogram-matching 0 \
+|  
+  
+> registration works in real coordinates given by the scanner. So images can start quite far from each other (e.g., one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other)  
+> options are:  
+> 0-match by mid-point (i.e., center voxel of each image  
+> 1-match by center of mass  
+> 2-match by point of origin (i.e. coordinates 0,0,0)  
+> One can also point to a .mat file obtained with antsAI, but there is no need. The AI solution is implemented in antsCortThicknes.sh and runs an affine with several random changes to check if one "unsual" solution is better. Useful if there are strong orientation issues.  
+> the command tells [fixed,moving,option]
+   
+		--initial-moving-transform [$t1brain,$template,1] \
         
         
 		####################################
