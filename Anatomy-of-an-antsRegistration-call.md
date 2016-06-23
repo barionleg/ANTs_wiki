@@ -1,6 +1,6 @@
 A walkthrough of an example ANTs registration, with options explained in detail:
 
-```
+```bash
 antsRegistration --dimensionality 3 --float 0 \  
         --output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \  
         --interpolation Linear \  
@@ -45,6 +45,7 @@ t1brain=Subject1.nii.gz
 
 
 ***
+## Inline code explained  
 >  # first two arguments tells the images are 3D, no floating point will be use (double instead)  
 antsRegistration --dimensionality 3 --float 0 \  
   
