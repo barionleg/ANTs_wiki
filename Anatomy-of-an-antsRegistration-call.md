@@ -41,7 +41,7 @@ The above antsRegistration call runs a rigid, an affine, and a SyN registration.
 
 
 ***
-# first two arguments tells the images are 3D, no floating point will be use (double instead)
+`# first two arguments tells the images are 3D, no floating point will be use (double instead)
 antsRegistration --dimensionality 3 --float 0 \
 	
 		# save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_
