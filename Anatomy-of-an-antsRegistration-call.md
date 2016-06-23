@@ -88,80 +88,102 @@ t1brain=Subject1.nii.gz
 |  
   
 > ####################################  
-> THIS IS THE FIRST TRANSFORMATION: RIGID
-> steps size is 0.1, how fast you go with changes in the image transformation. Too big and you may overshoot. Too long and you wait longer.
+> THIS IS THE FIRST TRANSFORMATION: RIGID  
+step size is 0.1, how fast you go with changes in the image transformation. Too big and you may overshoot. Too long and you wait longer.
   
         --transform Rigid[0.1] \
 |  
   
 > mutual information measures how similar the two images look. It uses the histograms of the two images to check the similarity. The histogram will have 32 bins, and values are sampled regularly at 25%, i.e. a voxel is considered every four.  
-The value of 1 is a weight used if do multimodal registration. Here is an example
-		# --metric MI[$t1brain,$template,0.7,32,Regular,0.25] # weight 0.7 on t1
-		# --metric MI[$t2brain,$T2template,0.3,32,Regular,0.25] # weight 0.3 on t2
-		# the call format is [fixed, moving, weight, bins, sampling]
+The value of 1 is a weight used if do multimodal registration. Here is an example  
+		# --metric MI[$t1brain,$template,0.7,32,Regular,0.25] # weight 0.7 on t1  
+		# --metric MI[$t2brain,$T2template,0.3,32,Regular,0.25] # weight 0.3 on t2  
+		# the call format is [fixed, moving, weight, bins, sampling]  
   
         --metric MI[$t1brain,$template,1,32,Regular,0.25] \
-        
-        # we will run 4 levels (or multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:
-		# "if the change in MI value for the last 10 iterations is below the 1e-6, stop the iterations and go to next level"
-		# Typically not all iterations are run and the loop finishes because no further improvement is possible. If you want to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if mutual information becomes worse.
+|  
+  
+> we will run 4 levels (or multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:  
+"if the change in MI value for the last 10 iterations is below the 1e-6, stop the iterations and go to next level"  
+Typically not all iterations are run and the loop finishes because no further improvement is possible. If you want to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if mutual information becomes worse.  
+  
         --convergence [1000x500x250x100,1e-6,10] \
-        
-        # the 4 hierarchical steps will have resolutions divided by 8,4,2,1
-		# for an image with 256x256x256 voxels, the levels will work at 32mm, 64mm, 128mm, 256mm
+|  
+  
+> the 4 hierarchical steps will have resolutions divided by 8,4,2,1  
+for an image with 256x256x256 voxels, the levels will work at 32mm, 64mm, 128mm, 256mm
+  
         --shrink-factors 8x4x2x1 \
-        
-        # Here are the smoothing values for each step: sigma 3,2,1,0.
-        # To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond to 7mm, 5mm, 2mm and no smoothing
-        # Need to check if the factor is correct. ANTs uses simple Gaussian, not FWHM
-		# Note, smoothing occurs before shrinking to lower resolution.
-		# Phil, sigmas are in vox here, why is that?
+|  
+  
+> Here are the smoothing values for each step: sigma 3,2,1,0.  
+To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond to 7mm, 5mm, 2mm and no smoothing  
+Need to check if the factor is correct. ANTs uses simple Gaussian, not FWHM  
+Note, smoothing occurs before shrinking to lower resolution.  
+Phil, sigmas are in vox here, why is that?  
+  
         --smoothing-sigmas 3x2x1x0vox \
-        # END OF RIGID TRANSFORMATION
-		###########################################
-		
-		###########################################
-        # THIS IS THE SECOND TRANSFORMATION: AFFINE
-		# the speed of change each iterations (step size) is again 0.1
+|  
+  
+> END OF RIGID TRANSFORMATION  
+> ###########################################  
+|  
+  
+> ###########################################  
+THIS IS THE SECOND TRANSFORMATION: AFFINE  
+the speed of change each iterations (step size) is again 0.1  
+  
         --transform Affine[0.1] \
-        
-        # all following options are explained above
+|  
+  
+> all following options are explained above
+  
         --metric MI[$t1brain,$template,1,32,Regular,0.25] \
         --convergence [1000x500x250x100,1e-6,10] \
         --shrink-factors 8x4x2x1 \
-        --smoothing-sigmas 3x2x1x0vox \5
-        # END AFFINE TRANSFORMATION
-		############################################
-        
-        
-        ############################################
-		# THIS IS THE THIRD TRANSFORMATION: SyN
+        --smoothing-sigmas 3x2x1x0vox \
+|  
+  
+> END AFFINE TRANSFORMATION  
+############################################  
+  
+|  
+  
+>############################################  
+THIS IS THE THIRD TRANSFORMATION: SyN  
+  
         --transform SyN[0.1,3,0] \
-		
-        # here we use cross-correlation (CC) instead of mutual information (MI).
-		# Instead of checking the histograms of images, now we check individual voxels. A radius of 4 indicates that for each voxel we take 4 layers around it (728 voxels) and compute the correlation with the respective 728 on the other image. So, now we care that the surrounding neighborhood of voxels are as similar as possible.
-		# the call is [fixed,moving,weight,radius]
+|  
+  
+> here we use cross-correlation (CC) instead of mutual information (MI).  
+Instead of checking the histograms of images, now we check individual voxels. A radius of 4 indicates that for each voxel we take 4 layers around it (728 voxels) and compute the correlation with the respective 728 on the other image. So, now we care that the surrounding neighborhood of voxels are as similar as possible.  
+the call is [fixed,moving,weight,radius]
+  
         --metric CC[$t1brain,$template,1,4] \
-		
-		# the following options are explained above
+|  
+  
+> the following options are explained above
+  
         --convergence [100x70x50x20,1e-6,10] \
         --shrink-factors 8x4x2x1 \
         --smoothing-sigmas 3x2x1x0vox \
-		# END OF SyN TRANSFORMATION
-		#############################################
-        
-        # mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.
-		# why in template space? because you are supposed to move the image in that space and check how well it fits with your target.
-		# this is a problem for patients with lesions: the lesion is drawn on the subject's image.
-		# don't worry, just flip the order, make your subject fixed and move the template on it.
-		# This is the reason why all above calls show template as moving
+|  
+  
+> END OF SyN TRANSFORMATION  
+#############################################
+|
+    
+> mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.  
+ why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
+this is a problem for patients with lesions: the lesion is drawn on the subject's image.  
+don't worry, just flip the order, make your subject fixed and move the template on it.  
+This is the reason why all above calls show template as moving
+  
         -x $brainlesionmask
-        
-
-
-		
-Tips for registration:
-1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.  
+|  
+  
+> Tips for registration:  
+1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.   
 2. Remove the skull before antsRegistration. If you have two brain-only images, you can be sure that surrounding tissues (i.e. the skull) will not take a toll on the registration accuracy.  
 3. Never register a lesioned brain with a healthy brain without a proper mask. The algorithm will just pull the remaining parts of the lesioned brain to fill "the gap". Despite initial statements that you can "normalize" lesioned brains drawing the lesion, there is evidence showing that results are sub-optimal. If you really don't have the lesion mask, even a coarse and imprecise drawing of lesions helps (see XXXXXXXX).  
 3. Don't forget to read the parts of the manual related to registration.  
