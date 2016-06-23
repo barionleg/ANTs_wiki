@@ -127,7 +127,8 @@ Phil, sigmas are in vox here, why is that?
   
 > END OF RIGID TRANSFORMATION  
 > ###########################################  
-        .
+  
+        
 |  
   
 > ###########################################  
