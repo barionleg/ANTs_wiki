@@ -30,7 +30,7 @@ antsRegistration --dimensionality 3 --float 0 \
 
 
 # INTRODUCTION:  
-Registration (sometimes called "Normalization") brings one image to match another image in space. Often the fixed (or target) image is a template, but you can register any two images with each other, there is nothing special in a template from the registration perspective.  
+Registration (sometimes called "Normalization") brings one image to match another image, such that the same voxels refers roughly to the same structure in both brains. Often the fixed (or target) image is a template, but you can register any two images with each other, there is nothing special in a template from the computation perspective.  
   
 ### Registration algorithms:  
 To achieve optimal registration, a set of algorithms are used in ANTs: rigid, then affine, then SyN. A "rigid" registration does not deform or scale the brain, it only rotates and moves it (the whole image is considered a rigid object). An "affine" registration allows not only rotation and motion, but also shearing and scaling. This further allows to match brains in size. The "rigid" and "affine" registrations are also called linear registrations, because each point of the image depends on the motion in space of the other points. Linear registrations help only superficially, you can imagine that gyri and sulci still remain misaligned. To achieve proper registration of individual gyri and sulci we need  non-linear registrations. There are several non-linear algorithms in ANTs, but we typically use SyN, one of the top  performing algorithms (see Klein 2009).   
