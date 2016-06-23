@@ -1,3 +1,4 @@
+*by Dorian Pustina and Philip Cook*  
 A walkthrough of an example ANTs registration, with options explained in detail:
 
 ```bash
