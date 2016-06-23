@@ -46,12 +46,13 @@ t1brain=Subject1.nii.gz
 
 ***
 ## Inline code explained  
-```
-> # first two arguments tells the images are 3D, no floating point will be use (double instead)  
-antsRegistration --dimensionality 3 --float 0 \  
-		# save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_
-		# save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
-        --output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \
+first two arguments tells the images are 3D, no floating point will be use (double instead)  
+  
+> antsRegistration --dimensionality 3 --float 0 \  
+  
+ 		# save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_
+ 		# save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
+>        --output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \
         
         # The interpolation type used when saving the warped image.
 		# Applies just to the output image (from moving), nothing else
