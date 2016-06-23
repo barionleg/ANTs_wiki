@@ -88,7 +88,7 @@ Set to 0 if registering across modalities (T1 on T2) and 1 for within modalities
 |  
   
 > ####################################  
-> THIS IS THE FIRST TRANSFORMATION: RIGID  
+> START THE FIRST TRANSFORMATION: RIGID  
 step size is 0.1, how fast you go with changes in the image transformation. Too big and you may overshoot. Too long and you wait longer.
   
         --transform Rigid[0.1] \
@@ -130,7 +130,7 @@ Smoothing occurs before shrinking to lower resolution.
 |  
   
 > ###########################################  
-THIS IS THE SECOND TRANSFORMATION: AFFINE  
+START THE SECOND TRANSFORMATION: AFFINE  
 the speed of change each iterations (step size) is again 0.1  
   
         --transform Affine[0.1] \
@@ -150,7 +150,7 @@ the speed of change each iterations (step size) is again 0.1
 |  
   
 >############################################  
-THIS IS THE THIRD TRANSFORMATION: SyN  
+START THE THIRD TRANSFORMATION: SyN  
   
         --transform SyN[0.1,3,0] \
 |  
