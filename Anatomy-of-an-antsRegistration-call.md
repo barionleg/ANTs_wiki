@@ -77,8 +77,7 @@ t1brain=Subject1.nii.gz
 		--use-histogram-matching 0 \
 |  
   
-> registration works in real coordinates given by the scanner. So images can start quite far from each other (e.g., one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other)  
-> options are:  
+> registration works in real coordinates given by the scanner. So images can start quite far from each other (e.g., one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other). Options are:  
 > 0-match by mid-point (i.e., center voxel of each image  
 > 1-match by center of mass  
 > 2-match by point of origin (i.e. coordinates 0,0,0)  
