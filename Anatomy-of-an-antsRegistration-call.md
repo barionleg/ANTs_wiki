@@ -68,7 +68,7 @@ t1brain=Subject1.nii.gz
 > This helps because images may have a few voxels with high value that impact badly the registration
   
 		--winsorize-image-intensities [0.005,0.995] \
- |  
+|  
   
 > boolean if histogram of input and output images should be matched.  
 > If registering T1 on T2 is not good to set to 0, because they are not in same modality.
@@ -127,6 +127,7 @@ Phil, sigmas are in vox here, why is that?
   
 > END OF RIGID TRANSFORMATION  
 > ###########################################  
+        .
 |  
   
 > ###########################################  
