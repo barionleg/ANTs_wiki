@@ -46,7 +46,7 @@ t1brain=Subject1.nii.gz
 
 ***
 `# first two arguments tells the images are 3D, no floating point will be use (double instead)
-antsRegistration --dimensionality 3 --float 0 \
+>antsRegistration --dimensionality 3 --float 0 \
 	
 		# save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_
 		# save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
@@ -147,7 +147,7 @@ antsRegistration --dimensionality 3 --float 0 \
 
 		
 Tips for registration:
-1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.
-2. Remove the skull before antsRegistration. If you have two brain-only images, you can be sure that surrounding tissues (i.e. the skull) will not take a toll on the registration accuracy.
-3. Never register a lesioned brain with a healthy brain without a proper mask. The algorithm will just pull the remaining parts of the lesioned brain to fill "the gap". Despite initial statements that you can "normalize" lesioned brains drawing the lesion, there is evidence showing that results are sub-optimal. If you really don't have the lesion mask, even a coarse and imprecise drawing of lesions helps (see XXXXXXXX).
-3. Don't forget to read the parts of the manual related to registration.
+1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.  
+2. Remove the skull before antsRegistration. If you have two brain-only images, you can be sure that surrounding tissues (i.e. the skull) will not take a toll on the registration accuracy.  
+3. Never register a lesioned brain with a healthy brain without a proper mask. The algorithm will just pull the remaining parts of the lesioned brain to fill "the gap". Despite initial statements that you can "normalize" lesioned brains drawing the lesion, there is evidence showing that results are sub-optimal. If you really don't have the lesion mask, even a coarse and imprecise drawing of lesions helps (see XXXXXXXX).  
+3. Don't forget to read the parts of the manual related to registration.  
