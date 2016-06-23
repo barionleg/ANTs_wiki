@@ -35,8 +35,12 @@ Registration (sometimes called "Normalization") brings one image to match anothe
 To achieve optimal registration, a set of algorithms are used in ANTs: rigid, then affine, then SyN. A "rigid" registration does not deform or scale the brain, it only rotates and moves it (the whole image is considered a rigid object). An "affine" registration allows not only rotation and motion, but also shearing and scaling. This further allows to match brains in size. The "rigid" and "affine" registrations are also called linear registrations, because each point of the image depends on the motion in space of the other points. Linear registrations help only superficially, you can imagine that gyri and sulci still remain misaligned. To achieve proper registration of individual gyri and sulci we need  non-linear registrations. There are several non-linear algorithms in ANTs, but we typically use SyN, one of the top  performing algorithms (see Klein 2009).   
 
 ### Iterations:  
-Beside going through registration algorithms, ANTs improves the registration with each algorithm gradually at different levels.does iterations within each algorithm. The idea is to start with a coarse low resolution highly smoothed image, register it to the best value possible, than go to the next step, with finer resolution, and so on. This is the reason why you see 1000x500x250x100 in registration calls, it means there will be 4 levels 
-The above antsRegistration call runs a rigid, an affine, and a SyN registration. It is the exact call made by the script antsRegistrationSyN.sh. The following is a line by line comment of what each line of the call does:
+Beside going through registration algorithms, ANTs improves the registration with each algorithm gradually at different levels. The idea is to start with a "blurry" low resolution version, register it to the best value possible, than go to the next step, with a sharper higher resolution version, and so on. This is the reason why you see 1000x500x250x100 in registration calls, it means there will be 4 levels 
+The above antsRegistration call runs a rigid, an affine, and a SyN registration. It is the exact call made by the script antsRegistrationSyN.sh. The following is a line by line comment of what each line of the call does. Note that words starting with $ are variables we have defined before. I.e.:  
+thisfolder=/user/local/mydata/  
+sub=Subject1  
+template=Template.nii.gz  
+t1brain=Subject1.nii.gz  
 
 
 
