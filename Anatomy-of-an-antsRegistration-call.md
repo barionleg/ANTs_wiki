@@ -173,9 +173,10 @@ the call is [fixed,moving,weight,radius]
 |  
   
 > END OF SyN TRANSFORMATION  
-#############################################
-|
-    
+#############################################  
+  
+|  
+  
 > mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.  
  why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
 this is a problem for patients with lesions: the lesion is drawn on the subject's image.  
