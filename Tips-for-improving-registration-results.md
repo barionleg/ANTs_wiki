@@ -2,6 +2,8 @@
 
 * Formulate a registration problem that ANTs can solve (at least to a good approximation). More theory [here](http://www.ncbi.nlm.nih.gov/pubmed/17659998) but basically there needs to be a sensible mapping between points in the moving and the fixed image. This requirement is violated when the same anatomy doesn't exist in both images, for example if you register a brain-extracted image to another image including the whole head.
 
+* Use an appropriate similarity metric. This is also part of defining a solvable problem. Mattes Mutual Information is the most general and works within or across modalities. Cross correlation (CC) can work better (especially for deformable registration) but it assumes a correlation between image intensities when the images are aligned. Thus it is often not suitable to align images from different modalities.  Several metrics are available; but Mattes and CC will cover many common use cases.
+
 * Check the images have the same basic orientation. The exact position and orientation will vary (eg, due to head position) but they should not be upside down or back to front, and both the fixed and moving images should agree on left-right orientation. You can check this with [ITK-SNAP](http://itksnap.org), which uses the same ITK I/O as ANTs.
 
 * Provide a good initialization for affine registration with `-r`. 
