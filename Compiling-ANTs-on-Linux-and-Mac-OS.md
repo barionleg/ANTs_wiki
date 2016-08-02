@@ -87,12 +87,14 @@ export PATH=${ANTSPATH}:$PATH
 
 Now check this worked correctly:
 
-```which antsRegistration```
+```
+which antsRegistration
+```
 
 should print out the full path to `antsRegistration`, and
 
-```antsRegistrationSyN.sh```
+```
+antsRegistrationSyN.sh
+```
 
-should print out the usage for that script.
-
-You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
+should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
