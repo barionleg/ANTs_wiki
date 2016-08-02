@@ -76,7 +76,7 @@ to be at most the number of physical cores. So on an iMac with a quad-core CPU (
 
 ## Set `PATH` and `ANTSPATH`
 
-Assuming you've built in `~/bin/ants`, there will now be a binary directory `~/bin/ants/bin`, containing the programs (and scripts if you've included them). The scripts additionally require `ANTSPATH` to point to the bin directory, and by convention, we include a trailing slash on that variable. 
+Assuming you've built in `~/bin/ants`, there will now be a binary directory `~/bin/ants/bin`, containing the programs (and scripts if you've included them). The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
 
 For the bash shell (default on Mac and some Linux), you need to set
 
