@@ -41,9 +41,7 @@ cd ~/bin/ants
 ccmake ~/code/ANTs
 ```
 
-Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. 
-
-'''Mac only''': Set `CMAKE_OSX_ARCHITECTURES` to "x86_64". 
+Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. Mac users will need to set `CMAKE_OSX_ARCHITECTURES` to "x86_64". 
 
 If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF".
 
