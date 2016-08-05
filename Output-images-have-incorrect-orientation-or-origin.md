@@ -1,4 +1,6 @@
-Some potential causes of problems with output images being flipped or translated.
+[ITK-SNAP](http://itksnap.org) uses similar I/O to ANTs, and is very useful for testing how ANTs will interpret the image header.
+
+Some potential causes of problems with output images being flipped or translated:
 
 ### NIfTI header codes not set appropriately for ANTs
 
