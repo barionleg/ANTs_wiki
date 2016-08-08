@@ -1,5 +1,6 @@
 Welcome to the ANTs wiki!
 
+See an overview of our answers to frequently asked questions [here](https://github.com/stnava/ANTsTutorial/blob/master/handout/antsGithubExamples.Rmd).
 
 A recommended call to `antsCorticalThickness.sh`:
 ```
