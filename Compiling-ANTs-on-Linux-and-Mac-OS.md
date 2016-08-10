@@ -55,7 +55,7 @@ make -j 4
 
 The option `-j` lets `make` run multiple threads, which speeds up compilation. Here I've used 4, which is suitable for a quad-core machine. 
 
-The system will build ITK and then ANTs. Using these default settings, installation will take approximately 1 hour. You can speed it up by turning off `RUN_LONG_TESTS`. 
+The system will build ITK and then ANTs. Using these default settings, installation will take approximately 40 minutes. You can speed it up by turning off `RUN_LONG_TESTS`. 
 
 
 ## Copy scripts 
