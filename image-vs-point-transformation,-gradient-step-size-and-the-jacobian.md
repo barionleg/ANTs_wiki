@@ -65,6 +65,9 @@ which will be similar to:
 
 where J is the jacobian determinant computed from phi at x. 
 
-**Note on directionality of the mapping**:   phi is the ForwardWarp which maps points from the fixed space to the moving space.  It is also the mapping that one applies to deform the moving image to the fixed image. this is the difference between mapping points and images, as described in figure 7 of ants2.pdf ( quite an old figure but still correct in its description !).
+**Note on directionality of the mapping**:   phi is the ForwardWarp which maps points from the fixed space to the moving space.  It is also the mapping that one applies to deform the moving image to the fixed image. this is the difference between mapping points and images, as described in figure 7 of ants2.pdf ( quite an old figure but still correct in its description !).   
+
+
+**Note on group comparisons with the jacobian:**  Recall that - in a population tensor-based morphometry or jacobian study - one maps all subjects in the population to a group template.  If we do this, then the ANTs way of defining and computing the jacobian will produce *positive* values in a t-test between two cohorts if group A is "bigger" than group B.
 
 
