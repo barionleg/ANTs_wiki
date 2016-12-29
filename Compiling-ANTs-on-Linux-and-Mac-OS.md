@@ -53,9 +53,9 @@ Now you are back at the command line, it's time to compile.
 make -j 4
 ```
 
-The option `-j` lets `make` run multiple threads, which speeds up compilation. Here I've used 4, which is suitable for a quad-core machine. 
+The option `-j` lets `make` run multiple threads, which speeds up compilation. Here I've used 4, which is suitable for a quad-core machine. Note that multiple threads will require more RAM. If your build seems slow for the number of threads, or hangs up entirely, try building with a single thread. 
 
-The system will build ITK and then ANTs. Using these default settings, installation will take approximately 40 minutes. You can speed it up by turning off `RUN_LONG_TESTS`. 
+The system will build ITK and then ANTs. Using these default settings, installation will take approximately 40 minutes. You can speed it up by turning off `RUN_LONG_TESTS`, or by turning off testing entirely.
 
 
 ## Copy scripts 
@@ -98,3 +98,12 @@ antsRegistrationSyN.sh
 ```
 
 should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
+
+
+## Troubleshooting
+
+### Compilation starts but hangs with no error message
+
+*  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". 
+
+* If the build hangs during compilation of some code, it's probably because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
