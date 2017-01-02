@@ -1,0 +1,1 @@
+https://github.com/stnava/ANTsR/wiki/general-questions-about-how-to-build-a-template
