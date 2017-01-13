@@ -2,7 +2,7 @@
 
 [ITK-SNAP](http://itksnap.org) is free software for image segmentation, which is also a very useful platform for viewing input to ANTs and the output of ANTs processing. Documentation and tutorials on the uses of ITK-SNAP are provided on the SNAP website. Here we show some basic operations for checking image alignment.
 
-ITK-SNAP uses ITK I/O, like ANTs. It is therefore the best tool for previewing how ANTs will interpret a particular image. 
+ITK-SNAP uses ITK I/O, like ANTs. It is therefore a good tool for previewing how ANTs will interpret a particular image. 
 
 
 ## Previewing image orientation 
@@ -34,7 +34,3 @@ Here the option to `-r` uses the center of mass to align the images.
 ## Viewing registration output
 
 After registration, the deformed image produced by `antsRegistration` or `antsApplyTransforms` (with the forward warps) will be resampled into the fixed image space. The deformed and fixed image will therefore always have the same header. They can be loaded into a single SNAP session with one image as the main image. The images can be viewed side by side or with one as an overlay. The overlay can be adjusted in opacity and toggled hidden / visible (see [ITK-SNAP keyboard shortcuts](http://www.itksnap.org/pmwiki/uploads/Documentation/snap_shortcuts_v3.pdf)).
-
-
-## Evaluating the output of antsCorticalThickness 
-
