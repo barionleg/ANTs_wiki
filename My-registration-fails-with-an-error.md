@@ -31,7 +31,7 @@ Failed to allocate memory for image.
 
 Sometimes also results in a segmentation fault and exit code 139.
 
-If registration quits suddenly with no error message, memory is often the culprit. Some systems have hard limits and jobs that exceed the limits are killed before being able to throw an exception. If you run with verbose output `- v 1`, you can see where the error happens. It is often between stages of registration as the images get larger and thus require more memory.
+If registration quits suddenly with no error message, memory is often the culprit. Some systems have hard limits and jobs that exceed the limits are killed before being able to throw an exception. If you run with verbose output `-v 1`, you can see where the error happens. It is often between stages of registration as the images get larger and thus require more memory.
 
 On shared computing platforms, it's often possible to allocate more RAM. Alternatively configure ANTs to use less by using single precision floats for computation, with `--float 1`.
 
