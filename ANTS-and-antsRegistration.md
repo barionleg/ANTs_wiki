@@ -1,6 +1,6 @@
 We are frequently asked what the default `ANTS` parameters would look like in a call to `antsRegistration`. There is not a one to one mapping between the two programs, but some options can be set in a similar way.
 
-The most frequently asked question is how to set the shrink factors `-f` and smoothing `-s` in `antsRegistration` in a way analogous to the default behavior of `ANTS`.
+The most frequently asked question is how to set the shrink factors `-f` and smoothing `-s` in `antsRegistration` in a way analogous to the default behavior of `ANTS`. This page explains how ANTS handles these parameters for deformable registration. 
 
 Example call:
 
@@ -10,7 +10,7 @@ ANTS -m MI[ fixed.nii.gz , moving.nii.gz , 1, 32] -t SyN[0.25] -r Gauss[3,0] -i 
 
 Where fixed and moving are T1 images with 1x1x1 mm voxels, and dimensions 160x192x256. In the deformable part, we have four levels.
 
-For `antsRegistration`, this should be in same ballpark: `-f 6x4x2x1 -s 2x1x0.5x0 mm`. Read on for details.
+For `antsRegistration`, this should be in same ballpark: `-f 6x4x2x1 -s 2x1x0.5x0 mm`. 
 
 
 ## Shrink factors
