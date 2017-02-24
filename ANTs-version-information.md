@@ -10,7 +10,7 @@ If you have a local repository, you can get the full git hash from the source di
 git log | head - n 1 
 ```
 
-Of course, this will be incorrect if you've checked out a version other than the one you built. So it's good to do record this immediately before compiling.
+Of course, this will be incorrect if you've checked out a version other than the one you built. So it's good to record this immediately before compiling.
 
 Alternatively, if you have the full build directory, you can look in the file
 
