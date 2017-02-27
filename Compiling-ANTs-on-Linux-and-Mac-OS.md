@@ -108,8 +108,23 @@ should print out the usage for that script. You can put the above variable defin
 
 ## Troubleshooting
 
+It's rare for the ANTs code to have errors preventing compilation, because there are automated tests that check for successful compilation. It's very likely that any compilation problems are specific to a particular system. Most errors reported as issues relate to firewalls blocking the download of ITK, or resource issues limiting the available memory or CPU time, causing compilation to slow down or fail.
+
+
 ### Compilation starts but hangs with no error message
 
 *  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". 
 
 * If the build hangs during compilation of some code, it's probably because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
+
+
+### Compilation exits with error messages
+
+* Try building with a single thread. Resource limits or timeouts can lead to incomplete compilation, resulting in errors.
+
+
+### Asking for help
+
+If you have built with a single thread using `make`, and there are still errors that you can't resolve, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
+
+You may open an issue to report the error and seek help from the ANTs community. It's important to include as much relevant information as possible, including the exact version of the ANTs source (identified by the git hash), CMake, the compiler being used, and the operating system. The full output from `make` should also be included as a text file. 
