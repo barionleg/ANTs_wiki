@@ -1,4 +1,4 @@
-This installation guide is for Linux and Mac users. 
+This installation guide is for Linux and Mac users. See [this page](https://github.com/stnava/ANTsR/wiki/Installing-ANTsR-in-Windows-10-(along-with-FSL,-Rstudio,-Freesurfer,-etc).)] for information about building ANTs on Windows.
 
 ## Get CMake
 
