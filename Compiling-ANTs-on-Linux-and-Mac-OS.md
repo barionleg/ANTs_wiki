@@ -50,10 +50,16 @@ Hit 'c' again to do another round of configuration. If there are no errors, you'
 Now you are back at the command line, it's time to compile.
 
 ```
-make -j 4
+make
 ```
 
-The option `-j` lets `make` run multiple threads, which speeds up compilation. Here I've used 4, which is suitable for a quad-core machine. Note that multiple threads will require more RAM. If your build seems slow for the number of threads, or hangs up entirely, try building with a single thread. 
+This compiles in the most resource-efficient manner. To save time, you can use multiple threads, for example:
+
+```
+make -j 2
+```
+
+will use two cores. Note that multiple threads will require more RAM as well as CPU time. If your build seems slow for the number of threads, exits with errors, or hangs up entirely, try building with a single thread.
 
 The system will build ITK and then ANTs. Using these default settings, installation will take approximately 40 minutes. You can speed it up by turning off `RUN_LONG_TESTS`, or by turning off testing entirely.
 
