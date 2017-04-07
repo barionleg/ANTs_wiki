@@ -33,3 +33,29 @@ Smoothing is minimal in `ANTS`, based on the formula
 For the example above, this translates to smoothing sigmas of 0.8x1.0x1.4 mm, 0.6x0.6x0.6 mm, 0.2x0.2x0.2 mm, and 0x0x0 mm at each level. 
 
 Code: https://github.com/stnava/ANTs/blob/9bc1866a758c2c7b6da463566edc3cdaed65a829/ImageRegistration/itkANTSImageRegistrationOptimizer.h#L712-L748
+
+
+## Affine registration
+
+The default call to `ANTS` sets the following parameters:
+
+```
+--affine-metric-type MI
+--MI-option 32x32000
+--number-of-affine-iterations 10000x10000x10000
+```
+
+This does an initial affine transform using three levels, with the MI metric. The MI metric in `antsRegistration` is a synonym for Mattes Mutual Information, a different implementation of MI to that used in `ANTS`. 
+
+The downsampling and smoothing parameters are the same as described above for deformable registration, so something like 1-c [10000x10000x10000, 1e-4, 10] -f 4x2x1 -s 0.6x0.2x0mm` for a typical 1mm brain image. The number of MI bins is set to 32, but in contrast to `antsRegistration`, a fixed number of sample points are specified (32000). In `antsRegistration`, we set a sampling percentage rather than a fixed number of samples. For example, 
+
+```
+  -m MI[fixed.nii.gz, moving.nii.gz, 1,32, Regular, 0.1]
+```
+
+samples points on a regular grid, such that 10% of the voxels contain a sample point. Replacing "Regular" with "Random" adds a random perturbation to each point, to minimize any bias arising from regular sampling.
+
+The default number of MI samples in `ANTS` translates to a different sampling percentage for different images, so there's no direct replacement for this value. The setting in the `antsRegistrationSyN.sh` script is 0.25. Sampling more densely improves the capture range of the registration, at the cost of computation time. With a good initialization it may be possible to reduce the sampling percentage without harming performance.
+
+We have also found it useful to start with a rigid alignment before doing an affine stage. In ANTS, setting `--do-rigid` does a rigid alignment instead of, rather than before, affine.
+
