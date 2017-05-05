@@ -111,7 +111,7 @@ Typically not all iterations are run and the loop finishes because no further im
 |  
   
 > the 4 hierarchical steps will have resolutions divided by 8,4,2,1  
-For example, for an image with 256x256x256 voxels, the levels will work on images of size 32mm, 64mm, 128mm, and 256mm.  IMPORTANT! The resolutions use the fixed image as reference. If you register 5mm images on 1mm, --shrink-factors 3x2x1 will register images at 3mm, then 2mm, then 1mm. But if you register 1mm images to 5mm, --shrink-factors 3x2x1 will register images at 15mm, then 2mm, then 5mm. Keep this in mind and try to register low res to high res, not vice versa.
+For example, for an image with 256x256x256 voxels, the levels will work on images of size 32mm, 64mm, 128mm, and 256mm.  IMPORTANT! The resolutions use the fixed image as reference. If you register 5mm images on 1mm, --shrink-factors 3x2x1 will register images at 3mm, then 2mm, then 1mm. But if you register 1mm images to 5mm, --shrink-factors 3x2x1 will register images at 15mm, then 10mm, then 5mm. Keep this in mind and try to register low res to high res, not vice versa.
   
         --shrink-factors 8x4x2x1 \
 |  
