@@ -104,8 +104,9 @@ Our example call has 32 bins, and values are sampled regularly in 25% of the vox
 |  
   
 > we will run 4 levels (or multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:  
-"if the change in MI value for the last 10 iterations is below the 1e-6, stop the iterations and go to next level"  
-Typically not all iterations are run and the loop finishes because no further improvement is possible. If you want to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if mutual information becomes worse.  
+"if the change in MI value for the last 10 iterations is below the 1e-6 threshold, stop the iterations and go to next level"  
+Typically the convergence threshold is the main reason for stepping out of a level; i.e., the loop finishes because no further improvement is possible. For this reason, the number of iterations you specify have less importance. You can specify 1000 iterations and only 40 will be run because there is no further improvement possible.  
+If, by any change, you like to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if the similarity metric (i.e., mutual information) becomes worse.  
   
         --convergence [1000x500x250x100,1e-6,10] \
 |  
