@@ -117,8 +117,8 @@ For example, for an image with 256x256x256 voxels, the levels will work on image
 |  
   
 > Here are the smoothing values for each step: sigma 3,2,1,0.  
-To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond roughly to 7mm, 5mm, 2mm and 0mm (no smoothing).
-Smoothing occurs before shrinking to lower resolution.  
+To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond roughly to 7mm, 5mm, 2mm and 0mm (no smoothing).  
+Note, smoothing is applied before shrinking the image to lower resolution.  
   
         --smoothing-sigmas 3x2x1x0vox \
 |  
