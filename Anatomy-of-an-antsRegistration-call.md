@@ -94,11 +94,11 @@ Set to 0 if registering across modalities (T1 on T2) and 1 for within modalities
         --transform Rigid[0.1] \
 |  
   
-> mutual information measures how similar the two images look. It uses the histograms of the two images to check the similarity. The histogram will have 32 bins, and values are sampled regularly at 25%, i.e. a voxel is considered every four.  
-The value of 1 is a weight used if you do multimodal registration (i.e. using, T1, T2, FLAIR). Here is an example of a multimodal registration call  
+> mutual information measures how similar the two images look. It uses the histograms of the two images to check the similarity. The value of 1 is a weight used if you do multimodal registration (i.e. using, T1, T2, FLAIR). Here is an example of a multimodal registration call  
 		# --metric MI[$t1brain,$template,0.7,32,Regular,0.25] # weight 0.7 on t1  
 		# --metric MI[$t2brain,$T2template,0.3,32,Regular,0.25] # weight 0.3 on t2  
-		# the call format is [fixed, moving, weight, bins, sampling]  
+		# the call format is [fixed, moving, weight, bins, sampling, samplingPercentage]  
+Our example call has 32 bins, and values are sampled regularly in 25% of the voxels, i.e. one voxel every four is considered.  
   
         --metric MI[$t1brain,$template,1,32,Regular,0.25] \
 |  
