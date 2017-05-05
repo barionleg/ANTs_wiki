@@ -153,12 +153,12 @@ the speed of change each iterations (step size) is again 0.1
 START THE THIRD TRANSFORMATION: SyN  
 The parameters inside SyN[] are: gradientStep,updateFieldVarianceInVoxelSpace,totalFieldVarianceInVoxelSpace  
 
-`gradientStep` - how aggressive to be when moving each point after each iteration. Optimal values 0.1-0.25. Because the shift of each point is computed separately, high values here will allow for more high frequency deformations (i.e., smaller independent courses of each point), which is not good beyond some degree.
+`gradientStep` - the SyN metric computes in which direction each point needs to move. This movement can be large (high gradientStep) or small (low gradientStep). Optimal values 0.1-0.25. Because the shift of each point is computed separately, high values here may also increase high frequency deformations (i.e., each point going its own way), but see the other parameters below that mitigate this problem.
 
-After each iteration, a gradient field is computed, which indicates how each point (or voxel) will shift in space. This "updated" gradient field is combined with previous updates to form a "total" gradient deformation. Normally each point can follow it's own path. This may create non-realistic deformations.  
-`updateFieldVarianceInVoxelSpace` - By adding a penalty here, we smooth the deformation computed on the "updated" gradient field, such that deformations after each update are not too "individual" for each voxel, and the deformation of nearby voxels is considered at each specific update. Thus we avoid points moving too much independently at individual iterations.  
+After each iteration, a gradient field is computed, which indicates how each point (or voxel) will shift in space. This small deformation (or "updated" gradient field) is combined with previous updates to form a "total" gradient deformation. Normally each point can follow it's own path. This may create non-realistic deformations.  
+`updateFieldVarianceInVoxelSpace` - By adding a penalty here, we smooth the deformation computed on the "updated" gradient field, before this is added to previous deformations to form the "total" gradient field. Thus we avoid moving too much independently neighboring points/voxels at individual iteration.  
 `totalFieldVarianceInVoxelSpace` -  By adding a penalty here, we smooth the deformation computed on the "total" gradient field. The smoothing here is, therefore, applied on all the deformations computed at this and all previous SyN iterations.  
-One can view smoothing the update field only as a fluid-like registration whereas smoothing the total field is elastic.
+In sum, smoothing of the update field can be viewed as fluid-like registration whereas smoothing of the total field can be viewed as elastic registration.
   
         --transform SyN[0.1,3,0] \
 |  
