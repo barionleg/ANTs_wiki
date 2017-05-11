@@ -1,7 +1,7 @@
 *by Dorian Pustina and Philip Cook*  
 A walkthrough of an example ANTs registration, with options explained in detail:
 
-``` bash
+``` zsh
 antsRegistration --dimensionality 3 --float 0 \  
         --output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \  
         --interpolation Linear \  
