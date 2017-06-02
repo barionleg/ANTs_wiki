@@ -1,6 +1,6 @@
 We are frequently asked what the default `ANTS` parameters would look like in a call to `antsRegistration`. There is not a one to one mapping between the two programs, but some options can be set in a similar way.
 
-The most frequently asked question is how to set the shrink factors `-f` and smoothing `-s` in `antsRegistration` in a way analogous to the default behavior of `ANTS`. This page explains how ANTS handles these parameters for non-rigid registration. 
+The most frequently asked question is how to set the shrink factors `-f` and smoothing `-s` in `antsRegistration` in a way analogous to the default behavior of `ANTS`. 
 
 Example call:
 
