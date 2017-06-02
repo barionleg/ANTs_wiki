@@ -47,7 +47,7 @@ The default call to `ANTS` sets the following parameters:
 
 This does an initial affine transform using three levels, with the MI metric. The MI metric in `antsRegistration` is a synonym for Mattes Mutual Information, a different implementation of MI to that used in `ANTS`. 
 
-The downsampling and smoothing parameters are the same as described above for deformable registration, so something like 1-c [10000x10000x10000, 1e-4, 10] -f 4x2x1 -s 0.6x0.2x0mm` for a typical 1mm brain image. The number of MI bins is set to 32, but in contrast to `antsRegistration`, a fixed number of sample points are specified (32000). In `antsRegistration`, we set a sampling percentage rather than a fixed number of samples. For example, 
+The downsampling and smoothing parameters are the same as described above for deformable registration, so something like `1-c [10000x10000x10000, 1e-4, 10] -f 4x2x1 -s 0.6x0.2x0mm` for a typical 1mm brain image. The number of MI bins is set to 32, but in contrast to `antsRegistration`, a fixed number of sample points are specified (32000). In `antsRegistration`, we set a sampling percentage rather than a fixed number of samples. For example, 
 
 ```
   -m MI[fixed.nii.gz, moving.nii.gz, 1,32, Regular, 0.1]
