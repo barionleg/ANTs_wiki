@@ -43,7 +43,11 @@ ccmake ~/code/ANTs
 
 Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. 
 
-If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF".
+If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". You may also need to replace the git protocol for the ITK build. You can do this on the command line with 
+```
+git config --global url."https://".insteadOf git://
+```
+This will tell git to use https instead of git for all of your projects.
 
 On OS X 10.11 using clang, `CMAKE_OSX_ARCHITECTURES` needs to be left blank. Previously, this would be set to "x86_64". If CMake doesn't demand an architecture option, you should probably leave this blank.
 
