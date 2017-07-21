@@ -30,7 +30,7 @@ Smoothing is minimal in `ANTS`, based on the formula
 
   sigma = (outputSpacing / inputSpacing - 1.0) * 0.2
 
-For the example above, this translates to smoothing sigmas of 0.8x1.0x1.4 mm, 0.6x0.6x0.6 mm, 0.2x0.2x0.2 mm, and 0x0x0 mm at each level. 
+For the example above (160x192x256 voxels, 1x1x1 mm spacing), this translates to smoothing sigmas of 0.8x1.0x1.4 mm, 0.6x0.6x0.6 mm, 0.2x0.2x0.2 mm, and 0x0x0 mm at each level. 
 
 Code: https://github.com/stnava/ANTs/blob/9bc1866a758c2c7b6da463566edc3cdaed65a829/ImageRegistration/itkANTSImageRegistrationOptimizer.h#L712-L748
 
@@ -58,4 +58,3 @@ samples points on a regular grid, such that 10% of the voxels contain a sample p
 The default number of MI samples in `ANTS` translates to a different sampling percentage for different images, so there's no direct replacement for this value. The setting in the `antsRegistrationSyN.sh` script is 0.25. Sampling more densely improves the capture range of the registration, at the cost of computation time. With a good initialization it may be possible to reduce the sampling percentage without harming performance.
 
 We have also found it useful to start with a rigid alignment before doing an affine stage. In ANTS, setting `--do-rigid` does a rigid alignment instead of, rather than before, affine.
-
