@@ -41,7 +41,7 @@ To warp an image from the subject to template space:
 
 ```
 antsApplyTransforms -d 3 -i imageInSubjectSpace.nii.gz -o imageInTemplateSpace.nii.gz \
--t outputPrefixSubjectToTemplate1Warp.nii.gz -t SubjectToTemplate0GenericAffine.mat -r template.nii.gz
+-t outputPrefixSubjectToTemplate1Warp.nii.gz -t outputPrefixSubjectToTemplate0GenericAffine.mat -r template.nii.gz
 ```
 
 To warp an image from the template to subject space:
