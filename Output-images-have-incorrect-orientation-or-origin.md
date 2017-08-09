@@ -1,4 +1,4 @@
-[ITK-SNAP](http://itksnap.org) uses similar I/O to ANTs, and is very useful for testing how ANTs will interpret the image header.
+[ITK-SNAP](http://itksnap.org) uses similar I/O to ANTs, and is very useful for testing how ANTs will interpret the image header. See the page on [Using ITK-SNAP with ANTs](https://github.com/stnava/ANTs/wiki/Using-ITK-SNAP-with-ANTs).
 
 Some potential causes of problems with output images being flipped or translated:
 
