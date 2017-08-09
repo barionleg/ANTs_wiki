@@ -5,12 +5,13 @@ The most frequently asked question is how to set the shrink factors `-f` and smo
 Example call:
 
 ```
-ANTS -m MI[ fixed.nii.gz , moving.nii.gz , 1, 32] -t SyN[0.25] -r Gauss[3,0] -i 200x100x70x20 -o output
+ANTS -m MI[ fixed.nii.gz , moving.nii.gz , 1, 32] -t SyN[0.25] \
+  -r Gauss[3,0] -i 200x100x70x20 -o output
 ```
 
 Where fixed and moving are T1 images with 1x1x1 mm voxels, and dimensions 160x192x256. In the deformable part, we have four levels.
 
-For `antsRegistration`, this should be in same ballpark: `-f 6x4x2x1 -s 2x1x0.5x0 mm`. 
+For `antsRegistration`, this should be in same ballpark: `-f 6x4x2x1 -s 2x1x0.5x0mm`. 
 
 
 ## Shrink factors
