@@ -54,7 +54,9 @@ The downsampling and smoothing parameters are the same as described above for de
   -m MI[fixed.nii.gz, moving.nii.gz, 1,32, Regular, 0.1]
 ```
 
-samples points on a regular grid, such that 10% of the voxels contain a sample point. Replacing "Regular" with "Random" adds a random perturbation to each point, to minimize any bias arising from regular sampling.
+samples points on a regular grid defined by the fixed image spacing, such that 10% of the voxels contain a sample point. A small random perturbation is applied to each point to reduce aliasing. 
+
+Random sampling does not iterate over a grid, instead it randomly samples voxels, and again adds a random perturbation that displaces each point from the voxel center.
 
 The default number of MI samples in `ANTS` translates to a different sampling percentage for different images, so there's no direct replacement for this value. The setting in the `antsRegistrationSyN.sh` script is 0.25. Sampling more densely improves the capture range of the registration, at the cost of computation time. With a good initialization it may be possible to reduce the sampling percentage without harming performance.
 
