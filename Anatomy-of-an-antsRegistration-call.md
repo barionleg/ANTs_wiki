@@ -196,6 +196,7 @@ This is the reason why all above calls show template as moving
 		# -x [$fixed_mask,$moving_mask]
   
   
+  
 ** Tips for registration:**  
 1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.   
 2. Remove the skull before antsRegistration. If you have two brain-only images, you can be sure that surrounding tissues (i.e. the skull) will not take a toll on the registration accuracy.  
