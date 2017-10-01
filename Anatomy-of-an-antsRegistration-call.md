@@ -185,12 +185,14 @@ the call is [fixed,moving,weight,radius]
   
 > mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.  
 why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
-this is a problem for patients with lesions: the lesion is drawn on the subject's image.  
+This is a problem for patients with lesions: the lesion is drawn on the subject's image.  
 don't worry, just flip the order, make your subject fixed and move the template on it.  
 This is the reason why all above calls show template as moving
   
         -x $brainlesionmask
 |  
+> Note, antsRegistration can accept masks on the target, moving, or both images. Sometimes you may need to mask both the moving moving and the target. In that case you can use something like this:  
+# -x [$fixed_mask,$moving_mask]
   
   
 ** Tips for registration:**  
