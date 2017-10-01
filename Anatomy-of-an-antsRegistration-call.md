@@ -47,7 +47,7 @@ t1brain=Subject1.nii.gz
 
 ***
 ## Inline code explained  
-> first two arguments tells the images are 3D, no floating point will be use (double instead)  
+> first two arguments tells the images are 3D, no floating point will be used (double instead)  
   
 		antsRegistration --dimensionality 3 --float 0 \  
 |  
@@ -71,17 +71,17 @@ t1brain=Subject1.nii.gz
 		--winsorize-image-intensities [0.005,0.995] \
 |  
   
-> Histogram matching is a pre-processing step, transforming the input intensities such that the histogram matches as much as possible the histogram of the target image. It's designed to make registration work better but it is independent of the alignment of the two images.  
+> Histogram matching is a pre-processing step, transforming the input intensities such that the histogram are matched as much as possible between moving and target images. It's designed to make registration work better but it is independent of the alignment of the two images.  
 Set to 0 if registering across modalities (T1 on T2) and 1 for within modalities  
   
 		--use-histogram-matching 0 \
 |  
   
-> registration works in real coordinates given by the scanner. So images can start quite far from each other (e.g., one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other). Options are:  
-> 0-match by mid-point (i.e., center voxel of each image  
+> registration works in real coordinates given by the scanner. So images can start quite far from each other (per analogy, one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other). Options are:  
+> 0-match by mid-point (i.e., center voxel of one image will be brought in line with center voxel of the other)  
 > 1-match by center of mass  
 > 2-match by point of origin (i.e. coordinates 0,0,0)  
-> One can also point to a .mat file obtained with antsAI, but there is no need. The AI solution is implemented in antsCortThicknes.sh and runs an affine with several random changes to check if one "unsual" solution is better. Useful if there are strong orientation issues.  
+> One can also point to a .mat file obtained with antsAI, but there is no need. The AI solution is implemented in antsCortThicknes.sh and runs an affine with several random changes to check if one "unsual" solution is better. Useful if there are strong orientation issues (i.e., moving image is flipped inferior-superior)  
 > the command tells [fixed,moving,option]
    
 		--initial-moving-transform [$t1brain,$template,1] \
@@ -106,13 +106,13 @@ Our example call has 32 bins, and values are sampled regularly in 25% of the vox
 > we will run 4 levels (or multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:  
 "if the change in MI value for the last 10 iterations is below the 1e-6 threshold, stop the iterations and go to next level"  
 Typically the convergence threshold is the main reason for stepping out of a level; i.e., the loop finishes because no further improvement is possible. For this reason, the number of iterations you specify have less importance. You can specify 1000 iterations and only 40 will be run because there is no further improvement possible.  
-If, by any change, you like to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if the similarity metric (i.e., mutual information) becomes worse.  
+If, by any chance, you like to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if the similarity metric (i.e., mutual information) becomes worse.  
   
         --convergence [1000x500x250x100,1e-6,10] \
 |  
   
 > the 4 hierarchical steps will have resolutions divided by 8,4,2,1  
-For example, for an image with 256x256x256 voxels, the levels will work on images of size 32mm, 64mm, 128mm, and 256mm.  IMPORTANT! The resolutions use the fixed image as reference. If you register 5mm images on 1mm, --shrink-factors 3x2x1 will register images at 3mm, then 2mm, then 1mm. But if you register 1mm images to 5mm, --shrink-factors 3x2x1 will register images at 15mm, then 10mm, then 5mm. Keep this in mind and try to register low res to high res, not vice versa.
+For example, for an image with 256x256x256 voxels, the levels will work on images of size 32mm, 64mm, 128mm, and 256mm.   IMPORTANT! The resolutions use the fixed image as reference. If you register 5mm images on 1mm, --shrink-factors 3x2x1 will register images at 3mm, then 2mm, then 1mm. But if you register 1mm images to 5mm, --shrink-factors 3x2x1 will register images at 15mm, then 10mm, then 5mm. Keep this in mind and try to register low res to high res, not vice versa.
   
         --shrink-factors 8x4x2x1 \
 |  
