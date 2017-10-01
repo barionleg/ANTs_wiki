@@ -191,7 +191,7 @@ This is the reason why all above calls show template as moving
   
         -x $brainlesionmask
 |  
-> Note, antsRegistration can accept masks on the target, moving, or both images. Sometimes you may need to mask both the moving moving and the target. In that case you can use something like this:  
+> Note, antsRegistration can accept masks on the target, moving, or both images. Sometimes you may need to mask both sides with separate masks. In that case you can use something like this:  
 # -x [$fixed_mask,$moving_mask]
   
   
