@@ -19,7 +19,7 @@ When writing NIFTI files, ITK encodes the rotation, translation and scaling in b
 
 2. The sform will be overwritten in output images, and sform code will be set to 1. If the sform is not identical to the qform, information will be lost. 
 
-Another [comment](https://github.com/ANTsX/ANTs/issues/500#issuecomment-333543715) from Chris Rorden
+__Another [comment](https://github.com/ANTsX/ANTs/issues/500#issuecomment-333543715) from Chris Rorden__
 
 As a comment, in cases where both an SForm and QForm are present, ITK gives precedence to the QForm while SPM/MRIcroGL give precedence to the SForm. The rationale for the SPM approach is clear: QForms were designed to provide an idea of native space, while the SForm could provide the user an easy way to provide a starting estimate. However, when informed of this difference the ITK group elected to keep their method to ensure backward compatibility. I believe that this is the reason that recent versions of SPM change both the SForm as well as QForm when the user changes the origin with the "Display" button. One would hope that any code that changes the QForm should also update the SForm.
 
