@@ -4,6 +4,8 @@ These instructions require the Linux subsystem, which requires the Windows 10 an
 
 Follow the instructions here: https://msdn.microsoft.com/en-us/commandline/wsl/install_guide
 
+You can install your choice of Linux distributions. The instructions below are for Ubuntu, using the apt-get system to install software.
+
 ## Install git
 
 ```
