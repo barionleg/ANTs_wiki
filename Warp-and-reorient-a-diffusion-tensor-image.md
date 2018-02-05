@@ -21,7 +21,7 @@ followed by the x,y,z dimensions of the image, and then
 
 The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
-If your data is not in this format, see [Importing Diffusion Tensors](#importing-diffusion-tensors) below.
+If your data is not in this format, see this page.
 
 ## Warp and reorient the DT
 
@@ -52,6 +52,3 @@ antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
 ```
 ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 ```
-
-## Importing diffusion tensors
-
