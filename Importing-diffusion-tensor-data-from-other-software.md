@@ -20,3 +20,12 @@ The ANTs program `RebaseTensorImage` can convert tensors that are stored in voxe
 ## Examples
 
 Below are some examples of how to fit diffusion tensors in the correct NIFTI format for ANTs, using some common diffusion software packages.
+
+
+### FSL
+
+```
+dtifit -k dwi.nii.gz -o dti -m mask.nii.gz -r bvecs -b bvals --save_tensor
+```
+
+This produces a tensor component image `dti_tensor.nii.gz` which is stored as a **4D** NIFTI image in upper-triangular order. This needs to be converted into a 5D lower-triangular image for ANTs.
