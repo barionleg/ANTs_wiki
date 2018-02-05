@@ -52,3 +52,16 @@ antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
 ```
 ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 ```
+
+
+## Interpolation and masking options
+
+The default linear tensor interpolation in ANTs is done in the log space. This is based on a mathematical argument that linear interpolation of the log tensor gives a better result than linear interpolation of the tensor itself, as explained here
+
+https://www.ncbi.nlm.nih.gov/pubmed/16788917
+
+One problem with this approach is how to interpolate background (where the DT is all zeros), since the log of 0 is undefined. By default, `antsApplyTransforms` does not modify these tensors, which are then treated as zero tensors in the log space. This is why DT images with a brain mask often have unrealistic diffusion tensors around the edge of the brain.
+
+To prevent this, specify a background tensor diffusivity with the `-f` option to `antsApplyTransforms`. For example, `-f 0.0007` will replace background (any voxel that is all zeros) with an isotropic DT where each eigenvalue is 0.0007. If your b-values are in the usual units of s / mm^2 , then this ought to create a DT with similar mean diffusivity to those in the brain GM / WM. If your b-values are in different units, scale accordingly. Alternatively, you could use a larger value to simulate interpolation with CSF, which presumably surrounds the brain.
+
+Another option is to mask the DT image more generously in the native space, and then apply a tighter brain mask after warping to structural space, so that the voxels interpolated with zero voxels will be removed.
