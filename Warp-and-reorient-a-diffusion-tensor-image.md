@@ -23,9 +23,15 @@ The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
 [This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs.
 
-## Warp and reorient the DT
+The reorientation is computed using the [Preservation of Principal Directions](https://www.ncbi.nlm.nih.gov/pubmed/11700739) algorithm. The rotation matrix applied to the tensors is defined in the physical space of the image. It may be necessary to "rebase" the tensors into physical space coordinates in order to get the correct reorientation. This can be done with `RebaseTensorImage`. If the reorientation is not correct, scalar invariants (MD, FA) will not be affected but tractography might be degraded in a way that is difficult to detect.
+
+We are working to provide additional tools and guidance to assist users with this problem. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
+
+
+## Compute registration
 
 Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by proxy - for the moving image use B0 (recommended), FA, or some other scalar image(s) in the DT space. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`.
+
 
 ### Apply the transform to the DT image
 
@@ -36,6 +42,7 @@ antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
 -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
 You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
+
 
 ### Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
 
@@ -53,7 +60,6 @@ antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
 ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 ```
 
-
 ## Interpolation and masking options
 
 The default linear tensor interpolation in ANTs is done in the log space. This is based on a mathematical argument that linear interpolation of the log tensor gives a better result than linear interpolation of the tensor itself, as explained here
@@ -64,4 +70,4 @@ One problem with this approach is how to interpolate background (where the DT is
 
 To prevent this, specify a background tensor diffusivity with the `-f` option to `antsApplyTransforms`. For example, `-f 0.0007` will replace background (any voxel that is all zeros) with an isotropic DT where each eigenvalue is 0.0007. If your b-values are in the usual units of s / mm^2 , then this ought to create a DT with similar mean diffusivity to those in the brain GM / WM. If your b-values are in different units, scale accordingly. Alternatively, you could use a larger value to simulate interpolation with CSF, which presumably surrounds the brain.
 
-Another option is to mask the DT image more generously in the native space, and then apply a tighter brain mask after warping to structural space, so that the voxels interpolated with zero voxels will be removed.
+Another option is to mask the DT image more generously in the native space, and then apply a tighter brain mask after warping to structural space, so that the voxels interpolated with zero voxels will be removed. Lastly, nearest-neighbor interpolation avoids this issue entirely, though results may be less accurate within the brain.
