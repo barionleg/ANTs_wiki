@@ -21,7 +21,7 @@ followed by the x,y,z dimensions of the image, and then
 
 The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
-If your data is not in this format, see this page.
+[This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs.
 
 ## Warp and reorient the DT
 
