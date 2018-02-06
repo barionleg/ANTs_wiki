@@ -29,3 +29,11 @@ dtifit -k dwi.nii.gz -o dti -m mask.nii.gz -r bvecs -b bvals --save_tensor
 ```
 
 This produces a tensor component image `dti_tensor.nii.gz` which is stored as a **4D** NIFTI image in upper-triangular order. This needs to be converted into a 5D lower-triangular image for ANTs.
+
+```
+ImageMath 4 dti_comp.nii.gz TimeSeriesDisassemble dti_tensor.nii.gz
+mv dti_comp1000.nii.gz dti_xx.nii.gz
+mv dti_comp1000.nii.gz dti_xx.nii.gz
+mv dti_comp1000.nii.gz dti_xx.nii.gz
+mv dti_comp1000.nii.gz dti_xx.nii.gz
+mv dti_comp1000.nii.gz dti_xx.nii.gz
