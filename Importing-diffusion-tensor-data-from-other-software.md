@@ -43,7 +43,8 @@ ImageMath 3 dtAnts.nii.gz ComponentTo3DTensor dtiComp_
 ### Camino
 
 ```
-modelfit -model ldt_wtd -inputfile dwi.nii.gz -schemefile a.scheme -brainmask mask.nii.gz -outputfile wdt.Bdouble
+modelfit -model ldt_wtd -inputfile dwi.nii.gz -schemefile a.scheme \
+  -brainmask mask.nii.gz -outputfile wdt.Bdouble
 dt2nii -inputfile wdt.Bdouble -header dwi.nii.gz -outputroot nifti_
 ```
 
