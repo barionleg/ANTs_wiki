@@ -14,7 +14,7 @@ The NIFTI header describes the transformation of the image voxels into physical 
 
 The correct convention for the tensor coordinate system is software dependent and problems usually result from the DT reconstruction reading gradient vectors (`bvecs` in FSL terminology) that are not correctly formatted. See [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for discussion of this issue in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino.
 
-The ANTs program `RebaseTensorImage` can convert tensors that are stored in voxel space to physical space, and vice versa.
+The examples below describe how to convert the tensors into the correct file format for ANTs. The tensor orientation is handled separately and will be documented elsewhere.
 
 
 ## Examples
