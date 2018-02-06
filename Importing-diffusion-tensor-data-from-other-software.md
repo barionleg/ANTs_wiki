@@ -28,12 +28,23 @@ Below are some examples of how to fit diffusion tensors in the correct NIFTI for
 dtifit -k dwi.nii.gz -o dti -m mask.nii.gz -r bvecs -b bvals --save_tensor
 ```
 
-This produces a tensor component image `dti_tensor.nii.gz` which is stored as a **4D** NIFTI image in upper-triangular order. This needs to be converted into a 5D lower-triangular image for ANTs.
+This produces a tensor component image `dti_tensor.nii.gz` which is stored as a **4D** NIFTI image in upper-triangular order. This needs to be converted into a 5D lower-triangular image for ANTs by first splitting the 4D image into 3D components, and then labeling them by their matrix indices [xx,xy,xz,yy,yz,zz]. Then `ImageMath` can combine them into a NIFTI_SYMMATRIX image.
 
 ```
-ImageMath 4 dti_comp.nii.gz TimeSeriesDisassemble dti_tensor.nii.gz
-mv dti_comp1000.nii.gz dti_xx.nii.gz
-mv dti_comp1000.nii.gz dti_xx.nii.gz
-mv dti_comp1000.nii.gz dti_xx.nii.gz
-mv dti_comp1000.nii.gz dti_xx.nii.gz
-mv dti_comp1000.nii.gz dti_xx.nii.gz
+ImageMath 4 dtiComp.nii.gz TimeSeriesDisassemble dti_tensor.nii.gz
+i=0 
+for index in xx xy xz yy yz zz; do
+   mv dtiComp100${i}.nii.gz dtiComp_${index}.nii.gz
+   i=$((i+1))
+done
+ImageMath 3 dtAnts.nii.gz ComponentTo3DTensor dtiComp_
+```
+
+### Camino
+
+```
+modelfit -model ldt_wtd -inputfile dwi.nii.gz -schemefile a.scheme -brainmask mask.nii.gz -outputfile wdt.Bdouble
+dt2nii -inputfile wdt.Bdouble -header dwi.nii.gz -outputroot nifti_
+```
+
+This will produce nifti_dt.nii.gz, which is in the required format.
