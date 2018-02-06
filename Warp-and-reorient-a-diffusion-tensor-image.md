@@ -27,6 +27,8 @@ The reorientation is computed using the [Preservation of Principal Directions](h
 
 We are working to provide additional tools and guidance to assist users with this problem. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
+The steps below will work assuming the tensor orientation is in physical coordinates, that is, the primary eigenvector is aligned with the white matter pathways in physical space. 
+
 
 ## Compute registration
 
