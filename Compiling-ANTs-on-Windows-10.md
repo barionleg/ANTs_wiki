@@ -27,6 +27,12 @@ sudo apt-get -y install cmake
 sudo apt-get -y install cmake-curses-gui
 ```
 
+## Install Zlib
+
+```
+sudo apt-get -y install zlib1g-dev
+```
+
 ## Install ANTs
 
 From here, it should be possible to obtain the ANTs source code and compile as one would on [Linux or Mac OS](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#get-the-latest-code).
