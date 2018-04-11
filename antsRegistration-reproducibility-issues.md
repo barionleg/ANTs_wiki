@@ -39,7 +39,7 @@ However, each of these has it's own drawbacks:
 * Computation time is increased by restricting threads or memory requirements.
 
 
-Relevant threads:
+## Related discussion threads
 
 * [antsRegistration does not produce equivalent results](https://github.com/ANTsX/ANTsR/issues/210#issuecomment-377511054)
 
