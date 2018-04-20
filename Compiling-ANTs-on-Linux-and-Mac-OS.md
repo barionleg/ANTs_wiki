@@ -34,10 +34,8 @@ git clone https://github.com/stnava/ANTs.git
 ## Run CMake to configure the build
 
 ```
-mkdir ~/bin/ants
-
+mkdir -p ~/bin/ants
 cd ~/bin/ants
-
 ccmake ~/code/ANTs
 ```
 
