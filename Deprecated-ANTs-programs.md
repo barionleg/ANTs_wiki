@@ -28,7 +28,7 @@ Old cortical thickness implementation, named after a surfer. Replaced by a versi
 
 ## N3BiasFieldCorrection (N4BiasFieldCorrection)
 
-Bias correction based on the famous N3 algorithm by Sled et al. See the [paper](https://www.ncbi.nlm.nih.gov/pubmed/20378467) for details of N4 and a comparison to N3 performance.
+Bias correction based on the famous N3 algorithm by Sled et al. See the N4 [paper](https://www.ncbi.nlm.nih.gov/pubmed/20378467) for details and a comparison to N3 performance.
 
    
 ## WarpImageMultiTransform, WarpTensorImageMultiTransform, WarpTimeSeriesImageMultiTransform, ComposeMultiTransform  (antsApplyTransforms)
