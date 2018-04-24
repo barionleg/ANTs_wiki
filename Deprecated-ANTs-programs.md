@@ -42,7 +42,7 @@ These have been replaced by `antsApplyTransforms`, which can perform multiple fu
 
 The new implementation `antsMultivariateTemplateConstruction.sh` is fairly similar but supports multi-parametric templates, eg T1 and T2 images from the same set of subjects can be used to build a T1 and T2 template simultaneously.
 
-The newer `antsMultivariateTemplateConstruction2.sh` uses `antsRegistration` in place of ANTs.
+The newer `antsMultivariateTemplateConstruction2.sh` uses `antsRegistration` in place of ANTs. It also has additional options for averaging the image population to create the template.
 
 # Programs / scripts no longer included in ANTs
 
