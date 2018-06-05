@@ -24,9 +24,9 @@ Random sampling is used in various contexts, and different runs will produce a d
 
 * Set a fixed seed for randomization in [ITK](https://github.com/InsightSoftwareConsortium/ITK/blob/8a2a15f41218c925c0a89119e09419d48f83eb22/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L940-L949).
 
-* Disable multi-threading.
-
 * Use double precision.
+
+* Disable multi-threading.
 
 * Use a consistent computer infrastructure (same hardware, OS, compilation of ANTs etc).
 
@@ -38,9 +38,27 @@ However, each of these has it's own drawbacks:
 
 * Computation time is increased by restricting threads or memory requirements.
 
+* Dense sampling or a fixed seed may trade variance for bias.
+
+
+## Quantification of variance in registration results
+
+The sources of variance in a simple registration task appear to be (in decreasing order of magnitude):
+
+ * Random point set sampling / perturbation. This can be removed by dense sampling or use of a fixed seed.
+
+ * Single vs double precision
+
+ * Multi-threading
+
+More details will appear here. 
+
 
 ## Related discussion threads
 
 * [antsRegistration does not produce equivalent results](https://github.com/ANTsX/ANTsR/issues/210#issuecomment-377511054)
 
 * [Non-deterministic result of antsAffineInitializer](https://github.com/ANTsX/ANTs/issues/444)
+
+* [Fix registration ANTs random seed with an environment variable](https://github.com/ANTsX/ANTs/pull/597)
+
