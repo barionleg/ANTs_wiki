@@ -43,15 +43,27 @@ However, each of these has it's own drawbacks:
 
 ## Quantification of variance in registration results
 
-The sources of variance in a simple registration task appear to be (in decreasing order of magnitude):
+The variance in a simple registration task is mostly due to random point set sampling / perturbation. This can be removed by dense sampling or use of a fixed seed. Multi-threading and single vs double precision appear to have a small impact on average.
 
- * Random point set sampling / perturbation. This can be removed by dense sampling or use of a fixed seed.
+This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set of 10 brains, and computing the pairwise overlap of brain labels between the different runs. Specifically, `antsRegistrationSyNQuick.sh` was called 25 times for each of 10 brain images, registering to a common template. The mean (over all subjects) Dice overlap of the cerebral white matter under different experimental conditions is listed below. Scripts and results for other brain regions are available [here](https://github.com/cookpa/antsRegReproduce).
 
- * Single vs double precision
+| Fixed Random Seed | Float precision | Threads | Mean Dice | SD Dice |
+| --- | --- | --- | --- | --- |
+| TRUE  | double | 1 | 1.000 | 0.000 |
+| TRUE  | single | 1 | 1.000 | 0.000 |
+| TRUE  | double | 2 | 0.993 | 0.005 |
+| FALSE | double | 1 | 0.978 | 0.009 |
+| FALSE | single | 1 | 0.979 | 0.008 |
+| FALSE | single | 2 | 0.978 | 0.009 |
 
- * Multi-threading
 
-More details will appear here. 
+### Limitations of these experiments
+
+ * Quick registration, may be less stable than `antsRegistrationSyN.sh` (but much faster). 
+
+ * Random sampling only affects the rigid and affine stages of the registration, because dense sampling is used for SyN stage. This is also the case for `antsRegistrationSyN.sh` and `antsCorticalThickness.sh`. Using random sampling in the SyN stage would likely increase variance.
+
+ * Overlap between runs measures reproducibility, not registration quality, so it does not address the question of whether using random sampling or double precision improves registration overall. 
 
 
 ## Related discussion threads
@@ -61,4 +73,3 @@ More details will appear here.
 * [Non-deterministic result of antsAffineInitializer](https://github.com/ANTsX/ANTs/issues/444)
 
 * [Fix registration ANTs random seed with an environment variable](https://github.com/ANTsX/ANTs/pull/597)
-
