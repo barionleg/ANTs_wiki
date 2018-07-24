@@ -17,14 +17,12 @@ Floating point precision may cause differences in the registration solution on t
 
 ## Variance due to random sampling
 
-Random sampling is used in various contexts, and different runs will produce a different sequence of random numbers, unless a fixed seed is used. In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then perturbed randomly to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf).
+Random sampling is used in various contexts, and different runs will produce a different sequence of random numbers, unless a fixed seed is used. In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then perturbed randomly to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below.
 
 
 ## Strategies to improve reproducibility
 
 * Set a fixed seed for randomization in [ITK](https://github.com/InsightSoftwareConsortium/ITK/blob/8a2a15f41218c925c0a89119e09419d48f83eb22/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L940-L949).
-
-* Use double precision.
 
 * Disable multi-threading.
 
@@ -34,9 +32,7 @@ However, each of these has it's own drawbacks:
 
 * How to choose the seed since each fixed seed is just as good as the next one.
 
-* Increased storage of fixed/moving images and warp fields (forward/inverse displacement fields to/from (middle) virtual domain--total of 4 displacement fields in storage during optimization).
-
-* Computation time is increased by restricting threads or memory requirements.
+* Computation time is increased by restricting threads.
 
 * Dense sampling or a fixed seed may trade variance for bias.
 
