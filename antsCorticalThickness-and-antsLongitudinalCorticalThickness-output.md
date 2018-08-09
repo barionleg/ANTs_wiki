@@ -2,11 +2,11 @@
 
 `antsCorticalThickness.sh` output is to a single directory, with multiple files.
 
-Definitions
+## Definitions
 
-**Subject space**
+**Subject space** - The native space of the first anatomical input (usually T1).
 
-**Template space**
+**Template space** - The space of the template image provided at run time. Optionally, the **segmentation** template (used for brain extraction and priors) and **registration** template (used for final, high-quality registration on brain-extracted images) may be different. In this case, the output that is in template space will be to the **registration** template. Often, the registration template will be the same as the segmentation template, but with the brain extracted. 
 
 Some files are produced only if optional input parameters are set. The full file name will be `${outputPrefix}description${outputSuffix}`, the prefix and suffix are set at run time by the user.
 
