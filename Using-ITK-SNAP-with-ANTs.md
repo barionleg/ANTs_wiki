@@ -34,3 +34,8 @@ Here the option to `-r` uses the center of mass to align the images.
 ## Viewing registration output
 
 After registration, the deformed image produced by `antsRegistration` or `antsApplyTransforms` (with the forward warps) will be resampled into the fixed image space. The deformed and fixed image will therefore always have the same header. They can be loaded into a single SNAP session with one image as the main image. The images can be viewed side by side or with one as an overlay. The overlay can be adjusted in opacity and toggled hidden / visible (see [ITK-SNAP keyboard shortcuts](http://www.itksnap.org/pmwiki/uploads/Documentation/snap_shortcuts_v3.pdf)).
+
+
+## Visualizing warp fields
+
+Warp fields may be loaded as overlays and viewed as vector images (displayed as color-coded vectors, magnitude, or component images) or as a deformation grid. To access these options, right-click the warp field image in the "Cursor Inspector", or navigate to the layer inspector from the Tools menu.
