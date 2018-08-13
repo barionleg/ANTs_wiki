@@ -6,7 +6,7 @@
 
 * Check the images have the same basic orientation. The exact position and orientation will vary (eg, due to head position) but they should not be upside down or back to front, and both the fixed and moving images should agree on left-right orientation. You can check this with [ITK-SNAP](http://itksnap.org), which uses the same ITK I/O as ANTs.
 
-* Provide a good initialization for affine registration with `-r`. 
+* Provide a good initialization for affine registration with `-r`, if that is insufficient use `antsAI`. 
 
 * Provide a good initialization for deformable registration by running rigid and affine stages first. 
 
