@@ -14,7 +14,7 @@ Dense sampling, all points are used.
 
 ###  Regular
 
-A sampling fraction *f* is defined between 0 and 1. This number is converted to a rational number, ie a fraction with an integer denominator. The actual sampling percentage is 1 / floor(1/f). So *f* is one of (0.5, 0.25, 0.125), we sample 1 out of every (2, 4, 8) points respectively. If *f* > 0.5, all the points are sampled.
+A sampling fraction *f* is defined between 0 and 1. One out of every ceil(1  / _f_) points are sampled, so f = 0.5 and f = 0.6 both sample 1 out of every 2 points, *f* = 0.25 means 1 out of every 4 points is sampled, and so on.
 
 To reduce aliasing, a random perturbation is applied to each point. The perturbation in each dimension is drawn from a normal distribution with zero mean and variance of 1/3 the voxel spacing.
 
