@@ -23,9 +23,10 @@ The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
 [This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs.
 
-The reorientation is computed using the [Preservation of Principal Directions](https://www.ncbi.nlm.nih.gov/pubmed/11700739) algorithm. The rotation matrix applied to the tensors is defined in the physical space of the image. It may be necessary to "rebase" the tensors into physical space coordinates in order to get the correct reorientation. This can be done with `RebaseTensorImage`. If the reorientation is not correct, scalar invariants (MD, FA) will not be affected but tractography might be degraded in a way that is difficult to detect.
+Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
-We are working to provide additional tools and guidance to assist users with this problem. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
+**Update September 2018** - Reorientation of tensors is likely incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). We are working to fix this, see ([here](https://github.com/ANTsX/ANTs/issues/642) for details.
+
 
 ## Compute registration
 
