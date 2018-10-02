@@ -26,4 +26,4 @@ A sampling fraction *f* is defined between 0 and 1. Points are chosen at random 
 
 ## Masks
 
-With masks, the metric points are sampled in the usual way, and any points outside the mask are discarded. This can lead to problems when the mask is a small fraction of the image domain.
+With masks, the metric points are sampled in the usual way, and any points outside the mask are discarded. This can lead to problems when the mask is a small fraction of the image domain. Recent ITK changes have reduced the minimum number of points required inside the mask, so if you encounter these errors, try updating ANTs.
