@@ -24,7 +24,7 @@ followed by the x,y,z dimensions of the image, and then
 
 The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
-[This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs.
+[This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs. For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix.
 
 Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
