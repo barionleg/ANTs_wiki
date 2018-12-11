@@ -5,21 +5,21 @@ The discussion on this page is mostly about the NIFTI-1 file format. Tensors in 
 
 ## NIFTI DT image
 
-The NIFTI file should be 5D and have dimensions [X,Y,Z,1,6] where X,Y,Z are the number of voxels. The intent code should be set to NIFTI_INTENT_SYMMATRIX. The NIFTI format specifies a symmetric matrix in lower triangular format. For the DT, this means the six copmonents of the image are ordered [dxx, dxy, dyy, dxz, dyz, dzz]. 
+The NIFTI file should be 5D and have dimensions [X,Y,Z,1,6] where X,Y,Z are the number of voxels. The intent code should be set to NIFTI_INTENT_SYMMATRIX. The NIFTI format specifies a symmetric matrix in lower triangular format. For the DT, this means the six components of the image are ordered [dxx, dxy, dyy, dxz, dyz, dzz]. 
 
 
 ## Image and tensor coordinate system
 
-The NIFTI header describes the transformation of the image voxels into physical space, as for scalar images. The coordinate system of the tensors may be different. This can result in tensors that have the correct location in the image, but incorrect orientation. This is most notable in the white matter, where the tensor principal eigenvectors should be aligned with the major white matter bundles.
+The header describes the transformation of the image voxels into physical space, as for scalar images. In ITK, this is called the "Direction" matrix, and is always a rigid transform (affine transforms, like those defined in the NIFTI "sform", are not supported). 
 
-The correct convention for the tensor coordinate system is software dependent and problems usually result from the DT reconstruction reading gradient vectors (`bvecs` in FSL terminology) that are not correctly formatted. See [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for discussion of this issue in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino.
+The correct convention for the tensor coordinate system is software dependent and problems usually result from the DT reconstruction reading gradient vectors (`bvecs` in FSL terminology) that are not correctly formatted. See [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for discussion of this issue in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino. These errors can go unnoticed because invariant scalar characteristics like fractional anisotropy and mean diffusion are not affected, but tractography will be affected.
 
-The examples below describe how to convert the tensors into the correct file format for ANTs. The tensor orientation is handled separately and will be documented elsewhere. 
+In ANTs, the tensors should be in index space, such that a tensor can be correctly reoriented into physical space by applying the direction matrix. 
 
 
-## Examples
+## Converting tensors to ANTs format
 
-Below are some examples of how to fit diffusion tensors in the correct NIFTI format for ANTs, using some common diffusion software packages.
+The examples below describe how to convert the tensors into the correct file format for ANTs. 
 
 
 ### FSL
