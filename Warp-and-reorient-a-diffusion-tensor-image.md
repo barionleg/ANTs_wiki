@@ -1,3 +1,6 @@
+Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. 
+
+
 ## Input requirements
 
 Moving image: `dt.nii.gz`
@@ -25,7 +28,7 @@ The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
 Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
-**Update September 2018** - Reorientation of tensors is likely incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). We are working to fix this, see ([here](https://github.com/ANTsX/ANTs/issues/642) for details.
+**Update December 2018** - Orientation of deformed tensors was incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). See ([here](https://github.com/ANTsX/ANTs/issues/642) for details. This is fixed in commit [2703896fddcf5391ca178f17ec6bc168d861156e](https://github.com/ANTsX/ANTs/commit/2703896fddcf5391ca178f17ec6bc168d861156e).
 
 
 ## Compute registration
@@ -35,21 +38,27 @@ Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by
 
 ### Apply the transform to the DT image
 
-Apply these transforms to deform the tensor image. After this the tensors will be correctly located in the fixed space, but they retain their original orientation in the physical space as defined by the moving image.
+Apply these transforms to deform the tensor image. After this the tensors will be correctly located in the fixed space, but they need to be reoriented to account for the rotation introduced by the registration.
 
 ```
 antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
 -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
 
-`antsApplyTransforms` will "rebase" the tensors into the physical space of the moving image. The tensors are then resampled in the fixed space, but the orientation is not updated.
+`antsApplyTransforms` will output the tensors in the space of the fixed image. 
 
 You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
 
 
 ### Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
 
-If you are doing a single affine transform only, you can proceed to the next step. 
+If you have computed a single affine transform only, you can reorient the tensor at this stage:
+
+```
+ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz movingToFixed0GenericAffine.mat
+```
+
+Otherwise, combine the warps with `antsApplyTransforms`:
 
 ```
 antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
@@ -57,13 +66,14 @@ antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
 -r fixed.nii.gz
 ```
 
-### Apply the reorientation to the deformed tensor image
+Then apply the reorientation to the deformed tensor image
 
 ```
 ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 ```
 
-The tensors are reoriented in physical space. It may be necessary here to rebase the tensors into image space, for other software that expects that convention.
+The tensors are now reoriented correctly.
+
 
 ## Interpolation and masking options
 
