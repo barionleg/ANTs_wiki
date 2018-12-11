@@ -28,7 +28,7 @@ The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
 Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
-**Update December 2018** - Orientation of deformed tensors was incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). See ([here](https://github.com/ANTsX/ANTs/issues/642) for details. This is fixed in commit [2703896fddcf5391ca178f17ec6bc168d861156e](https://github.com/ANTsX/ANTs/commit/2703896fddcf5391ca178f17ec6bc168d861156e).
+**Update December 2018** - Orientation of deformed tensors was incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). See [here](https://github.com/ANTsX/ANTs/issues/642) for details. This is fixed in commit [2703896fddcf5391ca178f17ec6bc168d861156e](https://github.com/ANTsX/ANTs/commit/2703896fddcf5391ca178f17ec6bc168d861156e).
 
 
 ## Compute registration
