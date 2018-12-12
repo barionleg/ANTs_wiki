@@ -12,7 +12,7 @@ The NIFTI file should be 5D and have dimensions [X,Y,Z,1,6] where X,Y,Z are the 
 
 The header describes the transformation of the image voxels into physical space, as for scalar images. In ITK, this is called the "Direction" matrix, and is always a rigid transform (affine transforms, like those defined in the NIFTI "sform", are not supported). 
 
-The correct convention for the tensor coordinate system is software dependent, and extracting them from the raw scaner data has required considerable effort from the creators of software tools like `dcm2niix`. See [here](https://www.nitrc.org/plugins/mwiki/index.php/dcm2nii:MainPage#Diffusion_Tensor_Imaging) for discussion and sample data.
+The correct convention for the tensor coordinate system is software dependent, and extracting them from the raw scaner data has required considerable effort from the creators of tools like `dcm2niix`. See [here](https://www.nitrc.org/plugins/mwiki/index.php/dcm2nii:MainPage#Diffusion_Tensor_Imaging) for discussion and sample data.
 
 On the post-processing side, see [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for bvec requirements in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino. 
 
