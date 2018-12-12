@@ -12,14 +12,18 @@ The NIFTI file should be 5D and have dimensions [X,Y,Z,1,6] where X,Y,Z are the 
 
 The header describes the transformation of the image voxels into physical space, as for scalar images. In ITK, this is called the "Direction" matrix, and is always a rigid transform (affine transforms, like those defined in the NIFTI "sform", are not supported). 
 
-The correct convention for the tensor coordinate system is software dependent and problems usually result from the DT reconstruction reading gradient vectors (`bvecs` in FSL terminology) that are not correctly formatted for a particular software environment. See [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for discussion of this issue in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino. These errors can go unnoticed because invariant scalar characteristics like fractional anisotropy and mean diffusion are not affected, but tractography will be affected.
+The correct convention for the tensor coordinate system is software dependent, and extracting them from the raw scaner data has required considerable effort from the creators of software tools like `dcm2niix`. See [here](https://www.nitrc.org/plugins/mwiki/index.php/dcm2nii:MainPage#Diffusion_Tensor_Imaging) for discussion and sample data.
 
-In ANTs, the tensors should be in index space, such that a tensor can be correctly reoriented into physical space by applying the direction matrix. 
+On the post-processing side, see [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions_do_the_bvecs_use.3F) and [here](https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/troubleshooting.html#line-vectors-tensors-fibre-orientation-distributions-are-left-right-flipped) for bvec requirements in FSL and [here](http://camino.cs.ucl.ac.uk/index.php?n=Tutorials.DTI) for an example using Camino. 
+
+Errors in the bvecs can go unnoticed because invariant scalar characteristics like fractional anisotropy and mean diffusion are not affected, but tractography will be affected. 
 
 
 ## Converting tensors to ANTs format
 
 The examples below describe how to convert the tensors into the correct file format for ANTs. 
+
+To work with ANTs, the tensors should be in index space, such that a tensor can be correctly reoriented into physical space by applying the direction matrix. 
 
 
 ### FSL
@@ -46,7 +50,7 @@ As stated [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FDT/FAQ#What_conventions
 fslorient dwi.nii.gz
 ```
 
-If this reports `RADIOLOGICAL`, and output of `dtifit` looks correct in `fsleyes`, then the tensors should be compatible with ANTs. If `fslorient` reports `NEUROLOGICAL`, the bvecs still have to be radiological for FSL, but then image and bvec coordinate system will not agree and the tensors will not be correctly oriented by ANTs.
+If this reports `RADIOLOGICAL`, and output of `dtifit` looks correct in `fsleyes`, then the tensors should be compatible with ANTs. If `fslorient` reports `NEUROLOGICAL`, the bvecs still have to be radiological for FSL, but then image and bvec coordinate system will not agree and the tensors will not be correctly oriented by ANTs. 
 
 
 ### Camino
@@ -57,4 +61,4 @@ modelfit -model ldt_wtd -inputfile dwi.nii.gz -schemefile a.scheme \
 dt2nii -inputfile wdt.Bdouble -header dwi.nii.gz -outputroot nifti_
 ```
 
-This will produce nifti_dt.nii.gz, which is in the required format.
+This will produce nifti_dt.nii.gz, which is in the required format. The bvecs should agree with the voxel ordering of the image. Camino uses the voxel space internally and uses the NIFTI header to convert streamline tracts into physical space.
