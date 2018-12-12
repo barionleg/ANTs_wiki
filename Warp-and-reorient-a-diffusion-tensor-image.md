@@ -38,14 +38,12 @@ Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by
 
 ### Apply the transform to the DT image
 
-Apply these transforms to deform the tensor image. After this the tensors will be correctly located in the fixed space, but they need to be reoriented to account for the rotation introduced by the registration.
+Apply these transforms to deform the tensor image. `antsApplyTransforms` will output the tensors in the space of the fixed image. After this the tensors will be correctly located in the fixed space, but they need to be reoriented to account for the rotation introduced by the registration.
 
 ```
 antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
 -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
-
-`antsApplyTransforms` will output the tensors in the space of the fixed image. 
 
 You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
 
