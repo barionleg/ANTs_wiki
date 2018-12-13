@@ -55,9 +55,20 @@ ${ANTSPATH}antsApplyTransforms \
   -o movingToFixedDeformed.nii.gz
 ```
 
+## Deforming a point set
+
+
+
+## Computing the Jacobian
+
 
 
 ## Warp naming convention in antsCorticalThickness.sh 
 
 
 ## Warp naming convention in antsLongitudinalCorticalThickness.sh 
+
+
+## Details 
+
+
