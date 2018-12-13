@@ -42,12 +42,12 @@ ${ANTSPATH}antsApplyTransforms \
   -o movingToFixedDeformed.nii.gz
 ```
 
-Regions of interest are contained in `templateLabels.nii.gz`, in the fixed image space. Deforming these to moving space:
+Regions of interest are contained in `fixedLabels.nii.gz`, in the fixed image space. Deforming these to moving space:
 
 ```
 ${ANTSPATH}antsApplyTransforms \
   -d 3 \
-  -i templateLabels.nii.gz \
+  -i fixedLabels.nii.gz \
   -r movingImage.nii.gz \   
   -t [movingToFixed_0GenericAffine.mat, 1] \   
   -t movingToFixed_1InverseWarp.nii.gz \
@@ -55,7 +55,22 @@ ${ANTSPATH}antsApplyTransforms \
   -o movingToFixedDeformed.nii.gz
 ```
 
-## Deforming a point set
+## Transforming a point set
+
+Transform points from fixed to moving space:
+
+```
+${ANTSPATH}antsApplyTransformsToPoints \
+  -d 3 \
+  -i landmarksInFixedSpace.csv \
+  -o landmarksInMovingSpace.csv \
+  -t movingToFixed_1Warp.nii.gz \
+  -t movingToFixed_0GenericAffine.mat 
+```
+
+Internally, deforming an image involves transforming a point set. In the case of deforming the moving to the fixed image, we start from a point at the center of a voxel in fixed space, move it to the corresponding location in moving space, interpolate the intensity value at that point, and place the result in the output image. Thus the forward warps, which we use to deform an **image** from moving to fixed space, are the warps that transform **points** from fixed to moving space.
+
+
 
 
 
@@ -70,5 +85,4 @@ ${ANTSPATH}antsApplyTransforms \
 
 
 ## Details 
-
 
