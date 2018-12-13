@@ -1,6 +1,6 @@
 # Quick reference for applying ANTs warps
 
-It is important to use the correct warps, and to specify them in the correct order. Common use cases are explained below.
+Applying the deformations computed by ANTs require the user to specify the correct warps, and to specify them in the correct order. Common use cases are explained below.
 
 ## Terminology
 
@@ -8,11 +8,11 @@ The command
 
 ```
 ${ANTSPATH}antsRegistrationSyNQuick.sh 
+  -d 3 \
   -f fixedImage.nii.gz \
   -m movingImage.nii.gz \
   -o movingToFixed_ \
-  -t s
-  ...
+  -t s 
 ```
 
 produces 
@@ -33,14 +33,27 @@ The **inverse transforms** are the transforms that are used to perform the oppos
 Deforming the moving image to fixed space:
 
 ```
-${ANTSPATH}antsApplyTransforms -d 3 \
-  -i $movingImage.nii.gz \   
-  -r $fixedImage.nii.gz \   
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i movingImage.nii.gz \   
+  -r fixedImage.nii.gz \   
   -t movingToFixed_1Warp.nii.gz \
   -t movingToFixed_0GenericAffine.mat \   
   -o movingToFixedDeformed.nii.gz
 ```
 
+Regions of interest are contained in `templateLabels.nii.gz`, in the fixed image space. Deforming these to moving space:
+
+```
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i templateLabels.nii.gz \
+  -r movingImage.nii.gz \   
+  -t [movingToFixed_0GenericAffine.mat, 1] \   
+  -t movingToFixed_1InverseWarp.nii.gz \
+  -n GenericLabel[Linear] \
+  -o movingToFixedDeformed.nii.gz
+```
 
 
 
