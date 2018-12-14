@@ -25,7 +25,7 @@ movingToFixed_0GenericAffine.mat
 
 The **forward transforms** from moving to fixed space are defined as those we use to deform an image in the moving space and produce output in the fixed space. These are `movingToFixed_1Warp.nii.gz` and `movingToFixed_0GenericAffine.mat`.
 
-The **inverse transforms** are the transforms that are used to perform the opposite operation, deforming an image in the fixed space and producing output in the moving space. This operation uses the file `movingToFixed_1InverseWarp.nii.gz` and the inverse of the forward affine transform `movingToFixed_0GenericAffine.mat`. The inverse affine transform is not usually stored because it is easy to invert on demand. However, the inverse warp field cannot be precisely computed from the forward warp field, so the inverse warp field is saved separately.
+The **inverse transforms** are the transforms that are used to perform the opposite operation, deforming an image in the fixed space and producing output in the moving space. This operation uses the file `movingToFixed_1InverseWarp.nii.gz` and the inverse of the forward affine transform `movingToFixed_0GenericAffine.mat`. The inverse affine transform is not usually stored because it is easy to invert on demand (however, see the section on `antsCorticalThickness.sh` below). The inverse warp field cannot be precisely computed from the forward warp field, so the inverse warp field is saved separately.
 
 
 ## Deforming an image
@@ -54,6 +54,9 @@ ${ANTSPATH}antsApplyTransforms \
   -n GenericLabel[Linear] \
   -o movingToFixedDeformed.nii.gz
 ```
+
+The option `[movingToFixed_0GenericAffine.mat, 1]` tells the program to invert the affine transform contained in `movingToFixed_0GenericAffine.mat`. 
+
 
 ## Transforming a point set
 
@@ -98,10 +101,36 @@ This outputs the log of the Jacobian determinant in the fixed space.
 |     = 0      | Zero                       |
 |     > 0      | Contracting                |
  
-Example data and code [here](https://github.com/cookpa/jacobianExample).
+Simple example data and code [here](https://github.com/cookpa/jacobianExample), a more complex example [here](https://github.com/stnava/jacobianTests).
 
 
 ## Warp naming convention in antsCorticalThickness.sh 
+
+The forward warp computed by `antsCorticalThickness.sh` is `SubjectToTemplate1Warp.nii.gz`, and the forward affine is `SubjectToTemplate0GenericAffine.mat`. The inverse warp is called `TemplateToSubject0Warp.nii.gz`, and the inverse affine is saved as `TemplateToSubject1GenericAffine.mat`, so you do not need to use the square brackets on the command line.
+
+To warp an image from subject to template space:
+
+```
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i subjectImage.nii.gz \
+  -r registrationTemplate.nii.gz \   
+  -t SubjectToTemplate1Warp.nii.gz \
+  -t SubjectToTemplate0GenericAffine.mat \
+  -o subjectImageToTemplateDeformed.nii.gz
+```
+ 
+To warp an image from template to subject space:
+
+```
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i templateImage.nii.gz \
+  -r subjectImage.nii.gz \   
+  -t TemplateToSubject1GenericAffine.mat \
+  -t TemplateToSubject0Warp.nii.gz \
+  -o templateImageToSubjectDeformed.nii.gz
+```
 
 
 ## Warp naming convention in antsLongitudinalCorticalThickness.sh 
@@ -111,4 +140,4 @@ Example data and code [here](https://github.com/cookpa/jacobianExample).
 
 Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" image appears to be moving, but in reality it's being resampled. The sample points are a regular grid of voxel centers in the fixed space. A point at the center of a voxel is transformed to the corresponding location in moving space, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
-This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different.
+This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different, and the use of the forward warp for the Jacobian may be counter-intuitive.
