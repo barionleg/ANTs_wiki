@@ -68,10 +68,18 @@ ${ANTSPATH}antsApplyTransformsToPoints \
   -t movingToFixed_0GenericAffine.mat 
 ```
 
-Internally, deforming an image involves transforming a point set. In the case of deforming the moving to the fixed image, we start from a point at the center of a voxel in fixed space, move it to the corresponding location in moving space, interpolate the intensity value at that point, and place the result in the output image. Thus the forward warps, which we use to deform an **image** from moving to fixed space, are the warps that transform **points** from fixed to moving space.
+The forward warps, which we use to deform an **image** from moving to fixed space, are the warps that transform **points** from fixed to moving space. To move points in the opposite direction:
 
+```
+${ANTSPATH}antsApplyTransformsToPoints \
+  -d 3 \
+  -i landmarksInMovingSpace.csv \
+  -o landmarksInFixedSpace.csv \
+  -t [movingToFixed_0GenericAffine.mat, 1]
+  -t movingToFixed_1InverseWarp.nii.gz \
+```
 
-
+The input and output to `antsApplyTransformsToPoints` is in physical space as defined by ITK. This may vary from the coordinates as understood by NIFTI or other file formats. The coordinates need to be carefully validated by users. [ANTsR](https://github.com/ANTsX/ANTsR/wiki/MNI-Coordinates-in-ANTsR-(and-ANTs)) has some capabilities to help with this.
 
 
 ## Computing the Jacobian
@@ -86,3 +94,6 @@ Internally, deforming an image involves transforming a point set. In the case of
 
 ## Details 
 
+Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" image appears to be moving, but in reality it's being resampled. The sample points are a regular grid of voxel centers in the fixed space. A point at the center of a voxel is transformed to the corresponding location in moving space, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
+
+This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different.
