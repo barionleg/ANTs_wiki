@@ -25,7 +25,7 @@ movingToFixed_0GenericAffine.mat
 
 The **forward transforms** from moving to fixed space are defined as those we use to deform an image in the moving space and produce output in the fixed space. These are `movingToFixed_1Warp.nii.gz` and `movingToFixed_0GenericAffine.mat`.
 
-The **inverse transforms** are the transforms that are used to perform the opposite operation, deforming an image in the fixed space and producing output in the moving space. This operation uses the file `movingToFixed_1InverseWarp.nii.gz` and the inverse of the forward affine transform `movingToFixed_0GenericAffine.mat`. The inverse affine transform is not usually stored because it is easy to invert on demand (however, see the section on `antsCorticalThickness.sh` below). The inverse warp field cannot be precisely computed from the forward warp field, so the inverse warp field is saved separately.
+The **inverse transforms** are the transforms that are used to perform the opposite operation, deforming an image in the fixed space and producing output in the moving space. This operation uses the file `movingToFixed_1InverseWarp.nii.gz` and the inverse of the forward affine transform `movingToFixed_0GenericAffine.mat`. The inverse affine transform is not usually stored because it is easy to invert on demand.
 
 
 ## Deforming an image
