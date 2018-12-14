@@ -106,6 +106,8 @@ Simple example data and code [here](https://github.com/cookpa/jacobianExample), 
 
 ## Warp naming convention in antsCorticalThickness.sh 
 
+In this context the moving image is the subject T1 image on which cortical thickness is computed. The fixed image is a template.
+
 The forward warp computed by `antsCorticalThickness.sh` is `SubjectToTemplate1Warp.nii.gz`, and the forward affine is `SubjectToTemplate0GenericAffine.mat`. The inverse warp is called `TemplateToSubject0Warp.nii.gz`, and the inverse affine is saved as `TemplateToSubject1GenericAffine.mat`, so you do not need to use the square brackets on the command line.
 
 To warp an image from subject to template space:
@@ -135,9 +137,12 @@ ${ANTSPATH}antsApplyTransforms \
 
 ## Warp naming convention in antsLongitudinalCorticalThickness.sh 
 
+The longitudinal pipeline contains multiple runs of `antsCorticalThickness.sh`. Together, these provide all the transforms necessary to move any of the subject's images to the population template space, via the intermediate single-subject template.
+
+
 
 ## Details 
 
-Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" image appears to be moving, but in reality it's being resampled. The sample points are a regular grid of voxel centers in the fixed space. A point at the center of a voxel is transformed to the corresponding location in moving space, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
+Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" is being resampled into the fixed space, and the warps tell us where a particular sample point (ie, a voxel in the output image) lies in the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
 This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different, and the use of the forward warp for the Jacobian may be counter-intuitive.
