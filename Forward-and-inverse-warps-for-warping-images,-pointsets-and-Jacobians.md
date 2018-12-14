@@ -106,7 +106,7 @@ Simple example data and code [here](https://github.com/cookpa/jacobianExample), 
 
 ## Warp naming convention in antsCorticalThickness.sh 
 
-In this context the moving image is the subject T1 image on which cortical thickness is computed. The fixed image is a template.
+In this context the moving image is the subject T1 image on which cortical thickness is computed. The fixed image is a template. 
 
 The forward warp computed by `antsCorticalThickness.sh` is `SubjectToTemplate1Warp.nii.gz`, and the forward affine is `SubjectToTemplate0GenericAffine.mat`. The inverse warp is called `TemplateToSubject0Warp.nii.gz`, and the inverse affine is saved as `TemplateToSubject1GenericAffine.mat`, so you do not need to use the square brackets on the command line.
 
@@ -137,11 +137,26 @@ ${ANTSPATH}antsApplyTransforms \
 
 ## Warp naming convention in antsLongitudinalCorticalThickness.sh 
 
-The longitudinal pipeline contains multiple runs of `antsCorticalThickness.sh`. Together, these provide all the transforms necessary to move any of the subject's images to the population template space, via the intermediate single-subject template.
+The longitudinal pipeline contains multiple runs of `antsCorticalThickness.sh`. Together, these provide all the transforms necessary to move any of the subject's images to the population template space, via the intermediate single-subject template. The chain of warps required to perform this operation in either direction is composed [by the script](https://github.com/ANTsX/ANTs/blob/master/Scripts/antsLongitudinalCorticalThickness.sh#L1024-L1046), and saved as `SubjectToGroupTemplateWarp.nii.gz` and `GroupTemplateToSubjectWarp.nii.gz`. This encompasses both the affine and deformable parts.
+
+Note that each time point will have its own warp, and images may be transformed from subject to group template space with:
+
+```
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i subjectImageTime1.nii.gz \
+  -r groupTemplate.nii.gz \   
+  -t SubjectTime1/SubjectToGroupTemplateWarp.nii.gz \
+  -o subjectImageTime1ToGroupTemplateDeformed.nii.gz
+```
 
 
+## Combining warps
 
-## Details 
+Wherever possible, multiple interpolations of the data should be avoided. For example, say we have a perfusion image acquired at the same time as the T1. 
+
+
+## Discussion 
 
 Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" is being resampled into the fixed space, and the warps tell us where a particular sample point (ie, a voxel in the output image) lies in the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
