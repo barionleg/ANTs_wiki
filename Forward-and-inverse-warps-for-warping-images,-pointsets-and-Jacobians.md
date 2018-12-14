@@ -84,6 +84,21 @@ The input and output to `antsApplyTransformsToPoints` is in physical space as de
 
 ## Computing the Jacobian
 
+The Jacobian is typically computed in the fixed space, so that Jacobians from a population of moving images can compared directly.
+
+```
+CreateJacobianDeterminantImage 3 movingToFixed1Warp.nii.gz logJacobian.nii.gz 1 1
+```
+
+This outputs the log of the Jacobian determinant in the fixed space. 
+
+| Log Jacobian | Moving image volume change | 
+|    :---:     |     :---:                  | 
+|     < 0      | Expanding                  | 
+|     = 0      | Zero                       |
+|     > 0      | Contracting                |
+ 
+Example data and code [here](https://github.com/cookpa/jacobianExample).
 
 
 ## Warp naming convention in antsCorticalThickness.sh 
