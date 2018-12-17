@@ -169,7 +169,7 @@ Wherever possible, multiple interpolations of the data should be avoided. Warps 
 
 ## Discussion 
 
-Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" is being resampled into the fixed space, and the warps tell us where a particular sample point (ie, a voxel in the output image) lies in the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
+Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" image is being resampled into the fixed space, and the warps transform a sample point (ie, a voxel in the output image) into the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
 This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different, and the use of the forward warp for the Jacobian may be counter-intuitive.
 
