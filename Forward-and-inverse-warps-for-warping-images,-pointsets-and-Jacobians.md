@@ -42,7 +42,7 @@ ${ANTSPATH}antsApplyTransforms \
   -o movingToFixedDeformed.nii.gz
 ```
 
-Regions of interest are contained in `fixedLabels.nii.gz`, in the fixed image space. Deforming these to moving space:
+If we have regions of interest in `fixedLabels.nii.gz`, in the fixed image space, we can deform these to moving space:
 
 ```
 ${ANTSPATH}antsApplyTransforms \
@@ -55,7 +55,7 @@ ${ANTSPATH}antsApplyTransforms \
   -o movingToFixedDeformed.nii.gz
 ```
 
-The option `[movingToFixed_0GenericAffine.mat, 1]` tells the program to invert the affine transform contained in `movingToFixed_0GenericAffine.mat`. 
+The option `[movingToFixed_0GenericAffine.mat, 1]` tells the program to invert the affine transform contained in `movingToFixed_0GenericAffine.mat`. The option `-n GenericLabel[Linear]` uses an interpolation function suitable for label images.
 
 
 ## Transforming a point set
