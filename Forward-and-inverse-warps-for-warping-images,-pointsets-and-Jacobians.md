@@ -1,6 +1,6 @@
 # Quick reference for applying ANTs warps
 
-Applying the deformations computed by ANTs require the user to specify the correct warps, and to specify them in the correct order. Common use cases are explained below.
+Applying the deformations computed by ANTs require the user to specify the correct warps, and to specify them in the correct order. Getting this wrong can cause obvious or subtle errors in the output, depending on the size of the deformations. Common use cases are explained below.
 
 ## Terminology
 
@@ -150,10 +150,21 @@ ${ANTSPATH}antsApplyTransforms \
   -o subjectImageTime1ToGroupTemplateDeformed.nii.gz
 ```
 
+Warping to the single-subject template is similar to the cross-sectional usage:
+
+```
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i subjectImageTime1.nii.gz \
+  -r groupTemplate.nii.gz \   
+  -t SubjectTime1/SubjectToTemplate1Warp.nii.gz \
+  -t SubjectTime1/SubjectToTemplate0GenericAffine.mat \
+  -o subjectImageTime1ToGroupTemplateDeformed.nii.gz
+```
 
 ## Combining warps
 
-Wherever possible, multiple interpolations of the data should be avoided. For example, say we have a perfusion image acquired at the same time as the T1. 
+Wherever possible, multiple interpolations of the data should be avoided. Warps between modalities or through intermediate templates can be combined on the command line with multiple `-t` options to `antsApplyTransforms`. 
 
 
 ## Discussion 
@@ -161,3 +172,5 @@ Wherever possible, multiple interpolations of the data should be avoided. For ex
 Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" is being resampled into the fixed space, and the warps tell us where a particular sample point (ie, a voxel in the output image) lies in the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
 This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different, and the use of the forward warp for the Jacobian may be counter-intuitive.
+
+To verify the correct ordering of warps, it's necessary to know the choice of fixed and moving image for each registration. This depends entirely on how `antsRegistration` was called.
