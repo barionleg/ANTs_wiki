@@ -13,7 +13,7 @@ With ITK version 4, a variety of new registration filters were added. The interf
 See also: 
 
  * `WarpImageMultiTransform`, used with ANTS to deform images. `antsApplyTransforms` is forward compatible.
- *  [ANTS and antsRegistration](https://github.com/ANTsX/ANTs/wiki/ANTS-and-antsRegistration) for information on some important parameter choices between the two scripts.
+ *  [ANTS and antsRegistration](https://github.com/ANTsX/ANTs/wiki/ANTS-and-antsRegistration) for information on parameters for the two programs.
 
 
 ## ANTSJacobian (CreateJacobianDeterminantImage)
