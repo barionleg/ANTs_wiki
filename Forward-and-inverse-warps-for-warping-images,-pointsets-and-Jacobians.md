@@ -52,10 +52,41 @@ ${ANTSPATH}antsApplyTransforms \
   -t [movingToFixed_0GenericAffine.mat, 1] \   
   -t movingToFixed_1InverseWarp.nii.gz \
   -n GenericLabel[Linear] \
-  -o movingToFixedDeformed.nii.gz
+  -o labelsToMovingDeformed.nii.gz
 ```
 
 The option `[movingToFixed_0GenericAffine.mat, 1]` tells the program to invert the affine transform contained in `movingToFixed_0GenericAffine.mat`. The option `-n GenericLabel[Linear]` uses an interpolation function suitable for label images.
+
+
+## Applying affine transforms only
+
+Calling `antsRegistration` or the registration script without a deformable transform step will produce a `GenericAffine.mat` file but no warp field. 
+
+```
+${ANTSPATH}antsRegistrationSyNQuick.sh 
+  -d 3 \
+  -f fixedImage.nii.gz \
+  -m movingImage.nii.gz \
+  -o movingToFixed_ \
+  -t a 
+
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i movingImage.nii.gz \   
+  -r fixedImage.nii.gz \   
+  -t movingToFixed_0GenericAffine.mat \   
+  -o movingToFixedAffineDeformed.nii.gz
+
+${ANTSPATH}antsApplyTransforms \
+  -d 3 \
+  -i fixedImage.nii.gz \
+  -r movingImage.nii.gz \   
+  -t [movingToFixed_0GenericAffine.mat, 1] \   
+  -o fixedToMovingAffineDeformed.nii.gz
+
+```
+
+Applying the affine transform only is also useful for debugging deformable registration. If the final result looks suboptimal, check the affine alignment and improve it if possible, before altering the deformable parameters.
 
 
 ## Transforming a point set
