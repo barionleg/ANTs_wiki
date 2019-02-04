@@ -1,4 +1,4 @@
-**This page has recently changed to reflect updates to ITK NIFTI I/O. See revision history for information about older implementations.**
+**This page has changed to reflect updates to ITK NIFTI I/O. See revision history for information about older implementations.**
 
 ## Short answer
 
