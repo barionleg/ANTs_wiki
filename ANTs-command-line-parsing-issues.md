@@ -7,7 +7,7 @@ The bash shell interprets arguments containing square brackets as a pattern, and
 
 There's various strategies to deal with this:
 
-1. Escape brackets with quotes `-c "[100x100x100]"` or backslashes `-c "[100x100x100]"`. 
+1. Escape brackets with quotes `-c "[100x100x100]"` or backslashes `-c \[100x100x100\]`. 
 
 2. Use `set -f` in a job script to disable pattern expansion. But this will also disable other pattern matching, so for example `AverageImages 3 avg.nii.gz 0 *.nii.gz` would fail unless the matching was re-enabled with `set +f`.
 
