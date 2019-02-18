@@ -3,16 +3,13 @@ This page lists some known issues with ANTs command line parsing.
 
 ## Shell expansion of square brackets
 
-The bash shell interprets arguments containing square brackets as a pattern, and attempts to perform [filename expansion](http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_04.html#sect_03_04_08). This creates a problem if there is a file matching one of the characters in the brackets. For example, the argument `-c [100x100x100]` passed to `antsRegistration` will be incorrect if a file named "1", "0", or "x" exists in the current working directory. 
+Bash and related shells interpret arguments containing square brackets as a pattern, and attempts to perform [filename expansion](http://tldp.org/LDP/Bash-Beginners-Guide/html/sect_03_04.html#sect_03_04_08). This creates a problem if there is a file matching one of the characters in the brackets. For example, the argument `-c [100x100x100]` passed to `antsRegistration` will be incorrect if a file named "1", "0", or "x" exists in the current working directory. 
 
-There's various strategies to deal with this:
+A couple of strategies to deal with this, aside from not having files that match:
 
 1. Escape brackets with quotes `-c "[100x100x100]"` or backslashes `-c \[100x100x100\]`. 
 
 2. Use `set -f` in a job script to disable pattern expansion. But this will also disable other pattern matching, so for example `AverageImages 3 avg.nii.gz 0 *.nii.gz` would fail unless the matching was re-enabled with `set +f`.
-
-3. Avoid using single-character file names.
-
 
 
 ## File names containing multiple extensions
