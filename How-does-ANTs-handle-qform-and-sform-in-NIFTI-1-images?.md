@@ -15,6 +15,10 @@ In rare cases, the qform code is 0. This should never be the case except for bac
 
 When writing NIFTI files, ITK encodes the rotation, translation and scaling in the qform. The qform code is set to 1 (NIFTI_XFORM_SCANNER_ANAT), and the sform code is set to 0. The loss of the sform is unavoidable because the ITK I/O code reads images into a common internal structure, independent of the individual image format on disk, and only supports a rigid transformation.
 
+## Precision errors in header transforms
+
+ITK reads and writes a variety of file formats. Images are read into a generic ITK image object, and after processing the results are written out in the desired format. As a result, there can be precision errors in the output NIFTI header. 
+
 
 ## Potential interoperability problems with other software
 
