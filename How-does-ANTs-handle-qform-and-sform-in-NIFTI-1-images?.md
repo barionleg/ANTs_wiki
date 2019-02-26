@@ -17,7 +17,7 @@ When writing NIFTI files, ITK encodes the rotation, translation and scaling in t
 
 ## Precision errors in header transforms
 
-ITK reads and writes a variety of file formats. Images are read into a generic ITK image object, and after processing the results are written out in the desired format. As a result, there can be precision errors in the output NIFTI header. 
+ITK reads and writes a variety of file formats. Images are read into a generic ITK image object, and after processing the results are written out in the desired format. As a result, [there can be precision errors in the output NIFTI header](https://github.com/ANTsX/ANTs/wiki/Inputs-do-not-occupy-the-same-physical-space). 
 
 
 ## Potential interoperability problems with other software
