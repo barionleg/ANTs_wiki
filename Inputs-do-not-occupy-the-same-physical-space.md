@@ -29,7 +29,7 @@ The obvious cause of this error is when the images are truly in different physic
 
 [Dimension mismatch between images can cause direction matrices to be wrong](https://github.com/ANTsX/ANTs/issues/250).
 
-This often happens when a multi-component image like a time series or vector image is used when a 3D scalar image is expected. Usually you will want to use a 3D image (for example, the average BOLD image or the average b=0 image from DWI) to do things like motion correction to the T1 image space.
+This happens when a multi-component image like a time series or vector image is used when a 3D scalar image is expected. Usually you will want to use a 3D image (for example, the average BOLD image or the average b=0 image from DWI) to do things like motion correction to the T1 image space. To warp a time series or multicomponent image, use `antsApplyTransforms -d 3` and the `-e` option, with a 3D reference image.
 
 
 ### Precision errors 
