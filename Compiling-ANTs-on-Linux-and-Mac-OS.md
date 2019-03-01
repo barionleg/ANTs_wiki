@@ -33,6 +33,8 @@ git clone https://github.com/stnava/ANTs.git
 
 ## Run CMake to configure the build
 
+The build directory must be outside the source tree. Make a build directory, cd to it, then run `ccmake`.
+
 ```
 mkdir -p ~/bin/ants
 cd ~/bin/ants
