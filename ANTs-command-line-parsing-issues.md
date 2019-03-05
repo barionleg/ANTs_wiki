@@ -13,7 +13,9 @@ The easiest way to avoid glob problems is to include white space inside the squa
 
 ### Solution for ANTs scripts
 
-Script arguments with brackets should be quoted, for example `antsCorticalThickness -c "WM[ 4 ]"`.
+Script arguments with spaced brackets should be quoted, for example `antsCorticalThickness -c "WM[ 4 ]"`.
+
+ANTs scripts have been updated to avoid unwanted filename expansion ([f154285](https://github.com/ANTsX/ANTs/commit/f154285a72c357366a4ad99bd2eef946eb843878)). 
 
 
 ## File names containing multiple extensions
