@@ -91,7 +91,7 @@ Applying the affine transform only is also useful for debugging deformable regis
 
 ## Reference image (`-r` option)
 
-The reference image defines the physical space of the output image. This must be in the same **physical** space as the fixed image (if using forward transforms) or the moving image (if using inverse transforms). If you would like to change resolution, you can do so by resampling the image with `ResampleImageBySpacing`, which preserves the origin and orientation of the image in physical space. You can then use the resampled image as the reference image for `antsApplyTransforms`, and the results will still be aligned correctly. 
+The reference image defines both the voxel and the physical space of the output image. The reference image must be in the same **physical** space as the fixed image if using forward transforms, or the moving image if using inverse transforms. If you would like to change the resolution of the output image, you can do so by resampling the reference image with `ResampleImageBySpacing`, which preserves the origin and orientation of the image in physical space. 
 
 
 ## Transforming a point set
