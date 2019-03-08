@@ -1,25 +1,19 @@
 It's good practice to record the version of ANTs you use so that you and others can reproduce your processing. It's also helpful if you need support.
 
-The ANTs version numbers change infrequently, so it's best to record the git hash, which uniquely identifies a snapshot in the repository that others can access.
+## Version information in compiled binaries
+
+```
+antsRegistration --version
+```
+
 
 ## Version information from a local git repository
 
-If you have a local repository, you can get the full git hash from the source directory:
+If you can't build ANTs, you can get the full git hash from the source directory:
 
 ```
 git log | head - n 1 
 ```
-
-Of course, this will be incorrect if you've checked out a version other than the one you built. So it's good to record this immediately before compiling.
-
-Alternatively, if you have the full build directory, you can look in the file
-
-```
-ANTS-build/ProjectSourceVersionVars.cmake
-```
-
-for version information. This gives the first few characters of the git hash, enough to uniquely identify the ANTs version at the time it was checked out (and probably for quite some time after).
-
 
 ##  Version information from a source zip or tarball
 
