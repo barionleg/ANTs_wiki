@@ -93,6 +93,8 @@ Applying the affine transform only is also useful for debugging deformable regis
 
 The reference image defines both the voxel and the physical space of the output image. The reference image must be in the same **physical** space as the fixed image if using forward transforms, or the moving image if using inverse transforms. If you would like to change the resolution of the output image, you can do so by resampling the reference image with `ResampleImageBySpacing`, which preserves the origin and orientation of the image in physical space. 
 
+The reference image must have the same number of dimensions as the warp fields. For most use cases you will run `antsApplyTransforms -d 3` and this requires a 3D reference image. If your reference space belongs to a multi-component image, you will need a 3D image in the same physical space. One way to obtain this is to compute an average of a 4D time series with `antsMotionCorr`, or extracting the first 3D volume with the `TimeSeriesSubset` function in `ImageMath`.
+
 
 ## Transforming a point set
 
