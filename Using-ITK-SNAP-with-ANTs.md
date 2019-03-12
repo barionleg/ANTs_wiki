@@ -39,3 +39,10 @@ After registration, the deformed image produced by `antsRegistration` or `antsAp
 ## Visualizing warp fields
 
 Warp fields may be loaded as overlays and viewed as vector images (displayed as color-coded vectors, magnitude, or component images) or as a deformation grid. To access these options, right-click the warp field image in the "Cursor Inspector", or navigate to the layer inspector from the Tools menu.
+
+
+## Physical space coordinates
+
+The cursor position in the toolbox on the left side of the screen is voxel coordinates. Physical space coordinates are shown in the image inspector, available from the Tools menu under "Image Information". 
+
+Point set operations in ANTs require points in ITK physical space, which are listed in SNAP as "World units (ITK)".
