@@ -120,7 +120,7 @@ ${ANTSPATH}antsApplyTransformsToPoints \
   -t movingToFixed_1InverseWarp.nii.gz \
 ```
 
-The input and output to `antsApplyTransformsToPoints` is in physical space as defined by ITK. This may vary from the coordinates as understood by NIFTI or other file formats. The coordinates need to be carefully validated by users. [ANTsR](https://github.com/ANTsX/ANTsR/wiki/MNI-Coordinates-in-ANTsR-(and-ANTs)) has some capabilities to help with this. You can also use [ITK-SNAP](http://itksnap.org) to locate anatomical points and look up the [ITK coordinates](https://github.com/ANTsX/ANTs/wiki/Using-ITK-SNAP-with-ANTs#physical-space-coordinates) interactively.
+The input and output to `antsApplyTransformsToPoints` is coordinates **in physical space as defined by ITK**. This may vary from the coordinate system defined by NIFTI or other file formats or software. Point sets should be carefully validated by users. [ANTsR](https://github.com/ANTsX/ANTsR/wiki/MNI-Coordinates-in-ANTsR-(and-ANTs)) has some capabilities to help with this. You can also use [ITK-SNAP](http://itksnap.org) to locate anatomical points and look up the [ITK coordinates](https://github.com/ANTsX/ANTs/wiki/Using-ITK-SNAP-with-ANTs#physical-space-coordinates) interactively.
 
 
 ## Computing the Jacobian
