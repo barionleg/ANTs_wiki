@@ -124,7 +124,19 @@ It's rare for the ANTs code to have errors preventing compilation, because there
 * If the build hangs during compilation of some code, it's probably because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
 
 
-### Compilation exits with error messages
+### CMake complains about the compiler
+
+If you have multiple compilers, or CMake can't find the right one for some reason, set variables before building:
+
+```
+mkdir ~/bin/ants
+cd ~/bin/ants
+export CC=/usr/bin/cc
+export CXX=/usr/bin/c++
+ccmake ~/code/ANTs
+```
+
+### Compilation runs for some time but exits with error messages
 
 * Try building with a single thread. Resource limits or timeouts can lead to incomplete compilation, resulting in errors.
 
