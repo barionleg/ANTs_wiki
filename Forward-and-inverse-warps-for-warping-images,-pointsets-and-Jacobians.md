@@ -202,7 +202,47 @@ ${ANTSPATH}antsApplyTransforms \
 
 ## Combining warps
 
-Wherever possible, multiple interpolations of the data should be avoided. Warps between modalities or through intermediate templates can be combined on the command line with multiple `-t` options to `antsApplyTransforms`. 
+Wherever possible, multiple interpolations of the data should be avoided. Warps between modalities or through intermediate templates can be combined on the command line with multiple `-t` options to `antsApplyTransforms`.
+
+
+## Warping multiple modalities to a common template
+
+The usual workflow is to use the T1 or other structural image to define the most accurate registration to a group template. The other modalities are aligned to the T1, and the warps are then combined to deform the other modalities to the same group template space. 
+
+By aligning to the intra-session T1, we can exploit the fact that the underlying anatomy is the same, and the deformations will hopefully be small. This makes the registration problem a bit easier, though there can still be considerable challenges because of differing contrasts and distortions. Some images may need specialized pre-processing to correct distortions (for example, using field maps) before being aligned to the T1.
+
+For example, let's say we have a T1 and T2 image, which we want to align to a T1 group template. The T2 has been acquired such that it has the same distortion characteristics as the T1, so any misalignment between the two is due to motion. For this example, we'll just apply a general registration script to align the T2 to T1.
+
+```
+${ANTSPATH}antsRegistrationSyNQuick.sh 
+  -d 3 \
+  -f t1.nii.gz \
+  -m t2.nii.gz \
+  -o t2ToT1_ \
+  -t r 
+
+${ANTSPATH}antsRegistrationSyNQuick.sh 
+  -d 3 \
+  -f template.nii.gz \
+  -m t1.nii.gz \
+  -o t1ToTemplate_ \
+  -t s 
+```
+
+We can then call
+
+```
+  ${ANTSPATH}antsApplyTransforms \
+    -d 3 \
+    -i t2.nii.gz \
+    -o t2DeformedToTemplate.nii.gz \
+    -r template.nii.gz \
+    -t t1ToTemplate_1Warp.nii.gz \
+    -t t1ToTemplate_0GenericAffine.mat \
+    -t t2ToT1_0GenericAffine.mat
+```
+
+It may be desirable to resample the other modalities at lower resolution in the template space, which can be done by using a resampled version of the group template as the reference image in the call to `antsApplyTransforms`.
 
 
 ## Discussion 
