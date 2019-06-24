@@ -1,5 +1,6 @@
 This installation guide is for Linux and Mac users. Windows users will need to install the Linux subsystem and then install Git and CMake, as detailed [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10), before proceeding to clone ANTs and compile using the instructions on this page.
 
+
 ## Get CMake
 
 CMake is available as source or a binary package from 
@@ -10,6 +11,7 @@ You can also install it through a package manager for your system such as yum, a
 
 
 ## Install developer tools 
+
 
 ### Mac OS
 
@@ -139,6 +141,8 @@ ccmake ~/code/ANTs
 ### Compilation runs for some time but exits with error messages
 
 * Try building with a single thread. Resource limits or timeouts can lead to incomplete compilation, resulting in errors.
+
+* Ensure that you have a compiler that can build ANTs. The [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) has a list of compilers that can build the latest code. 
 
 
 ### Asking for help
