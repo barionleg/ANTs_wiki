@@ -136,7 +136,7 @@ This outputs the log of the Jacobian determinant in the fixed space.
 | Log Jacobian | Moving image volume change | 
 |    :---:     |     :---:                  | 
 |     < 0      | Expanding                  | 
-|     = 0      | Zero                       |
+|     = 0      | None                       |
 |     > 0      | Contracting                |
  
 Simple example data and code [here](https://github.com/cookpa/jacobianExample), a more complex example [here](https://github.com/stnava/jacobianTests).
