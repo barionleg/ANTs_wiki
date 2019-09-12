@@ -12,7 +12,6 @@ You can also install it through a package manager for your system such as yum, a
 
 ## Install developer tools 
 
-
 ### Mac OS
 
 The exact procedure varies by Mac OS X version. For 10.11 (El Capitan), you need to first install XCode, then get the command line tools. Once XCode is installed, you can get the command line tools from the Terminal, with
@@ -23,6 +22,12 @@ The exact procedure varies by Mac OS X version. For 10.11 (El Capitan), you need
 ### Linux
 
 The developer tools are usually installed in Linux. If not, there are several routes to install the required tools, depending on the Linux installation. Look for "developer tools" packages for your Linux distribution.
+
+### Minimum C/C++ compiler versions
+
+ANTs requires GNU CC 5.0 or later, or clang 3.6 or later. A current list of compilers known to build ANTs successfully can be viewed on Travis at
+ 
+  https://travis-ci.org/ANTsX/ANTs
 
 
 ## Get the latest code
