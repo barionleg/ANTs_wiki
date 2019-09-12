@@ -1,6 +1,13 @@
 This installation guide is for Linux and Mac users. Windows users will need to install the Linux subsystem and then install Git and CMake, as detailed [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10), before proceeding to clone ANTs and compile using the instructions on this page.
 
 
+## Compiler requirements
+
+On all platforms, ANTs requires GNU CC 5.0 or later, or clang 3.6 or later. A current list of compilers known to build ANTs successfully can be viewed on Travis at
+ 
+  https://travis-ci.org/ANTsX/ANTs
+
+
 ## Get CMake
 
 CMake is available as source or a binary package from 
@@ -22,12 +29,6 @@ The exact procedure varies by Mac OS X version. For 10.11 (El Capitan), you need
 ### Linux
 
 The developer tools are usually installed in Linux. If not, there are several routes to install the required tools, depending on the Linux installation. Look for "developer tools" packages for your Linux distribution.
-
-### Minimum C/C++ compiler versions
-
-ANTs requires GNU CC 5.0 or later, or clang 3.6 or later. A current list of compilers known to build ANTs successfully can be viewed on Travis at
- 
-  https://travis-ci.org/ANTsX/ANTs
 
 
 ## Get the latest code
