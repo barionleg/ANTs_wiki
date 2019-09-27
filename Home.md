@@ -16,3 +16,14 @@ bash ${ANTSPATH}antsCorticalThickness.sh -d $dim \
   -z 0 -x 25 -g 1 -k 1 \
   -o ${OUT_DIR}/${outname}/${outname}_
 ```
+
+Fast pairwise deformable registration:
+
+```
+  ${ANTSPATH}antsRegistrationSyNQuick.sh \
+    -d 3 \
+    -t s \
+    -f fixed.nii.gz \
+    -m moving.nii.gz \
+    -o movingToFixed
+```
