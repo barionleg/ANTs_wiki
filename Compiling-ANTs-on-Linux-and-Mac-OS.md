@@ -1,5 +1,7 @@
 This installation guide is for Linux and Mac users. Windows users will need to install the Linux subsystem and then install Git and CMake, as detailed [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10), before proceeding to clone ANTs and compile using the instructions on this page.
 
+Update 2019-10-01: Build instructions have been updated to reflect recent improvements to the ANTs CMake scripts.
+
 
 ## Compiler requirements
 
@@ -41,15 +43,15 @@ git clone https://github.com/stnava/ANTs.git
 
 ## Run CMake to configure the build
 
-The build directory must be outside the source tree. Make a build directory, cd to it, then run `ccmake`.
+The build directory must be outside the source tree. Make a build directory, cd to it, then run `ccmake`. The build directory is not the final install location. You will set the prefix in CMake where you want to install the executables and libraries.
 
 ```
-mkdir -p ~/bin/ants
-cd ~/bin/ants
+mkdir -p ~/bin/antsBuild
+cd ~/bin/antsBuild
 ccmake ~/code/ANTs
 ```
 
-Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. 
+Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. You should set `CMAKE_INSTALL_PREFIX` to where you want to install ANTs. This needs to be somewhere that you have write access.
 
 If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". You may also need to replace the git protocol for the ITK build. You can do this on the command line with 
 ```
@@ -73,35 +75,31 @@ This compiles in the most resource-efficient manner. To save time, you can use m
 make -j 2
 ```
 
-will use two cores. Note that multiple threads will require more RAM as well as CPU time. If your build seems slow for the number of threads, exits with errors, or hangs up entirely, try building with a single thread.
+will use two cores. Note that multiple threads will require more RAM as well as CPU time. If your build seems slow for the number of threads, exits with errors, or hangs up entirely, try building with a single thread. You can also save time by turning off `RUN_LONG_TESTS` in CMake, or by turning off testing entirely.
 
-The system will build ITK and then ANTs. Using these default settings, installation will take approximately 40 minutes. You can speed it up by turning off `RUN_LONG_TESTS`, or by turning off testing entirely.
-
-
-## Copy scripts 
-
-If you want to use ANTs scripts, copy them from the source directory `Scripts/` to the bin directory where `antsRegistration` etc are located.
+The system will build ITK and then ANTs. 
 
 
-## Control multi-threading at run time
+## Install step 
 
-Not all ANTs programs multi-thread, but many do. There is some cost to threading so running N threads won't make the programs run N times faster and the performance benefit diminishes with larger numbers of threads. By default, the number of available threads is set to the number of virtual cores, which may degrade system performance for relatively little benefit. You probably want to set the environment variable
+After compilation completes, you will see a subdirectory `ANTS-build`. This is the location from which you will run the install.
 
 ```
-ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
+cd ANTS-build
+make install
 ```
 
-to be at most the number of physical cores. So on an iMac with a quad-core CPU (8 virtual cores), set this variable to 4, or less than 4 if you want to save more CPU time for other processes - 2 delivers a substantial speed increase without degrading desktop performance.
+This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INSTALL_PREFIX`. 
 
 
 ## Set `PATH` and `ANTSPATH`
 
-Assuming you've built in `~/bin/ants`, there will now be a binary directory `~/bin/ants/bin`, containing the programs (and scripts if you've included them). The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
+Assuming your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts. The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
 
 For the bash shell (default on Mac and some Linux), you need to set
 
 ```
-export ANTSPATH=${HOME}/bin/ants/bin/
+export ANTSPATH=/opt/ants/bin/
 export PATH=${ANTSPATH}:$PATH
 ```
 
@@ -120,16 +118,32 @@ antsRegistrationSyN.sh
 should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
 
 
+## Control multi-threading at run time
+
+Many ANTs programs use multi-threading. By default, one thread will be generated for every CPU core on the system. This might be acceptable on a single-user machine but in a cluster environment, you will need to restrict the number of threads to be no more than the number of cores you have reserved for use.
+
+Set the environment variable
+
+```
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
+```
+
+to control the number of threads ANTs will use. 
+
+On a desktop computer, a sensible value for this is the number of physical cores. For example, on an iMac with a quad-core CPU (8 virtual cores), set this variable to 4, or less than 4 if you want to save more CPU time for other processes.
+
+
 ## Troubleshooting
 
-It's rare for the ANTs code to have errors preventing compilation, because there are automated tests that check for successful compilation. It's very likely that any compilation problems are specific to a particular system. Most errors reported as issues relate to firewalls blocking the download of ITK, or resource issues limiting the available memory or CPU time, causing compilation to slow down or fail.
+If you are building the latest source code, you can check the [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) to see if the code can compile successfully. 
 
+Other common build problems:
 
 ### Compilation starts but hangs with no error message
 
-*  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". 
+*  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". If that does not work, try altering your settings with `git config` to use https instead of git.
 
-* If the build hangs during compilation of some code, it's probably because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
+* If the build hangs during compilation of some code, it may be because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
 
 
 ### CMake complains about the compiler
