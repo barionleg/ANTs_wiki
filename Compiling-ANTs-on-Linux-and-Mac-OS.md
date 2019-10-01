@@ -163,6 +163,29 @@ ccmake ~/code/ANTs
 * Ensure that you have a compiler that can build ANTs. The [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) has a list of compilers that can build the latest code. 
 
 
+### The build completed but I forgot to set the install prefix and can't write to the default
+
+If you see something like
+
+```
+CMake Error at cmake_install.cmake:37 (file):
+  file cannot create directory: /opt/ANTs/bin.  Maybe need administrative
+  privileges.
+
+
+make: *** [install] Error 1
+```
+and you need to install elsewhere, return to the top-level build directory (where you ran make). Run `ccmake` again and set the install prefix, then press "c" to configure and "g" to generate new make files. Then run 
+
+```
+make
+cd ANTS-build
+make install
+```
+
+It will take a few minutes, but it is much faster than starting over.
+
+
 ### Asking for help
 
 If you have built with a single thread using `make`, and there are still errors that you can't resolve, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
