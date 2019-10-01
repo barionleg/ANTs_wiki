@@ -151,8 +151,6 @@ Other common build problems:
 If you have multiple compilers, or CMake can't find the right one for some reason, set variables before building:
 
 ```
-mkdir ~/bin/ants
-cd ~/bin/ants
 export CC=/usr/bin/cc
 export CXX=/usr/bin/c++
 ccmake ~/code/ANTs
