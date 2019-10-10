@@ -4,6 +4,8 @@ See an overview of our answers to frequently asked questions and commonly reques
 
 To build and install ANTs, see [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) for Linux / Mac OS, and [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10) for Windows.
 
+If you are installing pre-compiled binaries, start [here](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#set-path-and-antspath).
+
 A recommended call to `antsCorticalThickness.sh`:
 ```
 bash ${ANTSPATH}antsCorticalThickness.sh -d $dim \
