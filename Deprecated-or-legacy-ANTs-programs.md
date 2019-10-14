@@ -1,4 +1,4 @@
-ANTs has been developed over many years and several programs and scripts are no longer actively maintained. Generally, ANTs policy is to leave these programs available for backwards compatibility and reproducibility.
+ANTs has been developed over many years and several programs and scripts are no longer actively maintained. Generally, ANTs policy is to leave these programs available for backwards compatibility and reproducibility. Some of these programs continue to be useful, but it is unlikely that new features will be added.
 
 In the list below, the currently maintained version of the program or script is listed in parentheses, where available. 
 
@@ -18,7 +18,7 @@ See also:
 
 ## ANTSJacobian (CreateJacobianDeterminantImage)
 
-`CreateJacobianDeterminantImage` is the older program it is still used in the ANTs scripts. `ANTSJacobian` was intended to replace it but is no longer under active development.
+`CreateJacobianDeterminantImage` is the older program it is still used in the ANTs scripts. `ANTSJacobian` was intended to replace it but is no longer under active development, and is not recommended.
 
 
 ## KellySlater (KellyKapowski) 
@@ -28,7 +28,7 @@ Old cortical thickness implementation, named after a surfer. Replaced by a versi
 
 ## N3BiasFieldCorrection (N4BiasFieldCorrection)
 
-Bias correction based on the famous N3 algorithm by Sled et al. See the N4 [paper](https://www.ncbi.nlm.nih.gov/pubmed/20378467) for details and a comparison to N3 performance.
+Bias correction based on the famous N3 algorithm by Sled et al. See the N4 [paper](https://www.ncbi.nlm.nih.gov/pubmed/20378467) for details and a comparison to N3 performance. N3 is still used for fast correction of relatively smooth bias fields. 
 
    
 ## WarpImageMultiTransform, WarpTensorImageMultiTransform, WarpTimeSeriesImageMultiTransform, ComposeMultiTransform  (antsApplyTransforms)
@@ -43,6 +43,11 @@ These have been replaced by `antsApplyTransforms`, which can perform multiple fu
 The new implementation `antsMultivariateTemplateConstruction.sh` is fairly similar but supports multi-parametric templates, eg T1 and T2 images from the same set of subjects can be used to build a T1 and T2 template simultaneously.
 
 The newer `antsMultivariateTemplateConstruction2.sh` uses `antsRegistration` in place of ANTs. It also has additional options for averaging the image population to create the template.
+
+## antsIntroduction.sh
+
+Old registration wrapper script that calls N4 and ANTS. Mostly now replaced by `antsRegistrationSyN.sh` and `antsRegistrationSyNQuick.sh`.
+
 
 # Programs / scripts no longer included in ANTs
 
