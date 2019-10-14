@@ -1,6 +1,6 @@
 In general, the `-d` flag controls the dimensionality of the algorithm being used, but this can be confusing in some use cases, such as when 3D registration warps are applied to each volume in a 4D time series. 
 
-It is very important to choose the dimensionality correctly and to ensure that all input and reference images have the expected dimensions. If there is a discrepency, the output physical space may not be correct (see [here](https://github.com/stnava/ANTs/issues/250) for details).
+The user must choose the appropriate dimensionality and ensure that all input and reference images have the expected dimensions. If there is a discrepency, the output physical space may not be correct (see [here](https://github.com/stnava/ANTs/issues/250) for details).
 
 ## Use of the -d flag in ANTs programs
 
