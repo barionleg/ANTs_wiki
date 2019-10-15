@@ -10,7 +10,7 @@ Supported dimensions: 2/3/4
 
 The dimension chosen here determines the domain of the registration. With `-d 4`, the registration is done across all four dimensions. This allows the user to pass in two time series and compute the registration over time as well as space. 
 
-The more common use case is where a 4D time series (such as fMRI data) is registered to a 3D image (such as a T1w volume). In this case, you would use `-d 3` and compute a 3D moving image, such as the mean fMRI volume.
+The more common use case is where a 4D time series (such as fMRI data) is registered to a 3D image (such as a T1w volume). In this case, you would compute a 3D moving image, such as the mean fMRI volume, and then run the registration with `-d 3`. 
 
 
 ### `antsApplyTransforms`
@@ -26,4 +26,4 @@ The reference image must also match the dimension of the warp. Usually, the refe
 
 Supported dimensions: 2/3/4
 
-Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or maybe on an average, and then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images.
+Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or maybe on an average, and then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images, you can them recombine them with `TimeSeriesAssemble`.
