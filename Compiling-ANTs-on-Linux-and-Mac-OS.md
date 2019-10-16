@@ -66,18 +66,35 @@ Hit 'c' again to do another round of configuration. If there are no errors, you'
 Now you are back at the command line, it's time to compile.
 
 ```
-make
+make 2>&1 | tee build.log
 ```
 
-This compiles in the most resource-efficient manner. To save time, you can use multiple threads, for example:
+The last part of the command here records the terminal output to a file `build.log`. This is optional, but you must do this if you need to report an issue. If you don't have the `tee` command installed, you can do
 
 ```
-make -j 2
+make > build.log 2>&1 
 ```
 
-will use two cores. Note that multiple threads will require more RAM as well as CPU time. If your build seems slow for the number of threads, exits with errors, or hangs up entirely, try building with a single thread. You can also save time by turning off `RUN_LONG_TESTS` in CMake, or by turning off testing entirely.
+but you will not see output to the terminal. 
 
-The system will build ITK and then ANTs. 
+To speed up compilation, you can use multiple threads, for example:
+
+```
+make -j 2 2>&1 | tee build.log
+```
+
+will use two threads. Note that multiple threads will require more RAM as well as CPU resources. If your build seems slow for the number of threads, exits with errors, or hangs up entirely, try building with a single thread. You can also save time by turning off `RUN_LONG_TESTS` in CMake, or by turning off testing entirely.
+
+
+## Checking compilation success
+
+If all went well, `make` will exit with code 0, after printing
+
+```
+[100%] Built target ANTS
+```
+
+You can also check for the empty file `CMakeFiles/ANTS-complete` under the build directory.
 
 
 ## Install step 
@@ -86,7 +103,7 @@ After compilation completes, you will see a subdirectory `ANTS-build`. This is t
 
 ```
 cd ANTS-build
-make install
+make install 2>&1 | tee install.log
 ```
 
 This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INSTALL_PREFIX`. 
@@ -190,4 +207,4 @@ It will take a few minutes, but it is much faster than starting over.
 
 If you have built with a single thread using `make`, and there are still errors that you can't resolve, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
 
-You may open an issue to report the error and seek help from the ANTs community. It's important to include as much relevant information as possible, including the exact version of the ANTs source (identified by the git hash), CMake, the compiler being used, and the operating system. The full output from `make` should also be included as a text file. 
+You may open an issue to report the error and seek help from the ANTs community. Please see the issue template for build issues, and include all the relevant attachments. 
