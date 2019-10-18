@@ -208,3 +208,12 @@ It will take a few minutes, but it is much faster than starting over.
 If you have built with a single thread using `make`, and there are still errors that you can't resolve, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
 
 You may open an issue to report the error and seek help from the ANTs community. Please see the issue template for build issues, and include all the relevant attachments. 
+
+
+## Advanced topics
+
+For developers and advanced users who are not using the default Superbuild.
+
+### Using system ITK or VTK
+
+If you wish to use a pre-compiled system version of either ITK or VTK, it must be the correct version for the ANTs source you are working from. The ITK version changes most frequently, this allows us to keep up to date with bug fixes, performance enhancements, and new features. The required ITK version can be found in the ANTs source [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_ITKv5.cmake#L154) and the VTK version [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_VTK.cmake#L163).
