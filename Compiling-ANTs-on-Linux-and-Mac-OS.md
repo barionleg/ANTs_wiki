@@ -5,7 +5,7 @@ Update 2019-10-01: Build instructions have been updated to reflect recent improv
 
 ## Compiler requirements
 
-On all platforms, ANTs requires GNU CC 5.0 or later, or clang 3.6 or later. A current list of compilers known to build ANTs successfully can be viewed on Travis at
+A current list of compilers known to build ANTs successfully can be viewed on Travis at
  
   https://travis-ci.org/ANTsX/ANTs
 
