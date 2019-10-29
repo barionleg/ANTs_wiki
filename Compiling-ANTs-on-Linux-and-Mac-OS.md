@@ -1,7 +1,6 @@
 This installation guide is for Linux and Mac users. Windows users will need to install the Linux subsystem and then install Git and CMake, as detailed [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10), before proceeding to clone ANTs and compile using the instructions on this page.
 
-Update 2019-10-01: Build instructions have been updated to reflect recent improvements to the ANTs CMake scripts.
-
+The instructions here will perform a "SuperBuild", which will automatically build the correct versions of ITK (required) and VTK (optional) for ANTs. Most ANTs users will find it easiest to use the SuperBuild. Advanced users can use [system ITK or VTK](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS/_edit#using-system-itk-or-vtk).
 
 ## Compiler requirements
 
