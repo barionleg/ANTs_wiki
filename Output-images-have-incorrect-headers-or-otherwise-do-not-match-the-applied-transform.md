@@ -6,7 +6,7 @@ Some potential causes of problems with output images being flipped or translated
 
 ITK, and therefore ANTs, only supports a rigid transform to physical space. It prefers qform over sform. See
 
-https://github.com/stnava/ANTs/wiki/How-does-ANTs-handle-qform-and-sform-in-NIFTI-1-images%3F
+https://github.com/ANTsX/ANTs/wiki/How-does-ANTs-handle-qform-and-sform-in-NIFTI-1-images%3F
 
 
 ### Dimension mismatch
