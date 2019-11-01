@@ -191,15 +191,19 @@ CMake Error at cmake_install.cmake:37 (file):
 
 make: *** [install] Error 1
 ```
-and you need to install elsewhere, return to the top-level build directory (where you ran make). Run `ccmake` again and set the install prefix, then press "c" to configure and "g" to generate new make files. Then run 
+
+The fastest way to fix this is with the `DESTDIR` variable:
 
 ```
-make
-cd ANTS-build
+make install DESTDIR=/new/install/dir
+```
+
+This will install the binaries in `${DESTDIR}/opt/ANTs/bin`. Alternatively, you can reconfigure the install directory with CMake:
+
+```
+cmake -DCMAKE_INSTALL_PREFIX=/new/install/dir .
 make install
 ```
-
-It will take a few minutes, but it is much faster than starting over.
 
 
 ### Asking for help
