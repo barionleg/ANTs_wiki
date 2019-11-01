@@ -13,6 +13,5 @@ https://github.com/stnava/ANTs/wiki/How-does-ANTs-handle-qform-and-sform-in-NIFT
 
 If you pass a 4D image where a 3D image is expected, the transform of the output image may not be correct. See
 
-https://github.com/stnava/ANTs/issues/250
+https://github.com/ANTsX/ANTs/wiki/Dimensionality-of-ANTs-algorithms
 
-Better to split the 4D volume into components and process them independently (can be done with `ImageMath`).
