@@ -17,6 +17,8 @@ CMake is available as source or a binary package from
 
 You can also install it through a package manager for your system such as yum, apt, or Homebrew.
 
+The current minimum CMake version is 3.10.2.
+
 
 ## Install developer tools 
 
