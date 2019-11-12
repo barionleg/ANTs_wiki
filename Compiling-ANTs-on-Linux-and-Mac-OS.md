@@ -9,7 +9,7 @@ A current list of compilers known to build ANTs successfully can be viewed on Tr
   https://travis-ci.org/ANTsX/ANTs
 
 
-## Get CMake
+## CMake requirements
 
 CMake is available as source or a binary package from 
 
@@ -20,7 +20,7 @@ You can also install it through a package manager for your system such as yum, a
 The current minimum CMake version is 3.10.2.
 
 
-## Install developer tools 
+## Installing developer tools 
 
 ### Mac OS
 
