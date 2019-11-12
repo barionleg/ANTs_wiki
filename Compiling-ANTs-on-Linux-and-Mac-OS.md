@@ -42,6 +42,9 @@ cd ~/code
 git clone https://github.com/stnava/ANTs.git
 ```
 
+You can also download code snapshots as a ZIP file from Github, but you will still need `git` installed for the SuperBuild to work.
+
+
 ## Run CMake to configure the build
 
 The build directory must be outside the source tree. Make a build directory, cd to it, then run `ccmake`. The build directory is not the final install location. You will set the prefix in CMake where you want to install the executables and libraries.
