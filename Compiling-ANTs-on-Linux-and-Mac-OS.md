@@ -39,7 +39,7 @@ The developer tools are usually installed in Linux. If not, there are several ro
 ```
 mkdir ~/code 
 cd ~/code
-git clone https://github.com/stnava/ANTs.git
+git clone https://github.com/ANTsX/ANTs.git
 ```
 
 You can also download code snapshots as a ZIP file from Github, but you will still need `git` installed for the SuperBuild to work.
