@@ -2,6 +2,24 @@ This installation guide is for Linux and Mac users. Windows users will need to i
 
 The instructions here will perform a "SuperBuild", which will automatically build the correct versions of ITK (required) and VTK (optional) for ANTs. Most ANTs users will find it easiest to use the SuperBuild. Advanced users can use [system ITK or VTK](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#using-system-itk-or-vtk).
 
+## SuperBuild quick reference
+
+A downloadable script to build and install ANTs locally is [available here](https://github.com/cookpa/antsInstallExample).
+
+Here is a very minimal example. This example works if you have all the necessary tools, including CMake and a supported compiler. The system requirements and installation steps are discussed in more detail below.
+
+```
+git clone https://github.com/ANTsX/ANTs.git
+mkdir build install
+cd build
+cmake \
+    -DCMAKE_INSTALL_PREFIX=${PWD}/install \
+    ../ANTs 2>&1 | tee cmake.log
+make -j 4 2>&1 | tee build.log
+cd ANTS-build
+make install 2>&1 | tee install.log
+```
+
 ## Compiler requirements
 
 A current list of compilers known to build ANTs successfully can be viewed on Travis at
@@ -37,8 +55,6 @@ The developer tools are usually installed in Linux. If not, there are several ro
 ## Get the latest code
 
 ```
-mkdir ~/code 
-cd ~/code
 git clone https://github.com/ANTsX/ANTs.git
 ```
 
@@ -47,27 +63,24 @@ You can also download code snapshots as a ZIP file from Github, but you will sti
 
 ## Run CMake to configure the build
 
-The build directory must be outside the source tree. Make a build directory, cd to it, then run `ccmake`. The build directory is not the final install location. You will set the prefix in CMake where you want to install the executables and libraries.
+The build directory must be outside the source tree. Make a build directory, cd to it, then run `cmake` with command line options or `ccmake` for the GUI. The build directory is not the final install location. You will set the prefix in CMake where you want to install the executables and libraries, but that is a separate command after the build completes.
 
 ```
-mkdir -p ~/bin/antsBuild
-cd ~/bin/antsBuild
-ccmake ~/code/ANTs
+# make a build and install dir
+mkdir build install
+cd build
+ccmake ../ANTs
 ```
 
-Hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. You should set `CMAKE_INSTALL_PREFIX` to where you want to install ANTs. This needs to be somewhere that you have write access.
+In the GUI, hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. You should set `CMAKE_INSTALL_PREFIX` to where you want to install ANTs. This needs to be somewhere that you have write access.
 
-If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". You may also need to replace the git protocol for the ITK build. You can do this on the command line with 
-```
-git config --global url."https://".insteadOf git://
-```
-This will tell git to use https instead of git for all of your projects.
-
-On OS X 10.11 using clang, `CMAKE_OSX_ARCHITECTURES` needs to be left blank. Previously, this would be set to "x86_64". If CMake doesn't demand an architecture option, you should probably leave this blank.
+If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". This should use https for all components of the SuperBuild, but see the Troubleshooting section if you have trouble with git operations.
 
 Hit 'c' again to do another round of configuration. If there are no errors, you're ready to generate the make files by pressing 'g'.
 
 Now you are back at the command line, it's time to compile.
+
+## Build step
 
 ```
 make 2>&1 | tee build.log
@@ -113,7 +126,7 @@ make install 2>&1 | tee install.log
 This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INSTALL_PREFIX`. 
 
 
-## Set `PATH` and `ANTSPATH`
+## Post installation: set environment variables `PATH` and `ANTSPATH`
 
 Assuming your install prefix was `/opt/ANTs`, there will now be a binary directory `/opt/ANTs/bin`, containing the ANTs executables and scripts. The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
 
@@ -139,7 +152,7 @@ antsRegistrationSyN.sh
 should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
 
 
-## Control multi-threading at run time
+## Post installation: control multi-threading at run time
 
 Many ANTs programs use multi-threading. By default, one thread will be generated for every CPU core on the system. This might be acceptable on a single-user machine but in a cluster environment, you will need to restrict the number of threads to be no more than the number of cores you have reserved for use.
 
@@ -163,6 +176,15 @@ Other common build problems:
 ### Compilation starts but hangs with no error message
 
 *  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". If that does not work, try altering your settings with `git config` to use https instead of git.
+
+You can do this globally on the command line with 
+
+```
+git config --global url."https://".insteadOf git://
+```
+
+This will tell git to use https instead of git for all of your projects.
+
 
 * If the build hangs during compilation of some code, it may be because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
 
@@ -210,12 +232,11 @@ cmake -DCMAKE_INSTALL_PREFIX=/new/install/dir .
 make install
 ```
 
-
 ### Asking for help
 
-If you have built with a single thread using `make`, and there are still errors that you can't resolve, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
+If you still have problems, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
 
-You may open an issue to report the error and seek help from the ANTs community. Please see the issue template for build issues, and include all the relevant attachments. 
+You may open an issue to report the error and seek help from the ANTs community. Please see the issue template for build issues, and include all the relevant attachments.
 
 
 ## Advanced topics
