@@ -9,11 +9,12 @@ A downloadable script to build and install ANTs locally is [available here](http
 Here is a very minimal example. This example works if you have all the necessary tools, including CMake and a supported compiler. The system requirements and installation steps are discussed in more detail below.
 
 ```
+workingDir=${PWD}
 git clone https://github.com/ANTsX/ANTs.git
 mkdir build install
 cd build
 cmake \
-    -DCMAKE_INSTALL_PREFIX=${PWD}/install \
+    -DCMAKE_INSTALL_PREFIX=${workingDir}/install \
     ../ANTs 2>&1 | tee cmake.log
 make -j 4 2>&1 | tee build.log
 cd ANTS-build
