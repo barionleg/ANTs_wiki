@@ -239,8 +239,8 @@ This is a result of the default compiler optimization using instructions that ar
 Try adding the following to the CMake call:
 
 ```
--DSuperBuild_ANTS_C_OPTIMIZATION_FLAGS:STRING= -mtune=native -march=native \
--DSuperBuild_ANTS_CXX_OPTIMIZATION_FLAGS:STRING= -mtune=native -march=native
+-DSuperBuild_ANTS_C_OPTIMIZATION_FLAGS="-mtune=native -march=native" \
+-DSuperBuild_ANTS_CXX_OPTIMIZATION_FLAGS="-mtune=native -march=native"
 ```
 
 See the issue for more on this: [764](https://github.com/ANTsX/ANTs/issues/764).
