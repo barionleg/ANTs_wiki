@@ -234,16 +234,16 @@ make install
 
 ## Compilation fails or run time errors occur with "Illegal Instruction" errors
 
-This is a result of the default compiler optimization using instructions that are not supported by some CPUs.
-
-Try adding the following to the CMake call:
+This is a result of the compiler using instruction sets that are not supported by some CPUs. By default, the target architecture is "corei7", which works for most modern PCs and Macs. But some users may need to change the compiler architecture options used by CMake by adding 
 
 ```
 -DSuperBuild_ANTS_C_OPTIMIZATION_FLAGS="-mtune=native -march=native" \
 -DSuperBuild_ANTS_CXX_OPTIMIZATION_FLAGS="-mtune=native -march=native"
 ```
 
-See the issue for more on this: [764](https://github.com/ANTsX/ANTs/issues/764).
+to the `cmake` call. This will target the build to the machine used to compile ANTs. To make a more portable build, replace `-march=native` with "-march=x86-64". 
+
+Related issue: [764](https://github.com/ANTsX/ANTs/issues/764).
 
 ## Asking for help
 
