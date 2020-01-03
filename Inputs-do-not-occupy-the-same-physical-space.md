@@ -21,18 +21,35 @@ InputImage Direction: 1.0000000e+00 0.0000000e+00 0.0000000e+00
 
 Other programs can produce similar errors if the headers do not agree.
 
-## Causes and solutions
+
+# Causes and solutions
 
 The obvious cause of this error is when the images are truly in different physical spaces. For example, if one image is in a subject's native T1 space, and another is in a group template space. If the T1 has been registered to the template, you can use `antsApplyTransforms` to resample the template space images into the native space, and vice versa. 
 
-### Images are aligned but have different number of dimensions
+## Images are aligned but have different number of dimensions
 
 [Dimension mismatch between images can cause direction matrices to be wrong](https://github.com/ANTsX/ANTs/issues/250).
 
 This happens when a multi-component image like a time series or vector image is used when a 3D scalar image is expected. Usually you will want to use a 3D image (for example, the average BOLD image or the average b=0 image from DWI) to do things like motion correction to the T1 image space. To warp a time series or multicomponent image, use `antsApplyTransforms -d 3` and the `-e` option, with a 3D reference image.
 
 
-### Precision errors 
+## Images are aligned in physical space, but not voxel space
+
+In general, supplementary images such as masks or tissue probabilities must be in the same voxel space as the main input image. If the images are in the same physical space but sampled on different grids, the image can be resampled with `antsApplyTransforms`. For example:
+
+```
+antsApplyTransforms \
+  -d 3 \
+  -i mask.nii.gz \
+  -r t1.nii.gz \
+  -o maskResampled.nii.gz \
+  -n NearestNeighbor 
+```
+
+will resample `mask.nii.gz` into the voxel space of `t1.nii.gz`.
+
+
+## Precision errors 
 
 ITK reads and writes a variety of file formats. Images are read into a generic ITK image object, and after processing the results are written out in the desired format. As a result, there can be precision errors in the output NIFTI header.
 
@@ -49,3 +66,4 @@ Tolerance: 1.8750000e-06
 ```
 
 You can use `CopyImageHeaderInformation` after processing to set headers consistently. You can also minimize problems by using a consistent reference space when warping images.
+
