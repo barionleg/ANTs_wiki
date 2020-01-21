@@ -2,6 +2,8 @@ It's good practice to record the version of ANTs you use so that you and others 
 
 ## Version information in compiled binaries
 
+If you clone the ANTs git repository and build against that, the version information will be encoded into the binaries. You can recover this later with
+
 ```
 antsRegistration --version
 ```
