@@ -172,19 +172,21 @@ On a desktop computer, a sensible value for this is the number of physical cores
 
 If you are building the latest source code, you can check the [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) to see if the code can compile successfully. 
 
+## git error messages while cloning ITK or VTK
+
+Sometimes git will return an error when attempting to clone ITK or VTK. This is often caused by firewalls blocking the git protocol. Try setting `SuperBuild_ANTS_USE_GIT_PROTOCOL` `OFF` in CMake or `ccmake`. Some firewalls may cause the build to hang instead of returning an error, see below for more details. 
 
 ## Compilation starts but hangs with no error message
 
 *  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". If that does not work, try altering your settings with `git config` to use https instead of git.
 
-You can do this globally on the command line with 
+If you continue to have firewall problems, you can globally replace git with https on the command line with 
 
 ```
 git config --global url."https://".insteadOf git://
 ```
 
 This will tell git to use https instead of git for all of your projects.
-
 
 * If the build hangs during compilation of some code, it may be because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
 
