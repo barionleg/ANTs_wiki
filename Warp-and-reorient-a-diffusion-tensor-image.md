@@ -75,17 +75,17 @@ The tensors are now reoriented correctly.
 
 ## Combining warps
 
-If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space:
+If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space. The transform syntax is the same as for scalar images, the only difference is we use `-e 2` to deform the tensor image, and then apply the reorientation step.
 
 ```
 antsApplyTransforms -d 3 -i dt.nii.gz -o dtGroupTemplateDeformed.nii.gz -e 2 \
   -t anatToGroupTemplate1Warp.nii.gz -t anatToGroupTemplate0GenericAffine.mat \
-  -t diffusionToAnat0GenericAffine.mat
+  -t diffusionToAnat0GenericAffine.mat \
   -r groupTemplate.nii.gz 
 
 antsApplyTransforms -d 3 -o [dtCombinedWarp.nii.gz,1] \
   -t anatToGroupTemplate1Warp.nii.gz -t anatToGroupTemplate0GenericAffine.mat \
-  -t diffusionToAnat0GenericAffine.mat
+  -t diffusionToAnat0GenericAffine.mat \
   -r groupTemplate.nii.gz 
 
 ReorientTensorImage 3 dtGroupTemplateDeformed.nii.gz \
