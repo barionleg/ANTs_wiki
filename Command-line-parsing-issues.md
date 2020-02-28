@@ -8,6 +8,7 @@ Bash and related shells interpret arguments containing square brackets as a patt
 ### Solution for ANTs executables
 
 The easiest way to avoid glob problems is to include white space inside the square brackets in ANTs parameters when calling ANTs executables. For example `-c [ 100x100x100 ]` or `-t SyN[ 0.1 ]` passed to `antsRegistration`.
+
 If you are using `zsh` as your shell, you may prepend the call to your executable with the `noglob` command. Instead of calling `antsRegistration`, for example, call `noglob antsRegistration`.
 
 ### Solution for ANTs scripts
