@@ -38,11 +38,11 @@ Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by
 
 ### Apply the transform to the DT image
 
-Apply these transforms to deform the tensor image. `antsApplyTransforms` will output the tensors in the space of the fixed image. After this the tensors will be correctly located in the fixed space, but they need to be reoriented to account for the rotation introduced by the registration.
+Apply these transforms to deform the tensor image. `antsApplyTransforms` will output the tensors in the space of the fixed image with `-e 2`. After this the tensors will be correctly **located** in the fixed space, but they will retain their original **orientation** - they need to be reoriented to account for the rotation introduced by the registration.
 
 ```
 antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
--t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
+  -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
 
 You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
@@ -59,9 +59,9 @@ ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz movingToFixed0GenericAffi
 Otherwise, combine the warps with `antsApplyTransforms`:
 
 ```
-antsApplyTransforms -d 3 -r fixed.nii.gz -o [dtCombinedWarp.nii.gz,1] \
--t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat \
--r fixed.nii.gz
+antsApplyTransforms -d 3 -o [dtCombinedWarp.nii.gz,1] \
+  -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat \
+  -r fixed.nii.gz
 ```
 
 Then apply the reorientation to the deformed tensor image
@@ -71,6 +71,26 @@ ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 ```
 
 The tensors are now reoriented correctly.
+
+
+## Combining warps
+
+If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space:
+
+```
+antsApplyTransforms -d 3 -i dt.nii.gz -o dtGroupTemplateDeformed.nii.gz -e 2 \
+  -t anatToGroupTemplate1Warp.nii.gz -t anatToGroupTemplate0GenericAffine.mat \
+  -t diffusionToAnat0GenericAffine.mat
+  -r groupTemplate.nii.gz 
+
+antsApplyTransforms -d 3 -o [dtCombinedWarp.nii.gz,1] \
+  -t anatToGroupTemplate1Warp.nii.gz -t anatToGroupTemplate0GenericAffine.mat \
+  -t diffusionToAnat0GenericAffine.mat
+  -r groupTemplate.nii.gz 
+
+ReorientTensorImage 3 dtGroupTemplateDeformed.nii.gz \
+  dtNormalizedToGroupTemplate.nii.gz dtCombinedWarp.nii.gz
+```
 
 
 ## Interpolation and masking options
