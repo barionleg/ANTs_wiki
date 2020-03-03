@@ -1,15 +1,15 @@
 Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
 
-## Input requirements
+# Input requirements
 
 Moving image: `dt.nii.gz`
 Fixed image: `fixed.nii.gz`
 
-The diffusion tensors must follow the specifications outlined below. See [this page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) for examples of how to import tensors from FSL and other software.
+The diffusion tensors must follow the specifications outlined below. See the wiki page for [Importing diffusion tensor data from other software](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) for examples of how to import tensors from FSL and other software.
 
 
-### Header requirements
+## Header requirements
 
 The DT image should be encoded as a symmetric matrix in the NIFTI-1 format. This can be verified by running `PrintHeader` on the image. You should see
 
@@ -30,23 +30,21 @@ followed by the x,y,z dimensions of the image, and then
 The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
 
-### Component ordering
+## Component ordering
 
 ITK expects tensors in NIFTI format to follow the NIFTI specification of **lower-triangular** ordering: [dxx, dxy, dyy, dxz, dyz, dzz]. 
 
 
-### Diffusion tensor orientation 
+## Diffusion tensor orientation 
 
-For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix.
+For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix. 
 
-
-
-## Compute registration
+# Compute registration
 
 Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by proxy - for the moving image use B0 (recommended), FA, or some other scalar image(s) in the DT space. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`.
 
 
-### Apply the transform to the DT image
+## Apply the transform to the DT image
 
 Apply these transforms to deform the tensor image. `antsApplyTransforms` will output the tensors in the space of the fixed image with `-e 2`. After this the tensors will be correctly **located** in the fixed space, but they will retain their original **orientation** - they need to be reoriented to account for the rotation introduced by the registration.
 
@@ -58,7 +56,7 @@ antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
 You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
 
 
-### Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
+## Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
 
 If you have computed a single affine transform only, you can reorient the tensor at this stage:
 
@@ -83,7 +81,7 @@ ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 The tensors are now reoriented correctly.
 
 
-## Combining warps
+# Combining warps
 
 If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space. The transform syntax is the same as for scalar images, the only difference is we use `-e 2` to deform the tensor image, and then apply the reorientation step.
 
@@ -103,7 +101,7 @@ ReorientTensorImage 3 dtGroupTemplateDeformed.nii.gz \
 ```
 
 
-## Interpolation and masking options
+# Interpolation and masking options
 
 The default linear tensor interpolation in ANTs is done in the log space. This is based on a mathematical argument that linear interpolation of the log tensor gives a better result than linear interpolation of the tensor itself, as explained here
 
