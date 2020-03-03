@@ -1,4 +1,4 @@
-Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. 
+Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
 
 ## Input requirements
@@ -6,7 +6,12 @@ Warping and reorienting a diffusion tensor image is a two-stage process, because
 Moving image: `dt.nii.gz`
 Fixed image: `fixed.nii.gz`
 
-The DT image in this example is encoded as a symmetric matrix in the NIFTI-1 format. This can be verified by running `PrintHeader` on the image. You should see
+The diffusion tensors must follow the specifications outlined below. See [this page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) for examples of how to import tensors from FSL and other software.
+
+
+### Header requirements
+
+The DT image should be encoded as a symmetric matrix in the NIFTI-1 format. This can be verified by running `PrintHeader` on the image. You should see
 
 ```
     dim[0] = 5
@@ -24,11 +29,16 @@ followed by the x,y,z dimensions of the image, and then
 
 The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
 
-[This page](https://github.com/ANTsX/ANTs/wiki/Importing-diffusion-tensor-data-from-other-software) has more information on importing diffusion tensors into ANTs. For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix.
 
-Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
+### Component ordering
 
-**Update December 2018** - Orientation of deformed tensors was incorrect for non-axial images (where the header voxel to physical transformation matrix is not identity). See [here](https://github.com/ANTsX/ANTs/issues/642) for details. This is fixed in commit [2703896fddcf5391ca178f17ec6bc168d861156e](https://github.com/ANTsX/ANTs/commit/2703896fddcf5391ca178f17ec6bc168d861156e).
+ITK expects tensors in NIFTI format to follow the NIFTI specification of **lower-triangular** ordering: [dxx, dxy, dyy, dxz, dyz, dzz]. 
+
+
+### Diffusion tensor orientation 
+
+For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix.
+
 
 
 ## Compute registration
