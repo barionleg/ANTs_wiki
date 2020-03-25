@@ -17,7 +17,7 @@ Floating point precision may cause differences in the registration solution on t
 
 ## Variance due to random sampling
 
-Random sampling is used in various contexts, and different runs will produce a different sequence of random numbers, unless a fixed seed is used. In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then perturbed randomly to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below.
+Random sampling is used in various contexts, and different runs will produce a different sequence of random numbers, unless a fixed seed is used. In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then [perturbed randomly](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below.
 
 
 ## Strategies to improve reproducibility
