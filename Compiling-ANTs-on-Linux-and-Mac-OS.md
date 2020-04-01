@@ -131,7 +131,7 @@ This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INST
 
 Assuming your install prefix was `/opt/ANTs`, there will now be a binary directory `/opt/ANTs/bin`, containing the ANTs executables and scripts. The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
 
-For the bash shell, you need to set
+The exact syntax may vary depending on your terminal shell. For the bash shell, you would set
 
 ```
 export ANTSPATH=/opt/ANTs/bin/
