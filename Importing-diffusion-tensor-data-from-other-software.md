@@ -55,7 +55,7 @@ If this reports `RADIOLOGICAL`, and output of `dtifit` looks correct in `fsleyes
 
 ## Mrtrix
 
-The procedure is similar to FSL but the [https://mrtrix.readthedocs.io/en/latest/reference/commands/dwi2tensor.html](dwi2tensor) command uses a different component ordering, so the iteration over components is different:
+The procedure is similar to FSL but the [dwi2tensor](https://mrtrix.readthedocs.io/en/latest/reference/commands/dwi2tensor.html) command uses a different component ordering, so the iteration over components is different:
 
 ```
 ImageMath 4 dtiComp.nii.gz TimeSeriesDisassemble dt.nii.gz
@@ -66,8 +66,6 @@ for index in xx, yy, zz, xy, xz, yz; do
 done
 ImageMath 3 dtAnts.nii.gz ComponentTo3DTensor dtiComp_
 ```
-
-
 ## Camino
 
 ```
