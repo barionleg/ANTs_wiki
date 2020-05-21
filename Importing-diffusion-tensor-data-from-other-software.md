@@ -19,14 +19,14 @@ On the post-processing side, see [here](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/F
 Errors in the bvecs can go unnoticed because invariant scalar characteristics like fractional anisotropy and mean diffusion are not affected, but tractography will be affected. 
 
 
-## Converting tensors to ANTs format
+# Converting tensors to ANTs format
 
 The examples below describe how to convert the tensors into the correct file format for ANTs. 
 
 To work with ANTs, the tensors should be in index space, such that a tensor can be correctly reoriented into physical space by applying the direction matrix. 
 
 
-### FSL
+## FSL
 
 ```
 dtifit -k dwi.nii.gz -o dti -m mask.nii.gz -r bvecs -b bvals --save_tensor
@@ -53,7 +53,22 @@ fslorient dwi.nii.gz
 If this reports `RADIOLOGICAL`, and output of `dtifit` looks correct in `fsleyes`, then the tensors should be compatible with ANTs. If `fslorient` reports `NEUROLOGICAL`, the bvecs still have to be radiological for FSL, but then image and bvec coordinate system will not agree and the tensors will not be correctly oriented by ANTs. 
 
 
-### Camino
+## Mrtrix
+
+The procedure is similar to FSL but the [https://mrtrix.readthedocs.io/en/latest/reference/commands/dwi2tensor.html](dwi2tensor) command uses a different component ordering, so the iteration over components is different:
+
+```
+ImageMath 4 dtiComp.nii.gz TimeSeriesDisassemble dt.nii.gz
+i=0 
+for index in xx, yy, zz, xy, xz, yz; do
+   mv dtiComp100${i}.nii.gz dtiComp_${index}.nii.gz
+   i=$((i+1))
+done
+ImageMath 3 dtAnts.nii.gz ComponentTo3DTensor dtiComp_
+```
+
+
+## Camino
 
 ```
 modelfit -model ldt_wtd -inputfile dwi.nii.gz -schemefile a.scheme \
