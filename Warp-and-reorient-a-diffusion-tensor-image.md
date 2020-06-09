@@ -27,7 +27,7 @@ followed by the x,y,z dimensions of the image, and then
     intent_code = 1005
 ```
 
-The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix.
+The `intent_code` value of 1005 is the NIFTI-1 code for a symmetric matrix. 
 
 
 ## Component ordering
@@ -39,24 +39,25 @@ ITK expects tensors in NIFTI format to follow the NIFTI specification of **lower
 
 For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix. 
 
+
 # Compute registration
 
-Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by proxy - for the moving image use B0 (recommended), FA, or some other scalar image(s) in the DT space. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`.
+Run `antsRegistration` or `antsRegistrationSyN[Quick].sh`, registering the DT by proxy - for the moving image use B0 (recommended), FA, or some other scalar image(s) in the DT space. This produces the warps `movingDT_ToFixed1Warp.nii.gz` and `movingDT_ToFixed0GenericAffine.mat`, or just `movingDT_ToFixed0GenericAffine.mat` if the transformation does not include deformable registration.
 
 
-## Apply the transform to the DT image
+# Apply the transform to the DT image
 
-Apply these transforms to deform the tensor image. `antsApplyTransforms` will output the tensors in the space of the fixed image with `-e 2`. After this the tensors will be correctly **located** in the fixed space, but they will retain their original **orientation** - they need to be reoriented to account for the rotation introduced by the registration.
+`antsApplyTransforms` will warp the tensors with the `-e 2` option. After this, the tensors will be correctly **located** in the fixed space, but they will retain their original **orientation** - they need to be reoriented to account for the rotation introduced by the registration.
 
 ```
 antsApplyTransforms -d 3 -e 2 -i dt.nii.gz -o dtDeformed.nii.gz \
   -t movingDT_ToFixed1Warp.nii.gz -t movingDT_ToFixed0GenericAffine.mat -r fixed.nii.gz
 ```
 
-You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must then be composed as shown below.
+You may combine other warps here as you would for a scalar image. For example, if the fixed image is the subject's T1, and we have transforms mapping this to template space, we can apply them to map the DT to template space. All transforms applied here, both deformable and affine, must be composed as shown below for reorientation.
 
 
-## Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
+# Compose the affine and deformable transforms into a single warp file for `ReorientTensorImage`
 
 If you have computed a single affine transform only, you can reorient the tensor at this stage:
 
@@ -81,9 +82,9 @@ ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz dtCombinedWarp.nii.gz
 The tensors are now reoriented correctly.
 
 
-# Combining warps
+## Combining inter-subject warps
 
-If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space. The transform syntax is the same as for scalar images, the only difference is we use `-e 2` to deform the tensor image, and then apply the reorientation step.
+The above example uses the output of a single registration, which is normally done to align the DWI space to the T1w structural image acquired in the same session. Additional warps can be composed and applied to align the DT to a template. If we have aligned the DT to an anatomical image with transform `diffusionToAnat0GenericAffine.mat` and the anatomical to a group template with `anatToGroupTemplate1Warp.nii.gz anatToGroupTemplate0GenericAffine.mat`, then these transforms need to be composed to reorient the DT to the group template space. The transform syntax is the same as for scalar images, the only difference is we use `-e 2` to deform the tensor image, and then apply the reorientation step.
 
 ```
 antsApplyTransforms -d 3 -i dt.nii.gz -o dtGroupTemplateDeformed.nii.gz -e 2 \
@@ -112,3 +113,31 @@ One problem with this approach is how to interpolate background (where the DT is
 To prevent this, specify a background tensor diffusivity with the `-f` option to `antsApplyTransforms`. For example, `-f 0.0007` will replace background (any voxel that is all zeros) with an isotropic DT where each eigenvalue is 0.0007. If your b-values are in the usual units of s / mm^2 , then this ought to create a DT with similar mean diffusivity to those in the brain GM / WM. If your b-values are in different units, scale accordingly. Alternatively, you could use a larger value to simulate interpolation with CSF, which presumably surrounds the brain.
 
 Another option is to mask the DT image more generously in the native space, and then apply a tighter brain mask after warping to structural space, so that the voxels interpolated with zero voxels will be removed. Lastly, nearest-neighbor interpolation avoids this issue entirely, though results may be less accurate within the brain.
+
+
+# Troubleshooting
+
+## Check input tensors
+
+To check the correctness of the tensors in ITK format, use ImageMath and [ITK-SNAP](http://www.itksnap.org) for visualization:
+
+```
+ImageMath dtFA.nii.gz TensorFA dt.nii.gz
+ImageMath dtMD.nii.gz TensorMeanDiffusion dt.nii.gz
+ImageMath dtRGB.nii.gz TensorColor dt.nii.gz
+itksnap -g dtFA.nii.gz -o dtMD.nii.gz dtRGB.nii.gz
+```
+
+As well as checking the correctness of the scalar values of FA and MD, you should also check that the orientation (particularly left-right) is correct.
+
+
+## Input tensors are correct; deformed image is misaligned
+
+
+
+## Deformed image is aligned but the tensors are wrong 
+
+
+
+## Deformed image is aligned but the reorientation is wrong
+
