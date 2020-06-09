@@ -46,3 +46,14 @@ Warp fields may be loaded as overlays and viewed as vector images (displayed as 
 The cursor position in the toolbox on the left side of the screen is voxel coordinates. Physical space coordinates are shown in the image inspector, available from the Tools menu under "Image Information". 
 
 Point set operations in ANTs require points in ITK physical space, which are listed in SNAP as "World units (ITK)".
+
+
+## Visualizing diffusion tensors
+
+ITK-SNAP can load the diffusion tensor directly, which can be useful to verify that you have tensors in the correct format for ANTs.
+
+```
+ImageMath dtFA.nii.gz TensorFA dt.nii.gz
+ImageMath dtRGB.nii.gz TensorColor dt.nii.gz
+itksnap -g dtFA.nii.gz -o dtRGB.nii.gz
+```
