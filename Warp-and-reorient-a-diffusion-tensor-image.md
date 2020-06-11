@@ -151,4 +151,4 @@ Interpolation artifacts (see above) can cause problems with visualization of the
 
 Scalar metrics like fractional anisotropy and mean diffusivity are rotationally invariant, meaning they don't change if you apply a rotation to the tensor. So it's possible for FA to be correct but for the tensor orientations to be wrong. This is a difficult issue to solve because it often involves re-exporting the final image to other software that performs tractography.
 
-ANTs uses the ITK direction cosine matrix to transform tensors on disk to physical space. Therefore, reorientation will only work if the b-vectors used to fit the tensor can be rotated to physical space using the image header transform. Example data to test this is available [here] (https://github.com/cookpa/antsDTOrientationTests).
+ANTs uses the ITK direction cosine matrix to transform tensors on disk to physical space. Therefore, reorientation will only work if the b-vectors used to fit the tensor can be rotated to physical space using the image header transform. Example data to test this is available [here](https://github.com/cookpa/antsDTOrientationTests).
