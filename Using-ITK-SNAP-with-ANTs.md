@@ -50,10 +50,19 @@ Point set operations in ANTs require points in ITK physical space, which are lis
 
 ## Visualizing diffusion tensors
 
-ITK-SNAP can load the diffusion tensor directly, which can be useful to verify that you have tensors in the correct format for ANTs.
+To compute and visualize diffusion tensor statistics, something like
 
 ```
 ImageMath dtFA.nii.gz TensorFA dt.nii.gz
+ImageMath dtMD.nii.gz TensorMeanDiffusion dt.nii.gz
 ImageMath dtRGB.nii.gz TensorColor dt.nii.gz
-itksnap -g dtFA.nii.gz -o dtRGB.nii.gz
+itksnap -g dtFA.nii.gz -o dtMD.nii.gz dtRGB.nii.gz
 ```
+
+To display the RGB map as color, go to the Layer Inspector and then click on the RGB overlay, and change display mode to RGB.
+
+An important limitation of this approach is that flips in the coordinate system of the tensors cannot be detected, because the RGB mapping is insensitive to the sign of the vector components. However, you will be able to tell if the tensor components are incorrectly ordered, or if the brain has been flipped.
+
+### Loading the tensor image directly
+
+ITK-SNAP can load the diffusion tensor directly, as a multiple component image. When it does this, it will display the components in **upper-triangular** order, which is what ITK uses internally. This can be confusing because the NIfTI images on disk are required to be in lower-triangular order. So if you are loading a NIfTI tensor into ITK-SNAP, it should display in upper-triangular order.
