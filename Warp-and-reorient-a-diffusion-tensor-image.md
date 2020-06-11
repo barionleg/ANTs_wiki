@@ -1,7 +1,11 @@
 Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
+ANTs can read and write many file types supported by ITK, but for simplicity this page assumes diffusion tensors stored in NIfTI-1 format. 
 
-# Input requirements
+For all file types, two key things to check are correct component ordering of the tensor for that file type, and that the orientation of the tensors can be mapped to the physical space of the image using the rigid transform that ITK reads from the header.
+
+
+# Input requirements for NIfTI-1 images
 
 Moving image: `dt.nii.gz`
 Fixed image: `fixed.nii.gz`
@@ -119,7 +123,7 @@ Another option is to mask the DT image more generously in the native space, and 
 
 ## Check input tensors
 
-To check the correctness of the tensors in ITK format, use ImageMath and [ITK-SNAP](http://www.itksnap.org) for visualization:
+To check the correctness of the tensors in ITK format, use ImageMath and [ITK-SNAP](https://github.com/ANTsX/ANTs/wiki/Using-ITK-SNAP-with-ANTs) for visualization:
 
 ```
 ImageMath dtFA.nii.gz TensorFA dt.nii.gz
@@ -128,16 +132,23 @@ ImageMath dtRGB.nii.gz TensorColor dt.nii.gz
 itksnap -g dtFA.nii.gz -o dtMD.nii.gz dtRGB.nii.gz
 ```
 
+If the FA or MD image looks wrong, it is often because the tensors are not stored in the correct component order on disk.
+
 As well as checking the correctness of the scalar values of FA and MD, you should also check that the orientation (particularly left-right) is correct.
 
 
 ## Input tensors are correct; deformed image is misaligned
 
+If the registration is poor or the warps are incorrectly applied, the alignment of the deformed image will be incorrect. Troubleshooting this step can be made easier by using a scalar image in the same space as the diffusion tensors. Check that the registration and call to `antsApplyTransforms` is correct by applying the transforms to the scalar image that were input to the registration (eg, the b=0 volume). [This page](https://github.com/ANTsX/ANTs/wiki/Forward-and-inverse-warps-for-warping-images,-pointsets-and-Jacobians) has more information on ordering and combining warps.
 
 
-## Deformed image is aligned but the tensors are wrong 
+## Deformed image is aligned but the tensor scalars are wrong 
+
+Interpolation artifacts (see above) can cause problems with visualization of the mean diffusivity by introducing outliers around the edge of the brain. Try warping the tensors with `-n NearestNeighbor`.
 
 
+## Deformed tensor scalars are correct but the reorientation is wrong
 
-## Deformed image is aligned but the reorientation is wrong
+Scalar metrics like fractional anisotropy and mean diffusivity are rotationally invariant, meaning they don't change if you apply a rotation to the tensor. So it's possible for FA to be correct but for the tensor orientations to be wrong. This is a difficult issue to solve because it often involves re-exporting the final image to other software that performs tractography.
 
+ANTs uses the ITK direction cosine matrix to transform tensors on disk to physical space. Therefore, reorientation will only work if the b-vectors used to fit the tensor can be rotated to physical space using the image header transform. Example data to test this is available [here] (https://github.com/cookpa/antsDTOrientationTests).
