@@ -1,11 +1,11 @@
 Warping and reorienting a diffusion tensor image is a two-stage process, because we must account for changes in orientation as well as displacement of location. Because tensor processing conventions vary substantially between software, we recommend testing your own data with large rotations (eg, rotate the reference image) and validating that the resulting reorientations of the tensors are correct.
 
-ANTs can read and write many file types supported by ITK, but for simplicity this page assumes diffusion tensors stored in NIfTI-1 format. 
+ANTs can read and write many file types supported by ITK, but for simplicity this page assumes diffusion tensors stored in NIFTI-1 format. 
 
 For all file types, two key things to check are correct component ordering of the tensor for that file type, and that the orientation of the tensors can be mapped to the physical space of the image using the rigid transform that ITK reads from the header.
 
 
-# Input requirements for NIfTI-1 images
+# Input requirements for NIFTI-1 images
 
 Moving image: `dt.nii.gz`
 Fixed image: `fixed.nii.gz`
