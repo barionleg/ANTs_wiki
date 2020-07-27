@@ -170,7 +170,7 @@ On a desktop computer, a sensible value for this is the number of physical cores
 
 # Troubleshooting
 
-If you are building the latest source code, you can check the [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) to see if the code can compile successfully. 
+If you are building the latest source code, you can check the [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) or the [CircleCI page](https://app.circleci.com/pipelines/github/ANTsX/ANTs?branch=master) to see if the code can compile successfully. Currently, Travis often has some failures because of limitations on the build time on Travis. If all the builds for a platform are red, something is probably wrong. CircleCI does a single build on Linux and is a pretty reliable indicator of whether the build has errors.
 
 ## git error messages while cloning ITK or VTK
 
@@ -205,7 +205,10 @@ ccmake ~/code/ANTs
 
 * Try building with a single thread. Resource limits or timeouts can lead to incomplete compilation, resulting in errors.
 
-* Ensure that you have a compiler that can build ANTs. The [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) has a list of compilers that can build the latest code. 
+* Ensure that you have a compiler that can build ANTs. The [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) has a list of compilers that are known to build the latest code. 
+
+* If using system ITK or VTK, try a SuperBuild. Through the efforts of developers and contributors, ANTs tries to keep up with the innovations and C++ implementation updates in ITK. This means the ITK version required by ANTs changes fairly frequently and is often not backwards compatible.
+
 
 ## Compilation fails or run time errors occur with "Illegal Instruction" errors
 
