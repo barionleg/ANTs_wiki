@@ -26,4 +26,4 @@ The reference image must also match the dimension of the warp. Usually, the refe
 
 Supported dimensions: 2/3/4
 
-Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or maybe on an average, and then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images, you can them recombine them with `TimeSeriesAssemble`.
+Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or maybe on an average, and then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images, you can them recombine them with `TimeSeriesAssemble`. Divide each 3D volume by the bias field to correct the series.
