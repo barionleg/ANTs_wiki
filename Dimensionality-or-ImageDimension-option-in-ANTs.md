@@ -1,4 +1,4 @@
-The `-d` flag controls the dimensionality of the algorithm being used, but this can be confusing in some use cases, such as when 3D registration warps are applied to each volume in a 4D time series. 
+The `-d` flag, or for older programs the "ImageDimension" positional argument, controls the dimensionality of the algorithm being used, but this can be confusing in some use cases, such as when 3D registration warps are applied to each volume in a 4D time series. 
 
 The user must choose the appropriate dimensionality and ensure that all input and reference images have the expected dimensions. If there is a discrepency, the output physical space may not be correct (see [here](https://github.com/stnava/ANTs/issues/250) for details).
 
@@ -26,4 +26,4 @@ The reference image must also match the dimension of the warp. Usually, the refe
 
 Supported dimensions: 2/3/4
 
-Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or maybe on an average, and then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images, you can them recombine them with `TimeSeriesAssemble`. Divide each 3D volume by the bias field to correct the series.
+Using `-d 4` will compute a time-varying bias field. As with registration, you probably want to define a 3D bias field on the first volume or on an average, then apply it to each volume of the 4D data. See the `-o` option for how to output the bias field. `ImageMath` has a command `TimeSeriesDisassemble` to convert a 4D volume into a series of 3D images, you can them recombine them with `TimeSeriesAssemble`. Divide each 3D volume by the bias field to correct the series.
