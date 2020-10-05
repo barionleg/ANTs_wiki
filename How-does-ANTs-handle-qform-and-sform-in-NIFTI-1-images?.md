@@ -1,4 +1,9 @@
-**This page has changed to reflect updates to ITK NIFTI I/O. See revision history for information about older implementations.**
+## ANTs NIFTI I/O will change in the next release
+
+Because ITK has changed its NIFTI-1 I/O conventions, ANTs binaries will also change. The source code as already been updated to reflect this, so the next release will contain the new method. This page will be updated accordingly. Briefly, the preference for qform has been removed, and sform is now used wherever possible. 
+
+
+# ITK NIFTI I/O for ANTs 2.3.4 and earlier
 
 ## Short answer
 
