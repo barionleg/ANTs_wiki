@@ -36,7 +36,7 @@ The second parameter to `-b` is the spline order. The default is 3, so `-b [ 180
 
 ## Convergence (-c)
 
-The convergence option allows the user to set the number of multi-resolution iterations, and a convergence parameter which can halt execution of each level. The number of iterations and levels should be chosen to find a good solution without overfitting or taking too much time. 
+The convergence option allows the user to set the number of multi-resolution iterations, and a convergence parameter which can halt execution of each level. The number of iterations and levels should be chosen to find a good solution without overfitting or taking too much time. The default is equivalent to `-c [ 50x50x50x50, 0.0 ]`.
 
 
 ## Shrink factor (-s)
