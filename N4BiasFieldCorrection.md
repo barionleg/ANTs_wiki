@@ -51,14 +51,14 @@ Masks restrict the voxels in which the image histogram is sampled. The `-x` opti
 
 # Usage for time-series or multi-component data
 
-Using `-d 4` fits a 4D, or time-varying, bias field. In most cases, it is much better to determine a static bias field on a representative 3D image. This is commonly one to improve inter-modality registration.
+Using `-d 4` fits a 4D, or time-varying, bias field, which will require optimization of the spline parameters across space and time. Unless you really want to pursue this strategy, it is better to compute a static bias field on a representative 3D image. This is commonly done to improve inter-modality registration.
 
 If you want to correct the time series itself, you can save the 3D bias field and apply it to all volumes / components of the data set. The bias-corrected image is the input image divided by the bias field.
 
 
 ## Averaging time series data
 
-The average image from a time series can be computed with `antsMotionCorr`. 
+The average image from a time series can be computed with `antsMotionCorr`.
 
 
 ## Averaging dMRI data
