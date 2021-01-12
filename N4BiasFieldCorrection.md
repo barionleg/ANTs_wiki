@@ -3,7 +3,8 @@
 Example call for human brain T1w:
 
 ```
-N4BiasFieldCorrection -d 3 -v 1 -s 4 -b [ 180 ] -c [ 50x50x50x50, 0.0 ] -i T1w.nii.gz -o [ corrected_T1w.nii.gz, T1w_BiasField.nii.gz ]
+N4BiasFieldCorrection -d 3 -v 1 -s 4 -b [ 180 ] -c [ 50x50x50x50, 0.0 ] \
+  -i T1w.nii.gz -o [ corrected_T1w.nii.gz, T1w_BiasField.nii.gz ]
 ```
 
 If you have multi-component or time series data, do not use `-d 4`. Compute the bias field on a representative 3D volume and apply it by dividing each component or measurement by the bias field. More on this below.
