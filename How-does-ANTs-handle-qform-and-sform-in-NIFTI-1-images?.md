@@ -1,6 +1,6 @@
 # ANTs NIFTI-1 I/O
 
-ITK has changed its approach to NIFTI headers over time. Common to all ITK implementations is the restriction that ITK supports a rigid (rotation + translation) transform between voxel and physical coordinates. The variation in NIFTI I/O comes from changes in how ITK looks for the transform in the NIFTI header, and how it writes that information to output NIFTI files.
+ANTs uses ITK image I/O, which uses a common framework to read many different image formats. ITK has changed its approach to NIFTI headers over time. Common to all ITK implementations is the restriction that ITK supports a rigid (rotation + translation) transform between voxel and physical coordinates. The variation in NIFTI I/O comes from changes in how ITK looks for the transform in the NIFTI header, and how it writes that information to output NIFTI files.
 
 The main difference between ITK used in ANTs 2.3.5 and in 2.3.4 is that ITK now prefers the sform matrix to read and write the header transform. Previously, it used the qform header fields, but this suffered from precision issues in addition to being difficult to read. 
 
