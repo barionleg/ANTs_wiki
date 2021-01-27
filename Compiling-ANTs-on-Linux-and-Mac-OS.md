@@ -176,6 +176,16 @@ If you are building the latest source code, you can check the [ANTs Travis page]
 
 Sometimes git will return an error when attempting to clone ITK or VTK. This is often caused by firewalls blocking the git protocol. Try setting `SuperBuild_ANTS_USE_GIT_PROTOCOL` `OFF` in CMake or `ccmake`. Some firewalls may cause the build to hang instead of returning an error, see below for more details. 
 
+
+## CMake Error: install(EXPORT "ITKTargets" ...) includes target "gdcmjpeg8" more than once in the export set.
+
+This is a known issue with CMake 3.19.0 and 3.19.1.
+
+https://gitlab.kitware.com/cmake/cmake/-/issues/21529
+
+Compile with CMake 3.19.2 or later.
+
+
 ## Compilation starts but hangs with no error message
 
 *  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". If that does not work, try altering your settings with `git config` to use https instead of git.
