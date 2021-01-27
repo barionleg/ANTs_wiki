@@ -1,9 +1,33 @@
-# ANTs NIFTI I/O will change in the next release
+# ANTs NIFTI-1 I/O
 
-Because ITK has changed its NIFTI-1 I/O conventions, ANTs binaries will also change. The source code as already been updated to reflect this, so the next release will contain the new method. This page will be updated accordingly. Briefly, the preference for qform has been removed, and sform is now used wherever possible. 
+ITK has changed its approach to NIFTI headers over time. Common to all ITK implementations is the restriction that ITK supports a rigid (rotation + translation) transform between voxel and physical coordinates. The variation in NIFTI I/O comes from changes in how ITK looks for the transform in the NIFTI header, and how it writes that information to output NIFTI files.
 
+The main difference between ITK used in ANTs 2.3.5 and in 2.3.4 is that ITK now prefers the sform matrix to read and write the header transform. Previously, it used the qform header fields, but this suffered from precision issues in addition to being difficult to read. 
+
+On read, a rotation and translation are extracted from the sform matrix. Non-rigid scaling or shearing in the sform is not used and will not be preserved in output. When reading an image, the qform will be used if the sform is not present or has a code indicating it is not a voxel-to-physical space transform.
+
+On write, the rotation and translation for the output image is written back into the sform and qform. 
+ 
+
+## How NIFTI-1 transforms are read
+
+[will be added later]
+
+## How NIFTI-1 transforms are written
+
+[will be added later]
+
+## Potential interoperability problems with other software
+
+[will be added later]
+
+---
+
+The text below describes the previous ITK behavior, which was similar but preferred to read the qform if it was present. On output, the transform was written to the qform, and the sform was set to zeros. 
 
 # ITK NIFTI I/O for ANTs 2.3.4 and earlier
+
+
 
 ## Short answer
 
