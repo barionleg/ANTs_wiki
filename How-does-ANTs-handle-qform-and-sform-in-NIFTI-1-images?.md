@@ -23,9 +23,12 @@ On write, the rotation and translation for the output image is written back into
 
 ---
 
-The text below describes the previous ITK behavior, which was similar but preferred to read the qform if it was present. On output, the transform was written to the qform, and the sform was set to zeros. 
+The text below describes the previous ITK behavior, which was similar but preferred to read the qform if it was present. The text below is valid for ANTs 2.3.x. On output, the transform was written to the qform, and the sform was set to zeros.  
 
-# ITK NIFTI I/O for ANTs 2.3.4 and earlier
+Before ANTs 2.3.0, qform was still used on input, but the sform was set in the output to be identical to the qform.
+
+
+# ITK NIFTI I/O for ANTs 2.3.[0-4] 
 
 
 
