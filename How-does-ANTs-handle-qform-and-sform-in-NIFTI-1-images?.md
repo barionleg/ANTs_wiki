@@ -17,7 +17,7 @@ On write, the rotation and translation for the output space is written back into
 
 In all cases, the image spacing is read from the pixdim elements of the header. The rotation and translation information can either come from the qform (the quatern_[b,c,d] and qoffset_[x,y,z] NIFTI fields) or the sform matrix (srow_[x,y,z] fields).
 
-The exact procedure for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx). From reviewing the code, this is my take on how the algorithm proceeds:
+The exact procedure for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx). From reviewing the code, this is my take on how the algorithm proceeds (in most use cases*):
 
 1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. 
   a. If a rotation matrix can be extracted, proceed to step 2.
@@ -25,7 +25,12 @@ The exact procedure for computing the transform to physical space is here: [itkN
 
 2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation. Otherwise, proceed to step 3.
 
-3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space. If qform is NIFTI_XFORM_UNKNOWN, and sform is not, use sform. Otherwise, return an error.
+3. If qform is NIFTI_XFORM_UNKNOWN, and sform is not, use sform. Otherwise proceed to step 4.
+
+4. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space. 
+
+* Technically, it is possible to have sform_code == NIFTI_XFORM_UNKNOWN and still use sform, if the sform is very similar to the qform (see [here](https://github.com/InsightSoftwareConsortium/ITK/blob/ceac959c2dbcb52c478c05535eba9c7ff83b5dca/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx#L1876-L1879). But this should not happen in practice because the sform transform should be zero if sform_code == NIFTI_XFORM_UNKNOWN, and in any case, this requires that the sform and qform are very similar, meaning sform contains a rotation + scaling by the image spacing as required. 
+
 
 In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the old Analyze orientation codes will be used to define the rotation. The translation is set to zero. This is not recommended and extra care should be taken to check the results.
 
