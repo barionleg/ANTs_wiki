@@ -1,25 +1,36 @@
 # ANTs NIFTI-1 I/O
 
-ANTs uses ITK image I/O, which uses a common framework to read many different image formats. ITK has changed its approach to NIFTI headers over time. Common to all ITK implementations is the restriction that ITK supports a rigid (rotation + translation) transform between voxel and physical coordinates. The variation in NIFTI I/O comes from changes in how ITK looks for the transform in the NIFTI header, and how it writes that information to output NIFTI files.
+ANTs uses ITK image I/O, which uses a common framework to read many different image formats. ITK has changed its approach to NIFTI headers over time. Common to all versions is that ITK does not support a full affine transform between voxel and physical coordinates. The transformation must be represented by a rotation and translation, with scaling defined by the pixel dimensions. 
 
-The main difference between ITK used in ANTs 2.3.5 and in 2.3.4 is that ITK now prefers the sform matrix to read and write the header transform. Previously, it used the qform header fields, but this suffered from precision issues in addition to being difficult to read. 
+The variation in NIFTI I/O comes from changes in how ITK looks for the rotation and translation information in the NIFTI header, and how it writes that information to output NIFTI files.
 
-On read, a rotation and translation are extracted from the sform matrix. Non-rigid scaling or shearing in the sform is not used and will not be preserved in output. When reading an image, the qform will be used if the sform is not present or has a code indicating it is not a voxel-to-physical space transform.
+The main difference between ITK used in ANTs 2.3.5 and in 2.3.4 is that ITK now prefers the sform matrix to read and write the header transform. Previously, it used the qform header fields, but this suffers from precision issues in addition to being difficult to read. 
 
-On write, the rotation and translation for the output image is written back into the sform and qform. 
- 
+## Summary of NIFTI I/O for ANTs 2.3.5 and later
+
+On read, a rotation and translation are extracted from the sform matrix if possible. Non-rigid components of the sform are not used and will not be preserved in output. The qform will be used on read if the sform is not present or has a code indicating it is a transform to some other space.
+
+On write, the rotation and translation for the output space is written back into the sform and qform, and both qform and sform codes are set to NIFTI_XFORM_SCANNER_ANAT.  
+
 
 ## How NIFTI-1 transforms are read
 
-[will be added later]
+In all cases, the image spacing is read from the pixdim elements of the header. The rotation and translation information can either come from the qform (the quatern_[b,c,d] and qoffset_[x,y,z] NIFTI fields) or the sform matrix (srow_[x,y,z] fields).
+
+The exact procedure for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx). From reviewing the code, this is my take on how the algorithm proceeds:
+
+1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. If so, the rotation is extracted. If not, use the qform transform.
+
+2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation.
+
+3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. 
+
+In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the old Analyze orientation codes will be used to define the rotation. The translation is set to zero.
 
 ## How NIFTI-1 transforms are written
 
-[will be added later]
+Both the sform and qform parts of the NIFTI header are populated with the rotation and translation of the output space, and both the qform and sform codes are set to NIFTI_XFORM_SCANNER_ANAT. The spacing is encoded in the pixdim and the srow matrix. Transforms to other spaces (eg, MNI space) are not preserved.
 
-## Potential interoperability problems with other software
-
-[will be added later]
 
 ---
 
