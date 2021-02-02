@@ -19,11 +19,9 @@ In all cases, the image spacing is read from the pixdim elements of the header. 
 
 The code for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/ceac959c2dbcb52c478c05535eba9c7ff83b5dca/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx#L1783). From reviewing the code, this is my take on how the algorithm proceeds (in most use cases\*):
 
-1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. 
-  a. If a rotation matrix can be extracted, proceed to step 2.
-  b. If a rotation matrix cannot be extracted, use qform. 
+1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. If a rotation matrix can be extracted, proceed to step 2. Otherwise use qform.
 
-2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation. Otherwise, proceed to step 3.
+2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform. Otherwise, proceed to step 3.
 
 3. If qform is NIFTI_XFORM_UNKNOWN, and sform is not, use sform. Otherwise proceed to step 4.
 
@@ -34,7 +32,7 @@ The code for computing the transform to physical space is here: [itkNiftiImageIO
 
 ## ANALYZE backwards compatibility
 
-In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the ANALYZE orientation codes will be used to define the rotation. The translation is set to zero. This is not recommended and NIFTI images should be used wherever possible. Take extra care to check correctness of processing and output when handling ANALYZE images.
+In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, neither sform nor qform is used, and the ANALYZE orientation codes will be used to define the rotation. The translation is set to zero. This is not recommended and NIFTI images should be used wherever possible. Take extra care to check correctness of processing and output when handling ANALYZE images.
 
 
 ## How NIFTI-1 transforms are written
