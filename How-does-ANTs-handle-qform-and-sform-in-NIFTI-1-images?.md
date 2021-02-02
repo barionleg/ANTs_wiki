@@ -23,7 +23,7 @@ The code for computing the transform to physical space is here: [itkNiftiImageIO
 
 2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform. Otherwise, proceed to step 3.
 
-3. If qform is NIFTI_XFORM_UNKNOWN, and sform is not, use sform. Otherwise proceed to step 4.
+3. If qform is NIFTI_XFORM_UNKNOWN, use sform. Otherwise proceed to step 4.
 
 4. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space. 
 
