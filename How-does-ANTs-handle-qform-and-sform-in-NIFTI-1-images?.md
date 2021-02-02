@@ -19,11 +19,13 @@ In all cases, the image spacing is read from the pixdim elements of the header. 
 
 The exact procedure for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx). From reviewing the code, this is my take on how the algorithm proceeds:
 
-1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. If so, the rotation is extracted. If not, use the qform transform.
+1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. 
+  a. If a rotation matrix can be extracted, proceed to step 2.
+  b. If a rotation matrix cannot be extracted, use qform. 
 
-2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation.
+2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation. Otherwise, proceed to step 3.
 
-3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space.
+3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space. If qform is NIFTI_XFORM_UNKNOWN, and sform is not, use sform. Otherwise, return an error.
 
 In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the old Analyze orientation codes will be used to define the rotation. The translation is set to zero. This is not recommended and extra care should be taken to check the results.
 
