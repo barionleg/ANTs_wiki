@@ -17,7 +17,7 @@ On write, the rotation and translation for the output space is written back into
 
 In all cases, the image spacing is read from the pixdim elements of the header. The rotation and translation information can either come from the qform (the quatern_[b,c,d] and qoffset_[x,y,z] NIFTI fields) or the sform matrix (srow_[x,y,z] fields).
 
-The exact procedure for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx). From reviewing the code, this is my take on how the algorithm proceeds (in most use cases\*):
+The code for computing the transform to physical space is here: [itkNiftiImageIO.cxx](https://github.com/InsightSoftwareConsortium/ITK/blob/ceac959c2dbcb52c478c05535eba9c7ff83b5dca/Modules/IO/NIFTI/src/itkNiftiImageIO.cxx#L1783). From reviewing the code, this is my take on how the algorithm proceeds (in most use cases\*):
 
 1. Check the sform matrix to see if it can be decomposed into a rotation matrix with scaling matching the image spacing. 
   a. If a rotation matrix can be extracted, proceed to step 2.
