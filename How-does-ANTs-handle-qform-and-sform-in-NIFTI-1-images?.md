@@ -23,9 +23,10 @@ The exact procedure for computing the transform to physical space is here: [itkN
 
 2. If the sform_code is NIFTI_XFORM_SCANNER_ANAT, use the sform rotation + translation.
 
-3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. 
+3. If both the sform_code and qform_code are not NIFTI_XFORM_UNKNOWN, check if the qform and sform transforms are very similar. If so, use sform, otherwise use qform. The idea here is to take advantage of sform's extra precision, if they are representing the same transform. Otherwise, it is assumed that the qform represents the desired transform, and the sform (with code something other than NIFTI_XFORM_SCANNER_ANAT) represents alignment to some other space.
 
-In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the old Analyze orientation codes will be used to define the rotation. The translation is set to zero.
+In rare cases, the qform and sform code may both be NIFTI_XFORM_UNKNOWN. This is only for reading legacy ANALYZE files. In this case, the old Analyze orientation codes will be used to define the rotation. The translation is set to zero. This is not recommended and extra care should be taken to check the results.
+
 
 ## How NIFTI-1 transforms are written
 
