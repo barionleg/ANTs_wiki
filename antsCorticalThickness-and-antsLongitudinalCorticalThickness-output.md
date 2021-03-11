@@ -35,7 +35,7 @@ Some files are produced only if optional input parameters are set. The full file
 
 ## Applying the warps
 
-The warps produced by `antsCorticalThickness.sh` are named differently to the usual `antsRegistration` convention. The inverse affine transform is written to disk, so users do not need to invert the affine transform explicitly in the call to `antsApplyTransforms`. 
+The warps produced by `antsCorticalThickness.sh` are named differently to the usual `antsRegistration` convention. The inverse affine transform is written to disk, so users do not need to invert the affine transform explicitly in the call to `antsApplyTransforms`. The template is the fixed image in this registration so the files containing `SubjectToTemplate` are the [forward warps and the Jacobian](https://github.com/ANTsX/ANTs/wiki/Forward-and-inverse-warps-for-warping-images,-pointsets-and-Jacobians) derived from the forward warps.
 
 To warp an image from the subject to template space:
 
