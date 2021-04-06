@@ -261,10 +261,64 @@ We can then call
 It may be desirable to resample the other modalities at lower resolution in the template space, which can be done by using a resampled version of the group template as the reference image in the call to `antsApplyTransforms`.
 
 
+## Standard space through an intermediate template
+
+Another use case is where we have a local template that has been registered to a standard space, eg MNI152NLin6Asym.nii.gz. For example, say we ran
+
+```
+${ANTSPATH}antsRegistrationSyN.sh 
+  -d 3 \
+  -f MNI152NLin6Asym.nii.gz \
+  -m populationTemplate.nii.gz \
+  -o templateToMNI152NLin6Asym_ \
+  -t s 
+```
+
+And then for some subject,
+
+```
+${ANTSPATH}antsRegistrationSyN.sh 
+  -d 3 \
+  -f populationTemplate.nii.gz \
+  -m t1.nii.gz \
+  -o t1ToTemplate_ \
+  -t s 
+```
+
+Now we can warp the subject t1 to MNI space with
+
+```
+  ${ANTSPATH}antsApplyTransforms \
+    -d 3 \
+    -i t1.nii.gz \
+    -o t1DeformedToMNI152NLin6Asym.nii.gz \
+    -r MNI152NLin6Asym.nii.gz \
+    -t templateToMNI152NLin6Asym_1Warp.nii.gz \
+    -t templateToMNI152NLin6Asym_0GenericAffine.mat \
+    -t t1ToTemplate_1Warp.nii.gz \
+    -t t1ToTemplate_0GenericAffine.mat
+```
+
+To warp some labels from MNI space to the subject image, we have to apply inverse warps for each step:
+
+```
+  ${ANTSPATH}antsApplyTransforms \
+    -d 3 \
+    -i labels.nii.gz \
+    -o labelsDeformedToT1.nii.gz \
+    -n GenericLabel
+    -r MNI152NLin6Asym.nii.gz \
+    -t [ t1ToTemplate_0GenericAffine.mat, 1 ]
+    -t t1ToTemplate_1InverseWarp.nii.gz \
+    -t [ templateToMNI152NLin6Asym_0GenericAffine.mat, 1 ] \
+    -t templateToMNI152NLin6Asym_1InverseWarp.nii.gz 
+```
+
+
 ## Discussion 
 
 Internally, deforming an image involves transforming a point set in the opposite direction to the intuitive direction of the warping. The "moving" image is being resampled into the fixed space, and the warps transform a sample point (ie, a voxel in the output image) into the moving space. A point at the center of a voxel in the fixed space is transformed to moving space by the forward warps, an interpolated intensity value is computed, and the result is placed in the voxel in the output image. 
 
 This is why the transform ordering for `antsApplyTransforms` and `antsApplyTransformsToPoints` is different, and the use of the forward warp for the Jacobian may be counter-intuitive.
 
-To verify the correct ordering of warps, it's necessary to know the choice of fixed and moving image for each registration. This depends entirely on how `antsRegistration` was called.
+To verify the correct ordering of warps, it's necessary to know the choice of fixed and moving image for each registration being applied in the call to `antsApplyTransforms`.
