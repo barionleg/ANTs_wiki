@@ -6,7 +6,7 @@ In all scientific computing, the limited precision of floating point operations 
 
 Floating point precision may cause differences in the registration solution on the same images in several contexts including
 
-* Multi-threading. The exact sequence of floating point operations depends on the number of threads, as the results of computations performed in parallel are combined.
+* Multi-threading. The exact sequence of floating point operations depends on the number of threads, as the results of computations performed in parallel are combined. This affects global metrics (like mutual information) but not local metrics (like cross-correlation).
 
 * User choice of single or double precision for floating point operations.
 
@@ -24,7 +24,7 @@ Random sampling is used in various contexts, and different runs will produce a d
 
 * Set a fixed seed for randomization in [ITK](https://github.com/InsightSoftwareConsortium/ITK/blob/8a2a15f41218c925c0a89119e09419d48f83eb22/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L940-L949).
 
-* Disable multi-threading.
+* Disable multi-threading if using global metrics.
 
 * Use a consistent computer infrastructure (same hardware, OS, compilation of ANTs etc).
 
