@@ -1,6 +1,13 @@
-## __Problem:__  multiple runs of ``antsRegistration`` on the same images produces different results
+# __Problem:__  multiple runs of ``antsRegistration`` on the same images produces different results
 
-## Variance due to floating point precision errors
+Variance in output across multiple runs of the same registrations is a result of random sampling and floating point precision errors, as discussed below. These variances are usually small, and reflect uncertainty inherent to the registration method and to computation generally. We caution that a reproducible solution is not necessarily more accurate. However, some applications require complete reproducibility.
+
+To meet this requirement, a "repro mode" has been added to the `antsRegistrationSyN.sh` and `antsRegistrationSyNQuick.sh`. This uses a fixed seed for the random number generation and uses reproducible metrics for registration. This should provide complete reproducibility, at the cost of computational time and possibly registration accuracy. Alternatively, a fixed seed and single-threaded execution will produce reproducible results.
+
+
+# Causes of variance
+
+## Floating point precision errors
 
 In all scientific computing, the limited precision of floating point operations introduces variance that can be mitigated (often at the cost of performance), but usually not eliminated. Strategies such as [compensated summation](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) exist to manage precision errors.  
 
@@ -15,29 +22,30 @@ Floating point precision may cause differences in the registration solution on t
 * Differences in compiler options for ANTs, ITK, or underlying system libraries.
 
 
-## Variance due to random sampling
+## Random sampling
 
-Random sampling is used in various contexts, and different runs will produce a different sequence of random numbers, unless a fixed seed is used. In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then [perturbed randomly](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below.
-
-
-## Strategies to improve reproducibility
-
-* Set a fixed seed for randomization in [ITK](https://github.com/InsightSoftwareConsortium/ITK/blob/8a2a15f41218c925c0a89119e09419d48f83eb22/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L940-L949).
-
-* Disable multi-threading if using global metrics.
-
-* Use a consistent computer infrastructure (same hardware, OS, compilation of ANTs etc).
-
-However, each of these has it's own drawbacks:
-
-* How to choose the seed since each fixed seed is just as good as the next one.
-
-* Computation time is increased by restricting threads.
-
-* Dense sampling or a fixed seed may trade variance for bias.
+In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then [perturbed randomly](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below. 
 
 
-## Quantification of variance in registration results
+# Strategies to improve reproducibility
+
+## Repro mode
+
+Repro mode uses a fixed seed, and uses global correlation (GC) instead of mutual information for linear registration. While this is slower and possibly less robust than mutual information (MI), it is reproducible with multiple threads. 
+
+In `antsRegistrationSyNQuick.sh`, repro mode additionally changes the deformable metric from the default (MI) to cross correlation (CC). This will also increase computation time, which again can be mitigated by multi-threading.
+
+
+## Alternatives to repro mode
+
+* Set a fixed seed for randomization on the command line or by exporting the variable ANTS_RANDOM_SEED.
+
+* Disable multi-threading if using global metrics such as mutual information.
+
+These two steps should provide reproducibility at the cost of increased computation time. 
+
+
+# Quantification of variance in registration results
 
 The variance in a simple registration task is mostly due to random point set sampling / perturbation. This can be removed by dense sampling or use of a fixed seed. Multi-threading and single vs double precision appear to have a small impact on average.
 
@@ -53,7 +61,7 @@ This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set 
 | FALSE | single | 2 | 0.978 | 0.009 |
 
 
-### Limitations of these experiments
+## Limitations of these experiments
 
  * Quick registration, may be less stable than `antsRegistrationSyN.sh` (but much faster). 
 
@@ -62,7 +70,9 @@ This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set 
  * Overlap between runs measures reproducibility, not registration quality, so it does not address the question of whether using random sampling or double precision improves registration overall. 
 
 
-## Related discussion threads
+# Related discussion threads
+
+* [Beginnings of a default set up for reproducible registration in antsx](https://github.com/ANTsX/ANTs/issues/1189)
 
 * [antsRegistration does not produce equivalent results](https://github.com/ANTsX/ANTsR/issues/210#issuecomment-377511054)
 
