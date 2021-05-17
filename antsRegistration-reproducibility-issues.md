@@ -38,7 +38,7 @@ In `antsRegistrationSyNQuick.sh`, repro mode additionally changes the deformable
 
 ## Alternatives to repro mode
 
-* Set a fixed seed for randomization on the command line or by exporting the variable ANTS_RANDOM_SEED.
+* Set a fixed seed for randomization on the command line or by exporting the variable `ANTS_RANDOM_SEED`.
 
 * Disable multi-threading if using global metrics such as mutual information.
 
