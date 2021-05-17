@@ -1,4 +1,4 @@
-# __Problem:__  multiple runs of ``antsRegistration`` on the same images produces different results
+# __Problem:__  multiple runs of `antsRegistration` on the same images produces different results
 
 Variance in output across multiple runs of the same registrations is a result of random sampling and floating point precision errors, as discussed below. These variances are usually small, and reflect uncertainty inherent to the registration method and to computation generally. We caution that a reproducible solution is not necessarily more accurate. However, some applications require complete reproducibility.
 
