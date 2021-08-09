@@ -65,5 +65,21 @@ InputImage Origin: [9.5322963e+01, -1.1251340e+02, -1.3474442e+02], InputImage_1
 Tolerance: 1.8750000e-06
 ```
 
-You can use `CopyImageHeaderInformation` after processing to set headers consistently. You can also minimize problems by using a consistent reference space when warping images.
+## Fixing precision errors
 
+You can use `CopyImageHeaderInformation` after processing to set headers consistently. You can also minimize problems by using a consistent reference space when warping images. 
+
+But all ANTs programs use ITK for I/O, so there is inherent loss of precision when reading and writing images. If `CopyImageHeaderInformation` does not work, you can use `SetOrigin`, and if necessary `SetDirectionByMatrix`, to set both image headers to a constant reference value. For example:
+
+```
+CopyImageHeaderInformation t1w.nii.gz mask.nii.gz mask.nii.gz 0 1 0 
+```
+
+will normally make the headers consistent within the tolerance. But if it does not, then
+
+```
+SetOrigin t1w.nii.gz t1w.nii.gz -9.5968330e+01, 7.5178741e+01, -4.6519180e+01
+SetOrigin mask.nii.gz mask.nii.gz -9.5968330e+01, 7.5178741e+01, -4.6519180e+01
+```
+
+should make the origins exactly consistent, though they are not guaranteed to be precisely (-9.5968330e+01, 7.5178741e+01, -4.6519180e+01).
