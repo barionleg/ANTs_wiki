@@ -27,5 +27,7 @@ Fast pairwise deformable registration:
     -t s \
     -f fixed.nii.gz \
     -m moving.nii.gz \
-    -o movingToFixed
+    -o movingToFixed | tee myRegOutput.txt
 ```
+
+If you run `antsRegistrationSyNQuick.sh` or `antsRegistrationSyN.sh`, it will print the full ANTs command, which you can further modify. In the above example, the command (and its output) will be stored in `myRegOutput.txt` as well as being printed to the screen.
