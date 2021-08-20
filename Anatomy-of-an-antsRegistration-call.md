@@ -43,95 +43,96 @@ sub=Subject1
 template=Template.nii.gz  
 t1brain=Subject1.nii.gz  
 
-
-
 ***
-## Inline code explained  
-> first two arguments tells the images are 3D, no floating point will be used (double instead)  
+## Preprocessing options
+
+> The first two arguments tells `antsRegistration` that the images are 3D, and double precision floating point numbers will be used for computation and output.
   
 		antsRegistration --dimensionality 3 --float 0 \  
 |  
   
 > save transformation matrices with prefix $thisfolder/pennTemplate_to_${sub}_  
-> save registered image as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
-  
+> save the moving image resampled into the fixed space as $thisfolder/pennTemplate_to_${sub}_Warped.nii.gz
+> Optionally, one can also output the fixed image resampled into the moving space.  
 		--output [$thisfolder/pennTemplate_to_${sub}_,$thisfolder/pennTemplate_to_${sub}_Warped.nii.gz] \
 |  
   
-> The interpolation type used when saving the warped image.  
-> Applies just to the output image (from moving), nothing else
+> The interpolation type used when writing the warped image(s).  
+> This only applies to the resampling of the output images (specified with `--output`) at the end of the registration. It does not affect resampling internally during registration.
   
 		--interpolation Linear \
 |  
   
-> deal with outlier voxels. Clips values <5/1000 and >995/1000.  
-> Range can be restricted for bad images, but be careful because it may destroy contrast in image.  
-> This helps because images may have a few voxels with high value that impact badly the registration
+> Winsorization clips outlier intensities during registration. The specified quantiles of the image histograms define the minimum and maximum intensities. 
+> This can help stabilize image metrics, but overly aggressive clipping can destroy contrast in the image.  
+> The output warped images are not affected by this setting.
+> To preview winsorization on an image, use `ImageMath` with `TruncateImageIntensity`. 
   
 		--winsorize-image-intensities [0.005,0.995] \
 |  
   
-> Histogram matching is a pre-processing step, transforming the input intensities such that the histogram are matched as much as possible between moving and target images. It's designed to make registration work better but it is independent of the alignment of the two images.  
-Set to 0 if registering across modalities (T1 on T2) and 1 for within modalities  
+> Histogram matching is a pre-processing step, transforming the input intensities such that the histogram of the fixed and moving image are matched as closely as possible. This can help in certain applications, but is off by default.
   
 		--use-histogram-matching 0 \
 |  
   
-> registration works in real coordinates given by the scanner. So images can start quite far from each other (per analogy, one in New York, one in London). An initial move is required to bring the images roughly in the same space (close to each other). Options are:  
+> An initial moving transform is used to quickly align the images before registration. The optimization process requires images to roughly overlap and will fail if images are too far apart in physical space. There are various options for the initialization:
 > 0-match by mid-point (i.e., center voxel of one image will be brought in line with center voxel of the other)  
 > 1-match by center of mass  
-> 2-match by point of origin (i.e. coordinates 0,0,0)  
-> One can also point to a .mat file obtained with antsAI, but there is no need. The AI solution is implemented in antsCortThicknes.sh and runs an affine with several random changes to check if one "unsual" solution is better. Useful if there are strong orientation issues (i.e., moving image is flipped inferior-superior)  
-> the command tells [fixed,moving,option]
-   
+> 2-match by point of origin (i.e. physical coordinates 0,0,0, as defined by the image headers)
+> The center of mass alignment usually works well.
+  
+> Alternatively, you can specify an initial affine transform .mat file obtained with `antsAI`, which runs many quick registrations with different initial transforms (rotations and / or translations), to find what works best. 
+ 
 		--initial-moving-transform [$t1brain,$template,1] \
 |  
   
-> ####################################  
-> START THE FIRST TRANSFORMATION: RIGID  
-0.1 is the gradientStep, that is, how big the linear shifts will be. Because we run many iterations, we can allow ourselves to run small steps toward the best solution, rather than doing big jumps. If gradientStep is too big registration will finish quickly, but results may not be as optimal. If gradientStep is too small it will take longer to converge (i.e. more iterations). Optimal values are 0.1-0.25.
+## Registration stages
+
+Each stage of registration has a transformation model, one more more similarity metrics, and details of how to run the optimization. The stages proceed from simplest to most complex transforms. Most users will start with Rigid.
+
+
+The gradient step for the Rigid transform is 0.1. As with all optimization, the step size involves multiple tradeoffs. Smaller steps can be more accurate but take longer, and may appear to converge prematurely. Larger steps can overshoot the best solution. For most brain registration, optimal values are around 0.1-0.25.
   
         --transform Rigid[0.1] \
 |  
   
-> mutual information measures how similar the two images look. It uses the histograms of the two images to check the similarity. The value of 1 is a weight used if you do multimodal registration (i.e. using, T1, T2, FLAIR). Here is an example of a multimodal registration call  
-		# --metric MI[$t1brain,$template,0.7,32,Regular,0.25] # weight 0.7 on t1  
-		# --metric MI[$t2brain,$T2template,0.3,32,Regular,0.25] # weight 0.3 on t2  
-		# the call format is [fixed, moving, weight, bins, sampling, samplingPercentage]  
+> The metric measures similarity between two images, and the gradient of the metric informs the update of the transform parameters. All ANTs metrics have the form `[fixed, moving, parameters]`. It's important to keep track of which space define as the fixed and which as the moving.
+>Mutual information uses the histograms of the two images to check the similarity, meaning it can detect similar anatomical patterns even if the images do not correlate well. This makes it very useful for inter-modality registration. It is also fairly fast to compute and robust, making it a good choice for rigid registration. The value of 1 is a weight, used if you do multimodal registration. Here is an example of a multimodal registration call  
+		# --metric CC[$t1brain,$template,0.6,4] # CC radius 4, weight 0.5 on t1  
+		# --metric MI[$t2brain,$T2template,0.4,32,Regular,0.25] # weight 0.5 on t2  
+		# MI parameters are [fixed, moving, weight, bins, sampling, samplingPercentage] 
+The weights are normalized internally, so they sum to 1. The metrics themselves are also normalized so you can combine different metrics without any correspondence between the raw metric numbers. In the above example, CC on t1 and MI on t2 are weighted equally, so they will both contribute equally to the transform.
+
 Our example call has 32 bins, and values are sampled regularly in 25% of the voxels, i.e. one voxel every four is considered.  
   
         --metric MI[$t1brain,$template,1,32,Regular,0.25] \
 |  
   
-> we will run 4 levels (or multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:  
-"if the change in MI value for the last 10 iterations is below the 1e-6 threshold, stop the iterations and go to next level"  
-Typically the convergence threshold is the main reason for stepping out of a level; i.e., the loop finishes because no further improvement is possible. For this reason, the number of iterations you specify have less importance. You can specify 1000 iterations and only 40 will be run because there is no further improvement possible.  
-If, by any chance, you like to run all iterations, set the threshold to a large negative number. This will allow iterations to keep going even if the similarity metric (i.e., mutual information) becomes worse.  
-  
+> we will run 4 levels (multi-resolution steps) with a maximum number of iterations of 1000,500,250,100. The threshold (1e-6) tells the algorithm to stop if the improvement in mutual information has not changed more than 1e-6 in the last 10 iterations (convergenceWindowSize=10). To translate it in plain english:  
+"if the change in MI value for the last 10 iterations is below 1e-6, stop the iterations and go to next level". Because of this test, we can run a large number of iterations for the initial levels (here 1000). The images here are usually smooth and quite small, as explained below, and will almost always converge quickly.
+   
         --convergence [1000x500x250x100,1e-6,10] \
 |  
   
-> the 4 hierarchical steps will have resolutions divided by 8,4,2,1  
-For example, for an image with 256x256x256 voxels, the levels will work on images of size 32mm, 64mm, 128mm, and 256mm.   IMPORTANT! The resolutions use the fixed image as reference. If you register 5mm images on 1mm, --shrink-factors 3x2x1 will register images at 3mm, then 2mm, then 1mm. But if you register 1mm images to 5mm, --shrink-factors 3x2x1 will register images at 15mm, then 10mm, then 5mm. Keep this in mind and try to register low res to high res, not vice versa.
+> the 4 hierarchical steps will have resolutions divided by 8,4,2,1. The number of "shrink factors" must match the number of levels in the `--convergence` option. The factors use the fixed image as reference. If the fixed image has spacing 1x1x1mm, and the moving image has spacing 2x2x2mm, then `--shrink-factors 4x2x1` will register images at 4mm resolution, then 2mm, then 1mm. But if you switch the fixed and moving images, `--shrink-factors 4x2x1` will register images at 8mm, then 4mm, then 2mm. For 3D images, shrinking the volumes by a factor of 2 decreases the number of voxels by a factor of 8. So running iterations at shrink factor 1 requires about 8 times as much computation as at shrink factor 2, and so on.
   
         --shrink-factors 8x4x2x1 \
 |  
   
-> Here are the smoothing values for each step: sigma 3,2,1,0.  
-To convert the sigma in amount of mm you can use roughly a factor of 2.36. The above correspond roughly to 7mm, 5mm, 2mm and 0mm (no smoothing).  
-Note, smoothing is applied before shrinking the image to lower resolution.  
+> Next are the smoothing values for each step. The smoothing is Gaussian with a kernel standard deviation of 3,2,1,0 voxels. Here they are specified in voxels, but they can also be in mm.  To convert the sigma to FWHM you can use roughly a factor of 2.36. The images are smoothed before being downsampled at each level. The number of smoothing levels must match the number of iteration levels `--convergence`.
   
         --smoothing-sigmas 3x2x1x0vox \
 |  
   
-> END OF RIGID TRANSFORMATION  
+> END OF RIGID STAGE
 > ###########################################  
   
         
 |  
   
 > ###########################################  
-START THE SECOND TRANSFORMATION: AFFINE  
+AFFINE STAGE  
 the speed of deformation (gradientStep) at each iteration is again 0.1  
   
         --transform Affine[0.1] \
@@ -145,33 +146,37 @@ the speed of deformation (gradientStep) at each iteration is again 0.1
         --smoothing-sigmas 3x2x1x0vox \
 |  
   
-> END AFFINE TRANSFORMATION  
+> END AFFINE STAGE  
 ############################################  
   
 |  
   
 >############################################  
-START THE THIRD TRANSFORMATION: SyN  
+START THE THIRD STAGE: SyN  
 The parameters inside SyN[] are: gradientStep,updateFieldVarianceInVoxelSpace,totalFieldVarianceInVoxelSpace  
 
-`gradientStep` - tells the algorithm how much each point can move after each iteration. The SyN metric computes in which direction each point needs to move. This movement can be large (high gradientStep) or small (low gradientStep). Optimal values 0.1-0.25. Because the shift of each point is computed separately, high values here may also increase high frequency deformations (i.e., each point going its own way), but see the other parameters below that mitigate this problem.
+`gradientStep` - tells the algorithm how much each point can move after each iteration. The SyN metric computes in which direction each point needs to move. This movement can be large (high gradientStep) or small (low gradientStep). Optimal values for brain imaging are usually in the range of 0.1-0.25. 
 
-After each iteration, a gradient field is computed, which indicates how each point (or voxel) will shift in space. This small deformation (or "updated" gradient field) is combined with previous updates to form a "total" gradient deformation.  Becuase each point can follow its own path, non-realistic deformations can occur, which may make images look like teared apart. To resolve this issue we add a little penalty, such that shifts are not considered independently at each point.  
-`updateFieldVarianceInVoxelSpace` - By adding a penalty here, we smooth the deformation computed on the "updated" gradient field, before this is added to previous deformations to form the "total" gradient field. Thus, for each point the deformation of neighboring points is taken into account as well, which avoids too much independent moving of points at each iteration (i.e., a point cannot move 2 voxels away in one direction if all it's neighbors are moving 0.1 voxels away in the other direction).  
+After each iteration, a gradient field is computed, which indicates how each point within the image will shift in space. This small deformation (or "updated" gradient field) is combined with previous updates to form a "total" gradient deformation. Both the update field and the gradient field can be smoothed to regularize the deformation.
+  
+`updateFieldVarianceInVoxelSpace` - By adding a penalty here, we smooth the deformation computed on the "updated" gradient field at each iteration. The default of 3 voxels has been shown to work fairly well. Increasing this will make the update field smoother, meaning it will be less sensitive to local deformation.
+
 `totalFieldVarianceInVoxelSpace` -  By adding a penalty here, we smooth the deformation computed on the "total" gradient field. The smoothing here, therefore, is applied on all the deformations computed from the beginning (i.e., at this and all previous SyN iterations).  
-In principle, smoothing of the update field can be viewed as fluid-like registration whereas smoothing of the total field can be viewed as elastic registration.
+In principle, smoothing of the update field can be viewed as fluid-like registration whereas smoothing of the total field can be viewed as elastic registration. Adding a regularization term to the total field makes the image "stiffer", in that it dampens the total amount of deformation. 
+
+Both of these parameters can impact the optimal step size and number of iterations required for convergence.
   
         --transform SyN[0.1,3,0] \
 |  
   
-> here we use cross-correlation (CC) instead of mutual information (MI).  
-Instead of checking the histograms of images, now we check individual voxels. A radius of 4 indicates that for each voxel we take 4 layers around it (728 voxels) and compute the correlation with the respective 728 on the other image. So, now we care that the surrounding neighborhood of voxels are as similar as possible.  
+> At the SyN stage, we use cross-correlation (CC) instead of mutual information (MI). For intramodality neuroimaging, CC works better than MI for deformable registration. Instead of checking the histograms of images, CC measures correlation between local neighborhoods of voxels. For each point in the image, CC is computed for the point and its neighbors; a radius of `n` means the neighborhood will be a 2n+1 cube around the point. A large radius therefore increases computation time substantially, but uses more information as a result. A value of 2-4 works well for most brain imaging, larger can help improve robustness for hard problems (eg, low-information neighborhoods where tissue damage or removal has reduced contrast).
+ 
 the call is [fixed,moving,weight,radius]
   
         --metric CC[$t1brain,$template,1,4] \
 |  
   
-> the following options are explained above
+> the following options are explained above, and work the same way. Note that because SyN and CC are quite computationally expensive, the 20 full-resolution iterations here will take the longest. A large number of full-resolution iterations can take longer than all the preceding iterations combined across all stages. With `--verbose`, the registration will print time taken for each iteration.
   
         --convergence [100x70x50x20,1e-6,10] \
         --shrink-factors 8x4x2x1 \
@@ -184,21 +189,17 @@ the call is [fixed,moving,weight,radius]
 |  
   
   
-> mask defined in template (aka target) space. It will restrict all computations only to voxels with value 1 (i.e. brain), and ignore whatever is outside the mask.  
-why in template space? because you are supposed to move the image in that space and check how well it fits with your target.  
-This is a problem for patients with lesions: the lesion is drawn on the subject's image.  
-don't worry, just flip the order, make your subject fixed and move the template on it.  
-This is the reason why all above calls show template as moving
+> A mask restricts computation of the metric to a certain region. The mask should be 1 where similarity should be evaluated, and 0 otherwise. Anything outside the mask does not contribute to the similarity metric. This can help but also hinder registration. It can help by ignoring things that are leading to problems (eg, if we're trying to align brains within a head image, we might not care about the neck so much). But it can also destabilize registration as points moving into and out of the mask can change the metric sharply. Masking out smaller regions to deal with specific problems (eg, lesions) is less likely to cause problems than attempting to draw a mask around the entire structure of interest.
   
         -x $brainlesionmask
 |  
-> Note, antsRegistration can accept masks on the target, moving, or both images. Sometimes you may need to mask both sides with separate masks. In that case you can use something like this:  
+> antsRegistration can accept masks on the target, moving, or both images. Sometimes you may need to mask both sides with separate masks. In that case you can use something like this:  
 		# -x [$fixed_mask,$moving_mask]
   
   
   
 ** Tips for registration:**  
 1. Run a bias correction before antsRegistration (i.e. N4). It helps getting better registration.   
-2. Remove the skull before antsRegistration. If you have two brain-only images, you can be sure that surrounding tissues (i.e. the skull) will not take a toll on the registration accuracy. If you are using these skull-stripped versions, you can avoid using the mask, because you want the registration to use the "edge" features. If you use a mask, anything out of the mask will not be considered, the algorithm will try to match what's inside the brain, but not the edge of the brain itself (see Nick's explanation [here](https://github.com/ANTsX/ANTs/issues/483)).  
-3. Never register a lesioned brain with a healthy brain without a proper mask. The algorithm will just pull the remaining parts of the lesioned brain to fill "the gap". Despite initial statements that you can register lesioned brains without the need to mask out the lesion, there is evidence showing that results without lesion masking are sub-optimal. If you really don't have the lesion mask, even a coarse and imprecise drawing of lesions helps (see [Andersen 2010](http://www.ncbi.nlm.nih.gov/pubmed/20542122)).  
-4. Don't forget to read the parts of the [manual](http://stnava.github.io/ANTsDoc/) related to registration.  
+2. Remove the skull before registering brain images. 
+3. Use a mask when there are features in one image that have no proper match to the other image. For example, images with different fields of view, or a brain with lesions being registered to one without. If you really don't have the lesion mask, even a coarse and imprecise drawing of lesions helps (see [Andersen 2010](http://www.ncbi.nlm.nih.gov/pubmed/20542122)).  
+4. A good rigid and affine alignment will make deformable registration faster and more robust. If registration is failing, run the rigid part only, then the affine part only. If these are bad, fix them before spending more time on deformable registration.
