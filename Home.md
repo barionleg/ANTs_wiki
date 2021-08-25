@@ -2,11 +2,17 @@ Welcome to the ANTs wiki!
 
 See an overview of our answers to frequently asked questions and commonly requested examples [here](https://github.com/stnava/ANTsTutorial/blob/master/handout/antsGithubExamples.Rmd).
 
+** Searching the Wiki **
+
 The search bar on the right searches page titles and headings. For a full-text search of the wiki, use the main Github search bar at the top of the page, and select "in this repository". It will search for your terms in code, issues, and wiki pages.
+
+** Building and installing ANTs **
 
 To build and install ANTs, see [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) for Linux / Mac OS, and [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10) for Windows.
 
 If you are installing pre-compiled binaries, start [here](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#set-path-and-antspath).
+
+*** Using ANTs ***
 
 A recommended call to `antsCorticalThickness.sh`:
 ```
