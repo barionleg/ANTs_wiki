@@ -99,12 +99,12 @@ The gradient step for the Rigid transform is 0.1. As with all optimization, the 
   
 > The metric measures similarity between two images, and the gradient of the metric informs the update of the transform parameters. All ANTs metrics have the form `[fixed, moving, parameters]`. It's important to keep track of which space define as the fixed and which as the moving.
 >Mutual information uses the histograms of the two images to check the similarity, meaning it can detect similar anatomical patterns even if the images do not correlate well. This makes it very useful for inter-modality registration. It is also fairly fast to compute and robust, making it a good choice for rigid registration. The value of 1 is a weight, used if you do multimodal registration. Here is an example of a multimodal registration call  
-		# --metric CC[$t1brain,$template,0.6,4] # CC radius 4, weight 0.5 on t1  
-		# --metric MI[$t2brain,$T2template,0.4,32,Regular,0.25] # weight 0.5 on t2  
+		# --metric CC[$t1brain,$template,0.5,4] # CC radius 4, weight 0.5 on t1, dense sampling 
+		# --metric MI[$t2brain,$T2template,0.5,32,Regular,0.25] # weight 0.5 on t2  
 		# MI parameters are [fixed, moving, weight, bins, sampling, samplingPercentage] 
 The weights are normalized internally, so they sum to 1. The metrics themselves are also normalized so you can combine different metrics without any correspondence between the raw metric numbers. In the above example, CC on t1 and MI on t2 are weighted equally, so they will both contribute equally to the transform.
 
-Our example call has 32 bins, and values are sampled regularly in 25% of the voxels, i.e. one voxel every four is considered.  
+Our example call has 32 bins for MI, and values are sampled regularly in 25% of the voxels, i.e. one voxel every four is considered. 
   
         --metric MI[$t1brain,$template,1,32,Regular,0.25] \
 |  
