@@ -13,6 +13,11 @@ On read, a rotation and translation are extracted from the sform matrix if possi
 On write, the rotation and translation for the output space is written back into the sform and qform, and both qform and sform codes are set to NIFTI_XFORM_SCANNER_ANAT.  
 
 
+## itk::ERROR: ITK only supports orthonormal direction cosines. No orthonormal definition found!
+
+If this error arises with a seemingly valid sform, it may be because of a failed numerical check in the ITK NIFTI code (see issue #1213). The underlying error has been fixed in ITK and will be incorporated in a future ANTs release. In the mean time, images affected by this issue will need to have their headers updated to contain a valid qform transform. 
+
+
 ## How NIFTI-1 transforms are read
 
 In all cases, the image spacing is read from the pixdim elements of the header. The rotation and translation information can either come from the qform (the quatern_[b,c,d] and qoffset_[x,y,z] NIFTI fields) or the sform matrix (srow_[x,y,z] fields).
