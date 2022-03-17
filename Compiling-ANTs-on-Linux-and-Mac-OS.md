@@ -23,9 +23,7 @@ make install 2>&1 | tee install.log
 
 # Compiler requirements
 
-A current list of compilers known to build ANTs successfully can be viewed on Travis at
- 
-  https://travis-ci.org/ANTsX/ANTs
+ANTs requires a compiler that is able to [compile ITK](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Documentation/SupportedCompilers.md). The compilers used by the developers are usually GCC and Apple clang. If compilation fails on a very new or old version of these compilers, try GCC 7 or Apple clang 12.0.0, which are known to work as of March 2022.
 
 
 # CMake requirements
@@ -36,14 +34,14 @@ CMake is available as source or a binary package from
 
 You can also install it through a package manager for your system such as yum, apt, or Homebrew.
 
-The current minimum CMake version is 3.10.2.
+The [supported CMake versions](https://github.com/ANTsX/ANTs/blob/fc16efb8de42aa20955f694c31ea0af491e78d9e/CMakeLists.txt#L1-L3) usually mirror those for ITK. Configuration of ANTs will fail immediately if the CMake version is not supported.
 
 
 # Installing developer tools 
 
 ## Mac OS
 
-The exact procedure varies by Mac OS X version. For 10.11 (El Capitan), you need to first install XCode, then get the command line tools. Once XCode is installed, you can get the command line tools from the Terminal, with
+First install XCode, then get the command line tools from the Terminal with
 
 ```xcode-select --install```
 
@@ -73,9 +71,7 @@ cd build
 ccmake ../ANTs
 ```
 
-In the GUI, hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. You should set `CMAKE_INSTALL_PREFIX` to where you want to install ANTs. This needs to be somewhere that you have write access.
-
-If you are behind a firewall that blocks the git protocol, set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". This should use https for all components of the SuperBuild, but see the Troubleshooting section if you have trouble with git operations.
+In the GUI, hit 'c' to do an initial configuration. CMake will do some checking and then present options for review. You should set `CMAKE_INSTALL_PREFIX` to where you want to install ANTs. This needs to be somewhere that you have write access. Set any other options you need here as well.
 
 Hit 'c' again to do another round of configuration. If there are no errors, you're ready to generate the make files by pressing 'g'.
 
@@ -170,11 +166,11 @@ On a desktop computer, a sensible value for this is the number of physical cores
 
 # Troubleshooting
 
-If you are building the latest source code, you can check the [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) or the [CircleCI page](https://app.circleci.com/pipelines/github/ANTsX/ANTs?branch=master) to see if the code can compile successfully. Currently, Travis often has some failures because of limitations on the build time on Travis. If all the builds for a platform are red, something is probably wrong. CircleCI does a single build on Linux and is a pretty reliable indicator of whether the build has errors.
-
 ## git error messages while cloning ITK or VTK
 
-Sometimes git will return an error when attempting to clone ITK or VTK. This is often caused by firewalls blocking the git protocol. Try setting `SuperBuild_ANTS_USE_GIT_PROTOCOL` `OFF` in CMake or `ccmake`. Some firewalls may cause the build to hang instead of returning an error, see below for more details. 
+Github has made some changes to its [connection protocols](https://github.blog/2021-09-01-improving-git-protocol-security-github/) that might cause the build to fail. 
+
+Older ANTs code used the deprecated unencrypted `git://` protocol by default. This can be changed by setting the option `SuperBuild_ANTS_USE_GIT_PROTOCOL` `OFF` in CMake or `ccmake`. The latest code should use `https://` consistently.
 
 
 ## CMake Error: install(EXPORT "ITKTargets" ...) includes target "gdcmjpeg8" more than once in the export set.
@@ -188,17 +184,7 @@ Compile with CMake 3.19.2 or later.
 
 ## Compilation starts but hangs with no error message
 
-*  If the build hangs while attempting to download code, it may be because the Git protocol is blocked by a firewall. Run `ccmake` again and set `SuperBuild_ANTS_USE_GIT_PROTOCOL` to "OFF". If that does not work, try altering your settings with `git config` to use https instead of git.
-
-If you continue to have firewall problems, you can globally replace git with https on the command line with 
-
-```
-git config --global url."https://".insteadOf git://
-```
-
-This will tell git to use https instead of git for all of your projects.
-
-* If the build hangs during compilation of some code, it may be because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
+If the build hangs during compilation of some code, it may be because the build is running out of RAM. You can reduce memory burden by compiling with fewer threads. Disabling testing may also help, set `BUILD_TESTING` to `OFF` in CMake. Alternatively, you can increase the memory available to the build process. 
 
 
 ## CMake complains about the compiler
@@ -215,7 +201,7 @@ ccmake ~/code/ANTs
 
 * Try building with a single thread. Resource limits or timeouts can lead to incomplete compilation, resulting in errors.
 
-* Ensure that you have a compiler that can build ANTs. The [ANTs Travis page](https://travis-ci.org/ANTsX/ANTs) has a list of compilers that are known to build the latest code. 
+* Ensure that you have a compiler that can build ANTs. If using a brand new or very old compiler, try one that is known to build ITK.
 
 * If using system ITK or VTK, try a SuperBuild. Through the efforts of developers and contributors, ANTs tries to keep up with the innovations and C++ implementation updates in ITK. This means the ITK version required by ANTs changes fairly frequently and is often not backwards compatible.
 
@@ -263,7 +249,7 @@ make install
 
 ## Asking for help
 
-If you still have problems, try searching the ANTs issues here on Github and also the [discussion forum](https://sourceforge.net/p/advants/discussion/) hosted at Sourceforge.
+If you still have problems, try searching the ANTs issues here on Github.
 
 You may open an issue to report the error and seek help from the ANTs community. Please see the issue template for build issues, and include all the relevant attachments.
 
