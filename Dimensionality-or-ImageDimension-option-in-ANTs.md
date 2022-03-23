@@ -32,9 +32,11 @@ The more common use case is where a 4D time series (such as fMRI data) is regist
 
 Supported dimensions: 2/3/4
 
-To apply a 3D warp (or a series of 3D warps) to each volume of a multi-component image or time series, use `-d 3` and the `-e` option. Only use `-d 4` if you are supplying 4D warp(s).
+To apply 3D warps to each volume of a multi-component image or time series, use `-d 3` and the `-e` option. Only use `-d 4` if you are supplying 4D warp(s).
 
-The reference image must also match the dimension of the warp. Usually, the reference image will be one of the images you used in `antsRegistration`.
+The reference image must match the dimension of the warp. Usually, the reference image will be one of the images you used in `antsRegistration`.
+
+In other words, if you ran `antsRegistration -d N`, you must call `antsApplyTransforms -d N -r refImage` and `refImage` must be an N-dimensional image.
 
 ### `antsApplyTransforms -e`
 
