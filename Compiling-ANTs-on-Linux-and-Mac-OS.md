@@ -264,6 +264,6 @@ VTK is required for the `antsSurf` program. VTK can be downloaded and built as p
 
 ## Using system ITK or VTK
 
-If you wish to use a pre-compiled system version of either ITK or VTK, it must be a compatible version for the ANTs source you are working from. The ITK version changes most frequently. The required ITK version can be found in the ANTs source [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_ITKv5.cmake) and the VTK version [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_VTK.cmake). These files also show the required options for building ITK and VTK for compatibility with ANTs. 
+If you wish to use a pre-compiled system version of either ITK or VTK, it must be a compatible version for the ANTs source you are working from. The ITK version changes most frequently. The required ITK version can be found in the ANTs source [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_ITKv5.cmake) and the VTK version [here](https://github.com/ANTsX/ANTs/blob/master/SuperBuild/External_VTK.cmake). These files also show the [required modules for building ITK](https://github.com/ANTsX/ANTs/blob/d30526f9cb5159bc0a3e9011f7ae5f409b3634c8/SuperBuild/External_ITKv5.cmake#L114-L138) and VTK for compatibility with ANTs. 
 
 
