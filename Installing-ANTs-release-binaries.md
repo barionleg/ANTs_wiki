@@ -50,3 +50,15 @@ ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS
 ```
 
 to control the number of threads ANTs will use. 
+
+
+# Mac OS: Override security settings
+
+Mac OS will prevent downloaded binaries from executing unless those binaries are signed. ANTs binaries are not signed because this capability requires a paid Apple Developer subscription.
+
+To run ANTs binaries, you will need to manually add them to the list of approved programs. This is most efficiently done in the terminal with
+
+```
+spctl --add /opt/ants/bin/*
+```
+
