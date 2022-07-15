@@ -8,9 +8,9 @@ The search bar on the right searches page titles and headings. For a full-text s
 
 ## Building and installing ANTs
 
-To build and install ANTs, see [here](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) for Linux / Mac OS, and [here](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Windows-10) for Windows.
+To build and install ANTs, see [compiling ANTs on Linux / Mac](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) or [compiling ANTs on Windows](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Windows-10).
 
-If you are installing pre-compiled binaries, start [here](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#post-installation-set-environment-variables-path-and-antspath).
+[Install pre-compiled binaries](https://github.com/ANTsX/ANTs/wiki/Installing-ANTs-release-binaries).
 
 ## Using ANTs
 
