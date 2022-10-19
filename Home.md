@@ -10,7 +10,7 @@ The search bar on the right searches page titles and headings. For a full-text s
 
 To build and install ANTs, see [compiling ANTs on Linux / Mac](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) or [compiling ANTs on Windows](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Windows-10).
 
-Future releases will include binaries, see the instructions to [install pre-compiled binaries](https://github.com/ANTsX/ANTs/wiki/Installing-ANTs-release-binaries).
+Releases since 2.4.1 include binaries for Mac and Linux, see the instructions to [install pre-compiled binaries](https://github.com/ANTsX/ANTs/wiki/Installing-ANTs-release-binaries).
 
 ## Using ANTs
 
