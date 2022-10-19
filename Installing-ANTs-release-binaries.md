@@ -1,4 +1,4 @@
-This page refers to a new feature. Release binaries will be available from ANTs 2.4.1.
+Release binaries are available from ANTs 2.4.1.
 
 
 # Supported platforms
