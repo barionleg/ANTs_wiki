@@ -66,7 +66,7 @@ You may combine other warps here as you would for a scalar image. For example, i
 If you have computed a single affine transform only, you can reorient the tensor at this stage:
 
 ```
-ReorientTensor 3 dtDeformed.nii.gz dtReoriented.nii.gz movingToFixed0GenericAffine.mat
+ReorientTensorImage 3 dtDeformed.nii.gz dtReoriented.nii.gz movingToFixed0GenericAffine.mat
 ```
 
 Otherwise, combine the warps with `antsApplyTransforms`:
