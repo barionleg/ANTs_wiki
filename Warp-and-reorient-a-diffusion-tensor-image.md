@@ -43,6 +43,10 @@ ITK expects tensors in NIFTI format to follow the NIFTI specification of **lower
 
 For ANTs to handle the tensor orientation correctly, the tensors must be oriented in the voxel space of the image, such that they can be converted to physical space using the ITK direction matrix. 
 
+The command `RebaseTensorImage` can be used to reorient tensors stored in physical space to voxel space.
+
+To check orientation, use `ImageMath 3 rgb.nii.gz TensorColor dt.nii.gz`. This will produce an RGB image based on the tensor coordinate system. The colors may change after calling `RebaseTensorImage`, depending on how the data is stored.
+
 
 # Compute registration
 
