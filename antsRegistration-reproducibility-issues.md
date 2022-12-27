@@ -65,8 +65,6 @@ This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set 
 
  * Quick registration, may be less stable than `antsRegistrationSyN.sh` (but much faster). 
 
- * Random sampling only affects the rigid and affine stages of the registration, because dense sampling is used for SyN stage. This is also the case for `antsRegistrationSyN.sh` and `antsCorticalThickness.sh`. Using random sampling in the SyN stage would likely increase variance.
-
  * Overlap between runs measures reproducibility, not registration quality, so it does not address the question of whether using random sampling or double precision improves registration overall. 
 
 
