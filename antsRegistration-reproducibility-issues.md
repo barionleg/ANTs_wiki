@@ -11,7 +11,7 @@ To meet this requirement, a "repro mode" has been added to the `antsRegistration
 
 Some registration methods in ITK, including global transforms (Rigid, Affine) randomly perturb the point set that is used to sample the registration metric in the virtual space. The point set is usually initialized to be a regular grid of points at the voxel centers of the fixed image. A [random perturbation](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) is applied to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below. 
 
-The random perturbation can be made consistent between runs by setting the random seed, or disabled altogether by using dense sampling. 
+The random perturbation can be made consistent between runs by setting the random seed, or disabled altogether by using [dense sampling](https://github.com/ANTsX/ANTs/wiki/antsRegistration-metric-sampling-strategies). 
 
 Note that the SyN registration method was designed to use a densely sampled point set, and does not apply any perturbation to its sample points.
 
