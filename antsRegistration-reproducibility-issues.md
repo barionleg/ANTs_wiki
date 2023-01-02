@@ -44,7 +44,7 @@ In `antsRegistrationSyNQuick.sh`, repro mode additionally changes the deformable
 
 * Set a fixed seed for randomization on the command line or by exporting the variable `ANTS_RANDOM_SEED`.
 
-* Disable multi-threading if using global metrics such as mutual information.
+* Disable multi-threading if using mutual information.
 
 These two steps should provide reproducibility at the cost of increased computation time. 
 
