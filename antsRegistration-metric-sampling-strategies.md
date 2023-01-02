@@ -5,7 +5,7 @@ Some registration methods, such as SyN, always use dense sampling and ignore oth
 
 ## Metric sampling strategies
 
-To save time, the point set can be downsampled in different ways, controlled in the metric specification. In the case of multiple metrics, the sampling strategy is defined by the first one ([code](https://github.com/ANTsX/ANTs/blob/9bc1866a758c2c7b6da463566edc3cdaed65a829/Examples/itkantsRegistrationHelper.hxx#L1284-L1309)).
+To save time, the point set can be downsampled in different ways, controlled in the metric specification. In the case of multiple metrics, the sampling strategy is defined by the first one ([code])(https://github.com/ANTsX/ANTs/blob/9bc1866a758c2c7b6da463566edc3cdaed65a829/Examples/itkantsRegistrationHelper.hxx#L1284-L1309).
 
 The different sampling strategies are explained below.
 
