@@ -13,7 +13,7 @@ Some registration methods in ITK, including global transforms (Rigid, Affine) ra
 
 The random perturbation can be made consistent between runs by setting the random seed, or disabled altogether by using [dense sampling](https://github.com/ANTsX/ANTs/wiki/antsRegistration-metric-sampling-strategies). 
 
-Note that the SyN registration method was designed to use a densely sampled point set, and does not apply any perturbation to its sample points.
+Note that the SyN registration method was designed to use a densely sampled point set, and does not apply any downsampling or perturbation to its sample points.
 
 
 ## Floating point precision errors
