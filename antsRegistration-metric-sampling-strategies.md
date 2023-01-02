@@ -19,7 +19,7 @@ Dense sampling, all points are used.
 
 A sampling fraction *f* is defined between 0 and 1. One out of every ceil(1  / _f_) points are sampled, so f = 0.5 and f = 0.6 both sample 1 out of every 2 points, *f* = 0.25 means 1 out of every 4 points is sampled, and so on.
 
-To reduce aliasing, a random perturbation is applied to each point. The perturbation in each dimension is drawn from a normal distribution with zero mean and variance of 1/3 the voxel spacing.
+To reduce aliasing, a random perturbation is applied to each point. The perturbation in each dimension is drawn from a normal distribution with zero mean and standard deviation of 1/3 the voxel spacing [code](https://github.com/InsightSoftwareConsortium/ITK/blob/0539a2c4ddd2b189d1e48eaf5294ce5556efe732/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L919-L1076).
 
 
 ###  Random
