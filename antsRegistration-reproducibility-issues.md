@@ -7,13 +7,22 @@ To meet this requirement, a "repro mode" has been added to the `antsRegistration
 
 # Causes of variance
 
+## Random sampling
+
+Some registration methods in ITK, including global transforms (Rigid, Affine) randomly perturb the point set that is used to sample the registration metric in the virtual space. The point set is usually initialized to be a regular grid of points at the voxel centers of the fixed image. A [random perturbation](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) is applied to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below. 
+
+The random perturbation can be made consistent between runs by setting the random seed, or disabled altogether by using dense sampling. 
+
+Note that the SyN registration method was designed to use a densely sampled point set, and does not apply any perturbation to its sample points.
+
+
 ## Floating point precision errors
 
 In all scientific computing, the limited precision of floating point operations introduces variance that can be mitigated (often at the cost of performance), but usually not eliminated. Strategies such as [compensated summation](https://en.wikipedia.org/wiki/Kahan_summation_algorithm) exist to manage precision errors.  
 
 Floating point precision may cause differences in the registration solution on the same images in several contexts including
 
-* Multi-threading. The exact sequence of floating point operations depends on the number of threads, as the results of computations performed in parallel are combined. This affects global metrics (like mutual information) but not local metrics (like cross-correlation).
+* Multi-threading. The exact sequence of floating point operations can depend on the number of threads, as the results of computations performed in parallel are combined in an undefined order. The Mattes Mutual Information metric is affected by this, cross correlation is not.
 
 * User choice of single or double precision for floating point operations.
 
@@ -22,12 +31,7 @@ Floating point precision may cause differences in the registration solution on t
 * Differences in compiler options for ANTs, ITK, or underlying system libraries.
 
 
-## Random sampling
-
-In registration, the point set used to evaluate similarity metrics is initialized as the grid of voxel centers of the fixed image. The point set is then [perturbed randomly](https://github.com/InsightSoftwareConsortium/ITK/blob/master/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L917-L1076) to [reduce bias in estimation](http://bigwww.epfl.ch/preprints/thevenaz0602p.pdf). This appears to be the largest source of variance in registration results, according to the experiments described below. 
-
-
-# Strategies to improve reproducibility
+# Strategies to for exact reproducibility
 
 ## Repro mode
 
@@ -47,7 +51,7 @@ These two steps should provide reproducibility at the cost of increased computat
 
 # Quantification of variance in registration results
 
-The variance in a simple registration task is mostly due to random point set sampling / perturbation. This can be removed by dense sampling or use of a fixed seed. Multi-threading and single vs double precision appear to have a small impact on average.
+The variance in a simple registration task is mostly due to random point set sampling / perturbation in the rigid and affine stages. This can be removed by dense sampling or use of a fixed seed. Multi-threading and single vs double precision appear to have a small impact on average.
 
 This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set of 10 brains, and computing the pairwise overlap of brain labels between the different runs. Specifically, `antsRegistrationSyNQuick.sh` was called 25 times for each of 10 brain images, registering to a common template. The mean (over all subjects) Dice overlap of the cerebral white matter under different experimental conditions is listed below. Scripts and results for other brain regions are available [here](https://github.com/cookpa/antsRegReproduce).
 
