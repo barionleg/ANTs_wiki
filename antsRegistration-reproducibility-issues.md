@@ -69,6 +69,8 @@ This was evaluated by running `antsRegistrationSyNQuick.sh` repeatedly on a set 
 
  * Quick registration, may be less stable than `antsRegistrationSyN.sh` (but much faster). 
 
+ * The deformable stage uses SyN, so the variation in that stage only arises from multi-threading the Mutual Information metric. 
+
  * Overlap between runs measures reproducibility, not registration quality, so it does not address the question of whether using random sampling or double precision improves registration overall. 
 
 
