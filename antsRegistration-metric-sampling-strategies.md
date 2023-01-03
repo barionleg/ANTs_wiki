@@ -1,7 +1,6 @@
 Image metrics are evaluated over a collection of points in the virtual image domain. The virtual domain has the same voxel spacing and dimensions as the fixed image, after downsampling by an integer shrink factor (specified with `-f`) for the stage.
 
-Some registration methods, such as SyN, always use dense sampling and ignore other metric options. Affine registration allows subsampling using the strategies below.
-
+SyN registration always uses dense sampling and ignores other metric options. Other methods allow subsampling as discussed below.
 
 ## Metric sampling strategies
 
