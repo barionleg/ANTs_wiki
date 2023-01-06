@@ -13,7 +13,9 @@ Some registration methods in ITK, including global transforms (Rigid, Affine) ra
 
 The random perturbation can be made consistent between runs by setting the random seed, or disabled altogether by using [dense sampling](https://github.com/ANTsX/ANTs/wiki/antsRegistration-metric-sampling-strategies). 
 
-Note that the SyN registration method was designed to use a densely sampled point set, and does not apply any downsampling or perturbation to its sample points.
+### Random sampling in SyN
+
+The SyN registration method was designed to use a densely sampled point set and does not apply any downsampling or perturbation to its sample points in versions prior to [v2.4.3](https://github.com/ANTsX/ANTs/releases/tag/v2.4.3). In version v2.4.3, SyN allows other sampling strategies, but neither it or BSplineSyN support user-defined seeds. This will be fixed in the next ANTs release.
 
 
 ## Floating point precision errors
@@ -31,7 +33,7 @@ Floating point precision may cause differences in the registration solution on t
 * Differences in compiler options for ANTs, ITK, or underlying system libraries.
 
 
-# Strategies to for exact reproducibility
+# Strategies for exact reproducibility
 
 ## Repro mode
 
