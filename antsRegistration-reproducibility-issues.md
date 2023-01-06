@@ -15,7 +15,7 @@ The random perturbation can be made consistent between runs by setting the rando
 
 ### Random sampling in SyN
 
-The SyN registration method was designed to use a densely sampled point set and does not apply any downsampling or perturbation to its sample points in versions prior to [v2.4.3](https://github.com/ANTsX/ANTs/releases/tag/v2.4.3). In version v2.4.3, SyN allows other sampling strategies, but neither it or BSplineSyN support user-defined seeds. This will be fixed in the next ANTs release.
+The SyN registration method was designed to use a densely sampled point set and does not apply any downsampling or perturbation to its sample points in versions prior to [v2.4.3](https://github.com/ANTsX/ANTs/releases/tag/v2.4.3). In version v2.4.3, SyN allows other sampling strategies, but neither it nor BSplineSyN support user-defined seeds. That issue is now [fixed](https://github.com/ANTsX/ANTs/pull/1478).
 
 
 ## Floating point precision errors
