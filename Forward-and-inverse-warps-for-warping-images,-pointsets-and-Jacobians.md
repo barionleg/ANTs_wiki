@@ -522,7 +522,27 @@ can resample some segmentation into the BOLD space with
     -t templateToMNI152NLin6Asym_1InverseWarp.nii.gz
 ```
 
+## Collapsing warps
 
+Users can concatenate warps manually using the `-o` option of `antsApplyTransforms`. This option produces a single warp field containing the composed transform, or a single matrix if only affine transforms are involved. 
+
+Some warps are also collapsed by `antsRegistration` automatically, unless disabled with the `-z` option.
+
+Affine transforms are generally performed at the beginning of the registration and collapsed into a single transform. For example:
+
+```
+${ANTSPATH}antsRegistrationSyN.sh
+  -d 3 \
+  -f template.nii.gz \
+  -m moving.nii.gz \
+  -o movingToTemplate_ \
+  -t a
+```
+
+will run three different stages: initial translation (with `-r`), rigid, then affine. These will be collapsed into a single transform `movingToTemplate_0GenericAffine.mat`. A user-defined initial moving transform matrix (see usage for `-r`) will also be collapsed into the combined affine transform. 
+
+Warp fields can also be collapsed from multiple adjacent stages of deformable registration. However, a user-defined initial warp field will never be collapsed, because `antsRegistration` does not handle the initial inverse.
+ 
 
 ## Discussion
 
