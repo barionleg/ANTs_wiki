@@ -1,5 +1,7 @@
 Image metrics are evaluated over a collection of points in the virtual image domain. The virtual domain has the same voxel spacing and dimensions as the fixed image, after downsampling by an integer shrink factor (specified with `-f`) for the stage.
 
+If the image spacing is anisotropic, the shrink factor is applied to the smallest spacing, shrink factors are chosen along the other dimensions in order to make the resulting point set close to isotropic [code](https://github.com/ANTsX/ANTs/blob/14e7312928179387e74a941f4b48223ffb9f4052/Examples/itkantsRegistrationHelper.hxx#L584-L632). For example, given an image with 0.5x1x2mm spacing, `-f 8` would result in shrink factors of [8,4,2], and the resulting point set would have spacing 4x4x4mm.
+
 Prior to v2.4.3, SyN registration always used dense sampling, regardless of the metric options. It now supports regular and random sampling.
 
 ## Metric sampling strategies
