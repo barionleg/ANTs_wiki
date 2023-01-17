@@ -1,6 +1,6 @@
 Image metrics are evaluated over a collection of points in the virtual image domain. The virtual domain has the same voxel spacing and dimensions as the fixed image, after downsampling by an integer shrink factor (specified with `-f`) for the stage.
 
-SyN registration always uses dense sampling and ignores other metric options. Other methods allow subsampling as discussed below.
+Prior to v2.4.3, SyN registration always used dense sampling, regardless of the metric options. It now supports regular and random sampling.
 
 ## Metric sampling strategies
 
@@ -16,15 +16,14 @@ Dense sampling, all points are used.
 
 ###  Regular
 
-A sampling fraction *f* is defined between 0 and 1. One out of every ceil(1  / _f_) points are sampled, so f = 0.5 and f = 0.6 both sample 1 out of every 2 points, *f* = 0.25 means 1 out of every 4 points is sampled, and so on.
+A sampling fraction *f* is defined between 0 and 1. One out of every ceil(1  / _f_) points are sampled, so *f* = 0.5 and *f* = 0.6 both sample 1 out of every 2 points, *f* = 0.25 means 1 out of every 4 points is sampled, and so on.
 
-To reduce aliasing, a random perturbation is applied to each point. The perturbation in each dimension is drawn from a normal distribution with zero mean and standard deviation of 1/3 the voxel spacing ([code](https://github.com/InsightSoftwareConsortium/ITK/blob/0539a2c4ddd2b189d1e48eaf5294ce5556efe732/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L919-L1076)).
+To reduce aliasing, a random perturbation is applied to each point. The perturbation in each dimension is drawn from a normal distribution with zero mean and standard deviation of 1/3 the voxel spacing ([code](https://github.com/InsightSoftwareConsortium/ITK/blob/0539a2c4ddd2b189d1e48eaf5294ce5556efe732/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L992-L1021)).
 
 
 ###  Random
 
-A sampling fraction *f* is defined between 0 and 1. Points are chosen at random until _f_ * (total points) have been sampled. A random perturbation is applied to the chosen points, as for regular sampling.
-
+A sampling fraction *f* is defined between 0 and 1. Points are chosen at random from the dense grid of *N* points until *fN* points have been sampled. A random perturbation is applied to the chosen points, as for regular sampling ([code](https://github.com/InsightSoftwareConsortium/ITK/blob/0539a2c4ddd2b189d1e48eaf5294ce5556efe732/Modules/Registration/RegistrationMethodsv4/include/itkImageRegistrationMethodv4.hxx#L1022-L1055))
 
 ## Masks
 
