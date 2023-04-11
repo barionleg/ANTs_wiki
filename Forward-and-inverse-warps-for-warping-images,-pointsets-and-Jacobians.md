@@ -343,7 +343,9 @@ multiple `-t` options to `antsApplyTransforms`.
 When multiple transforms are chained together, there is scope for confusion and subtle
 errors when some transforms are small. It's important to keep track of the logic of
 **all** of the registrations (ie, which image is moving and which is fixed). Naming
-transforms consisently helps with this.
+transforms consistently helps with this.
+
+The examples below cover some common use cases. 
 
 
 ## Warping multiple modalities to a common template
@@ -392,7 +394,7 @@ We can then call
     -t t2ToT1_0GenericAffine.mat
 ```
 
-It may be desirable to resample the other modalities at lower resolution in the template
+It may be desirable to resample the other modalities at a higher or lower resolution in the template
 space, which can be done by using a resampled version of the group template as the
 reference image in the call to `antsApplyTransforms`.
 
@@ -413,6 +415,39 @@ To warp in the other direction, eg bringing a segmentation from template to T2w 
 This is a combination of the transforms to warp the template to T1w space, and those to
 warp the T1w to T2w space. Note the order here, reading right to left, starting at the
 input space (template), to the intermediate space (T1w) then to the input space (T2w).
+
+If we had used a deformable registration in the T2w to T1w registration, we would also 
+include the warp field from that stage, ie
+
+
+```
+  ${ANTSPATH}antsApplyTransforms \
+    -d 3 \
+    -i t2.nii.gz \
+    -o t2DeformedToTemplate.nii.gz \
+    -r template.nii.gz \
+    -t t1ToTemplate_1Warp.nii.gz \
+    -t t1ToTemplate_0GenericAffine.mat \
+    -t t2ToT1_1Warp.nii.gz \
+    -t t2ToT1_0GenericAffine.mat
+```
+
+would be used to resample the T2w image into template space, and
+
+```
+  ${ANTSPATH}antsApplyTransforms \
+    -d 3 \
+    -i templateLabels.nii.gz \
+    -o labelsDeformedToT2.nii.gz \
+    -n GenericLabel \
+    -r t2.nii.gz \
+    -t [ t2ToT1_0GenericAffine.mat, 1 ] \
+    -t t2ToT1_1InverseWarp.nii.gz \
+    -t [ t1ToTemplate_0GenericAffine.mat, 1 ] \
+    -t t1ToTemplate_1InverseWarp.nii.gz
+```
+
+would warp the template labels to the T2w space.
 
 
 ## Standard space through an intermediate template
