@@ -50,7 +50,7 @@ disk because it is easy to invert on demand.
 
 It helps to have a consistent naming convention. I use an output prefix of
 `movingToFixed_`, such that `movingToFixed_0GenericAffine.mat` and
-``movingToFixed_1Warp.nii.gz` define the forward warp. But it's up to the user to supply
+`movingToFixed_1Warp.nii.gz` define the forward warp. But it's up to the user to supply
 the correct warps in the correct order, `antsApplyTransforms` does not attempt to parse
 transform file names for logical correctness.
 
