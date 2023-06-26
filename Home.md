@@ -16,7 +16,7 @@ Release binaries are available for Mac, Linux, and Windows: see the [binary inst
 
 ANTs since 2.4.4 is available [via Conda](https://anaconda.org/aramislab/ants), thanks to Ghislain Vaillant.
 
-[Docker images are available on DockerHub](https://hub.docker.com/repository/docker/antsx/ants/tags).
+Docker images are [available on DockerHub](https://hub.docker.com/repository/docker/antsx/ants/tags).
 
 To build and install ANTs from source, see [compiling ANTs on Linux / Mac](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS) or [compiling ANTs on Windows](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Windows-10). The Windows compilation instructions have not been updated in some time, and may be out of date. Please open an issue with any proposed changes.
 
