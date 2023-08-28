@@ -19,7 +19,7 @@ correct transform order. There are also other interpolation options besides the 
 The command
 
 ```
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f fixedImage.nii.gz \
   -m movingImage.nii.gz \
@@ -77,7 +77,7 @@ transform our points in the fixed space to points the moving space.
 After a pairwise registration, like
 
 ```
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f fixedImage.nii.gz \
   -m movingImage.nii.gz \
@@ -88,7 +88,7 @@ ${ANTSPATH}antsRegistrationSyNQuick.sh
 Deforming the moving image to fixed space:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i movingImage.nii.gz \
   -r fixedImage.nii.gz \
@@ -100,7 +100,7 @@ ${ANTSPATH}antsApplyTransforms \
 Deforming the fixed image to moving space:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i fixedImage.nii.gz \
   -r movingImage.nii.gz \
@@ -116,7 +116,7 @@ Given ROIs `fixedLabels.nii.gz`, to be resampled into the space of `movingImage.
 we would use the same warps:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i fixedImage.nii.gz \
   -r movingImage.nii.gz \
@@ -136,21 +136,21 @@ Calling `antsRegistration` or the registration script without a deformable trans
 will produce a `GenericAffine.mat` file but no warp field.
 
 ```
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f fixedImage.nii.gz \
   -m movingImage.nii.gz \
   -o movingToFixed_ \
   -t a
 
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i movingImage.nii.gz \
   -r fixedImage.nii.gz \
   -t movingToFixed_0GenericAffine.mat \
   -o movingToFixedAffineDeformed.nii.gz
 
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i fixedImage.nii.gz \
   -r movingImage.nii.gz \
@@ -173,14 +173,14 @@ series `bold.nii.gz` and a 3D reference image `boldRef.nii.gz` that is the first
 from the series, we can do
 
 ```
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f fixedImage.nii.gz \
   -m boldRef.nii.gz \
   -o boldRefToFixed_ \
   -t r
 
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -e 3 \
   -i bold.nii.gz \
@@ -214,7 +214,7 @@ series with `antsMotionCorr`, or extracting the first 3D volume with the
 Transform points from fixed to moving space:
 
 ```
-${ANTSPATH}antsApplyTransformsToPoints \
+antsApplyTransformsToPoints \
   -d 3 \
   -i landmarksInFixedSpace.csv \
   -o landmarksInMovingSpace.csv \
@@ -227,7 +227,7 @@ warps that transform **points** from fixed to moving space. To move points in th
 direction:
 
 ```
-${ANTSPATH}antsApplyTransformsToPoints \
+antsApplyTransformsToPoints \
   -d 3 \
   -i landmarksInMovingSpace.csv \
   -o landmarksInFixedSpace.csv \
@@ -278,7 +278,7 @@ the command line.
 To warp an image from subject to template space:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i subjectImage.nii.gz \
   -r registrationTemplate.nii.gz \
@@ -290,7 +290,7 @@ ${ANTSPATH}antsApplyTransforms \
 To warp an image from template to subject space:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i templateImage.nii.gz \
   -r subjectImage.nii.gz \
@@ -314,7 +314,7 @@ Note that each time point will have its own warp, and images may be transformed 
 subject to group template space with:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i subjectImageTime1.nii.gz \
   -r groupTemplate.nii.gz \
@@ -325,7 +325,7 @@ ${ANTSPATH}antsApplyTransforms \
 Warping to the single-subject template is similar to the cross-sectional usage:
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i subjectImageTime1.nii.gz \
   -r groupTemplate.nii.gz \
@@ -366,14 +366,14 @@ the T1w, so any misalignment between the two is due to motion. For this example,
 just use a generic quick registration script to rigidly align the T2w to T1w.
 
 ```
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f t1.nii.gz \
   -m t2.nii.gz \
   -o t2ToT1_ \
   -t r
 
-${ANTSPATH}antsRegistrationSyNQuick.sh
+antsRegistrationSyNQuick.sh
   -d 3 \
   -f template.nii.gz \
   -m t1.nii.gz \
@@ -384,7 +384,7 @@ ${ANTSPATH}antsRegistrationSyNQuick.sh
 We can then call
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i t2.nii.gz \
     -o t2DeformedToTemplate.nii.gz \
@@ -401,7 +401,7 @@ reference image in the call to `antsApplyTransforms`.
 To warp in the other direction, eg bringing a segmentation from template to T2w space:
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i templateLabels.nii.gz \
     -o labelsDeformedToT2.nii.gz \
@@ -421,7 +421,7 @@ include the warp field from that stage, ie
 
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i t2.nii.gz \
     -o t2DeformedToTemplate.nii.gz \
@@ -435,7 +435,7 @@ include the warp field from that stage, ie
 would be used to resample the T2w image into template space, and
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i templateLabels.nii.gz \
     -o labelsDeformedToT2.nii.gz \
@@ -456,7 +456,7 @@ Another use case is where we have a local template that has been registered to a
 space, eg `MNI152NLin6Asym.nii.gz`. For example, say we ran
 
 ```
-${ANTSPATH}antsRegistrationSyN.sh
+antsRegistrationSyN.sh
   -d 3 \
   -f MNI152NLin6Asym.nii.gz \
   -m populationTemplate.nii.gz \
@@ -467,7 +467,7 @@ ${ANTSPATH}antsRegistrationSyN.sh
 And then for some subject,
 
 ```
-${ANTSPATH}antsRegistrationSyN.sh
+antsRegistrationSyN.sh
   -d 3 \
   -f populationTemplate.nii.gz \
   -m t1.nii.gz \
@@ -478,7 +478,7 @@ ${ANTSPATH}antsRegistrationSyN.sh
 Now we can warp the subject t1 to MNI space with
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i t1.nii.gz \
     -o t1DeformedToMNI152NLin6Asym.nii.gz \
@@ -492,7 +492,7 @@ Now we can warp the subject t1 to MNI space with
 To warp some labels from MNI space to the subject image:
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i labels.nii.gz \
     -o labelsDeformedToT1.nii.gz \
@@ -518,7 +518,7 @@ distorted image the **fixed** image in registration. We would then warp the T1w 
 with
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i T1w.nii.gz \
   -r boldRef.nii.gz \
@@ -530,7 +530,7 @@ ${ANTSPATH}antsApplyTransforms \
 and boldRef to T1w with
 
 ```
-${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
   -d 3 \
   -i T1w.nii.gz \
   -r boldRef.nii.gz \
@@ -543,7 +543,7 @@ Now if the T1w is registered to MNI152NLin6Asym via a local group template, as a
 can resample some segmentation into the BOLD space with
 
 ```
-  ${ANTSPATH}antsApplyTransforms \
+antsApplyTransforms \
     -d 3 \
     -i labels.nii.gz \
     -o labelsDeformedToBOLD.nii.gz \
@@ -566,7 +566,7 @@ Some warps are also collapsed by `antsRegistration` automatically, unless disabl
 Affine transforms are generally performed at the beginning of the registration and collapsed into a single transform. For example:
 
 ```
-${ANTSPATH}antsRegistrationSyN.sh
+antsRegistrationSyN.sh
   -d 3 \
   -f template.nii.gz \
   -m moving.nii.gz \
