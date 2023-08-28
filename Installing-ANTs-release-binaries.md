@@ -13,15 +13,12 @@ The build is a default Superbuild. If you require custom build options (like VTK
 First unzip the archive to your desired install prefix, then set the environment variables. The archives contain `ants-{version}/[bin,lib]`. To simplify the instructions, we'll omit the version numbering below and assume we have `/opt/ants/[bin,lib]`.
 
 
-## Set environment variables `PATH` and `ANTSPATH`
+## Set environment variable `PATH`
 
-Assuming your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts. The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
-
-The exact syntax may vary depending on your terminal shell. For the bash shell, you would set
+Assuming your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts. The exact syntax to add this to the PATH may vary depending on your terminal shell. For the bash shell, you would set
 
 ```
-export ANTSPATH=/opt/ants/bin/
-export PATH=${ANTSPATH}:$PATH
+export PATH=/opt/ants/bin:$PATH
 ```
 
 Now check this worked correctly:
@@ -38,6 +35,15 @@ antsRegistrationSyN.sh
 
 should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
 
+
+### For ANTs < 2.5.0 : Also set ANTSPATH
+
+Prior to v2.5.0, the scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
+
+```
+export ANTSPATH=/opt/ants/bin/
+export PATH=${ANTSPATH}:$PATH
+```
 
 ## Set `ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS` to control multi-threading at run time
 
