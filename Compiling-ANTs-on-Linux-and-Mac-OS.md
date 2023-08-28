@@ -123,15 +123,12 @@ make install 2>&1 | tee install.log
 This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INSTALL_PREFIX`. 
 
 
-# Post installation: set environment variables `PATH` and `ANTSPATH`
+# Post installation: set environment variable `PATH`
 
-Assuming your install prefix was `/opt/ANTs`, there will now be a binary directory `/opt/ANTs/bin`, containing the ANTs executables and scripts. The scripts additionally require `ANTSPATH` to point to the bin directory **including a trailing slash**.
-
-The exact syntax may vary depending on your terminal shell. For the bash shell, you would set
+Assuming your install prefix was `/opt/ANTs`, there will now be a binary directory `/opt/ANTs/bin`, containing the ANTs executables and scripts.
 
 ```
-export ANTSPATH=/opt/ANTs/bin/
-export PATH=${ANTSPATH}:$PATH
+export PATH=/opt/ANTs/bin:$PATH
 ```
 
 Now check this worked correctly:
@@ -148,6 +145,15 @@ antsRegistrationSyN.sh
 
 should print out the usage for that script. You can put the above variable definitions in your shell initialization file, so future sessions will have them set automatically. On a Mac, this is usually `~/.profile`, on Linux `~/.bash_profile`.
 
+
+## ANTSPATH (deprecated in v2.5.0)
+
+ANTs scripts prior to v2.5.0 require `ANTSPATH` as well as PATH, where `ANTSPATH` points to the bin directory **including a trailing slash**.
+
+```
+export ANTSPATH=/opt/ANTs/bin/
+export PATH=${ANTSPATH}:$PATH
+```
 
 # Post installation: control multi-threading at run time
 
@@ -204,6 +210,8 @@ ccmake ~/code/ANTs
 * Ensure that you have a compiler that can build ANTs. If using a brand new or very old compiler, try one that is known to build ITK.
 
 * If using system ITK or VTK, try a SuperBuild. Through the efforts of developers and contributors, ANTs tries to keep up with the innovations and C++ implementation updates in ITK. This means the ITK version required by ANTs changes fairly frequently and is often not backwards compatible.
+
+* If building with testing on, there can be difficulties reaching the servers to download test data. ANTs prior to 2.4.0 will not work with testing on, because it uses deprecated MD5 hashes to identify the test data. 
 
 
 ## Compilation fails or run time errors occur with "Illegal Instruction" errors
