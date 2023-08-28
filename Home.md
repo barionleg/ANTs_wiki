@@ -25,7 +25,7 @@ To build and install ANTs from source, see [compiling ANTs on Linux / Mac](https
 
 A recommended call to `antsCorticalThickness.sh`:
 ```
-bash ${ANTSPATH}antsCorticalThickness.sh -d $dim \
+antsCorticalThickness.sh -d $dim \
   -a $img \
   -e ${TEMPLATE_DIR}T_template0.nii.gz \
   -t ${TEMPLATE_DIR}T_template0_BrainCerebellum.nii.gz \
@@ -39,7 +39,7 @@ bash ${ANTSPATH}antsCorticalThickness.sh -d $dim \
 Fast pairwise deformable registration:
 
 ```
-  ${ANTSPATH}antsRegistrationSyNQuick.sh \
+antsRegistrationSyNQuick.sh \
     -d 3 \
     -t s \
     -f fixed.nii.gz \
