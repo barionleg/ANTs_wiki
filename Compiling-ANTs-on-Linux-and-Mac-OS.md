@@ -125,7 +125,7 @@ This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INST
 
 # Post installation: set environment variable `PATH`
 
-Assuming your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts.
+Set the PATH to include the bin directory under whatever you used for `CMAKE_INSTALL_PREFIX`. For example, if your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts.
 
 ```
 export PATH=/opt/ants/bin:$PATH
