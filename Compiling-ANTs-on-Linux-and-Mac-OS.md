@@ -125,10 +125,10 @@ This will copy the binaries and libraries to `bin/` and `lib/` under `CMAKE_INST
 
 # Post installation: set environment variable `PATH`
 
-Assuming your install prefix was `/opt/ANTs`, there will now be a binary directory `/opt/ANTs/bin`, containing the ANTs executables and scripts.
+Assuming your install prefix was `/opt/ants`, there will now be a binary directory `/opt/ants/bin`, containing the ANTs executables and scripts.
 
 ```
-export PATH=/opt/ANTs/bin:$PATH
+export PATH=/opt/ants/bin:$PATH
 ```
 
 Now check this worked correctly:
@@ -151,7 +151,7 @@ should print out the usage for that script. You can put the above variable defin
 ANTs scripts prior to v2.5.0 require `ANTSPATH` as well as PATH, where `ANTSPATH` points to the bin directory **including a trailing slash**.
 
 ```
-export ANTSPATH=/opt/ANTs/bin/
+export ANTSPATH=/opt/ants/bin/
 export PATH=${ANTSPATH}:$PATH
 ```
 
@@ -234,7 +234,7 @@ If you see something like
 
 ```
 CMake Error at cmake_install.cmake:37 (file):
-  file cannot create directory: /opt/ANTs/bin.  Maybe need administrative
+  file cannot create directory: /opt/ants/bin.  Maybe need administrative
   privileges.
 
 
@@ -247,7 +247,7 @@ The fastest way to fix this is with the `DESTDIR` variable:
 make install DESTDIR=/new/install/dir
 ```
 
-This will install the binaries in `${DESTDIR}/opt/ANTs/bin`. Alternatively, you can reconfigure the install directory with CMake:
+This will install the binaries in `${DESTDIR}/opt/ants/bin`. Alternatively, you can reconfigure the install directory with CMake:
 
 ```
 cmake -DCMAKE_INSTALL_PREFIX=/new/install/dir .
