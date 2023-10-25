@@ -247,7 +247,7 @@ The fastest way to fix this is with the `DESTDIR` variable:
 make install DESTDIR=/new/install/dir
 ```
 
-This will install the binaries in `${DESTDIR}/opt/ants/bin`. Alternatively, you can reconfigure the install directory with CMake:
+This will install the binaries under `${DESTDIR}/${CMAKE_INSTALL_PREFIX}`, which by default is `${DESTDIR}/opt/ants/bin`. Alternatively, you can reconfigure the install directory with CMake:
 
 ```
 cmake -DCMAKE_INSTALL_PREFIX=/new/install/dir .
