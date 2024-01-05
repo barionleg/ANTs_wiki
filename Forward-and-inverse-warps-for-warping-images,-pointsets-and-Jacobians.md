@@ -414,7 +414,7 @@ antsApplyTransforms \
 
 This is a combination of the transforms to warp the template to T1w space, and those to
 warp the T1w to T2w space. Note the order here, reading right to left, starting at the
-input space (template), to the intermediate space (T1w) then to the input space (T2w).
+input space (template), to the intermediate space (T1w) then to the reference space (T2w).
 
 If we had used a deformable registration in the T2w to T1w registration, we would also 
 include the warp field from that stage, ie
