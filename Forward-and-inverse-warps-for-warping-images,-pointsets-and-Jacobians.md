@@ -497,7 +497,7 @@ antsApplyTransforms \
     -i labels.nii.gz \
     -o labelsDeformedToT1.nii.gz \
     -n GenericLabel
-    -r MNI152NLin6Asym.nii.gz \
+    -r t1.nii.gz \
     -t [ t1ToTemplate_0GenericAffine.mat, 1 ]
     -t t1ToTemplate_1InverseWarp.nii.gz \
     -t [ templateToMNI152NLin6Asym_0GenericAffine.mat, 1 ] \
