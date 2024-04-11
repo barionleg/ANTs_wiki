@@ -1,3 +1,5 @@
+**Note**: These instructions may be out of date. Native Windows binaries are available on the [ANTs Releases page](https://github.com/ANTsX/ANTs/releases).
+
 These instructions require the Linux subsystem, which requires the Windows 10 anniversary update (Aug 2016). You may need to disable some antivirus software for some parts of the install.
 
 ## Enable the Linux subsystem on Windows 10
