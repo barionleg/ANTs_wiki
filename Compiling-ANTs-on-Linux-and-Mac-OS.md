@@ -1,10 +1,12 @@
-This installation guide is for Linux and Mac users. Windows users will need to install the Linux subsystem and then install Git and CMake, as detailed [here](https://github.com/stnava/ANTs/wiki/Compiling-ANTs-on-Windows-10), before proceeding to clone ANTs and compile using the instructions on this page.
+This installation guide is for Linux and Mac users. Windows users who wish to install using the Linux subsystem will need CMake and Git, and can then clone ANTs and compile using the instructions on this page.
 
 The instructions here will perform a "SuperBuild", which will automatically build the correct versions of ITK (required) and VTK (optional) for ANTs. Most ANTs users will find it easiest to use the SuperBuild. Advanced users can use [system ITK or VTK](https://github.com/ANTsX/ANTs/wiki/Compiling-ANTs-on-Linux-and-Mac-OS#using-system-itk-or-vtk).
 
 # SuperBuild quick reference
 
 A downloadable script to build and install ANTs locally is [available here](https://github.com/cookpa/antsInstallExample).
+
+**Note for Mac ARM64 users**: CMake may incorrectly report the system architecture. `On Apple Silicon hosts, the architecture printed by uname -m may vary based on CMake's own architecture and that of the invoking process tree.` See documentation for [CMAKE_HOST_SYSTEM_PROCESSOR](https://cmake.org/cmake/help/latest/variable/CMAKE_HOST_SYSTEM_PROCESSOR.html). This results in a failure to build anything (including ITK) with the error `unknown target CPU 'apple-m1'`.
 
 Here is a very minimal example. This example works if you have all the necessary tools, including CMake and a supported compiler. The system requirements and installation steps are discussed in more detail below.
 
