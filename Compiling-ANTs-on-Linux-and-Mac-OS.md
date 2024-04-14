@@ -6,12 +6,6 @@ The instructions here will perform a "SuperBuild", which will automatically buil
 
 A downloadable script to build and install ANTs locally is [available here](https://github.com/cookpa/antsInstallExample).
 
-**Note for Mac ARM64 users**: CMake may incorrectly report the system architecture. 
-
->On Apple Silicon hosts, the architecture printed by uname -m may vary based on CMake's own architecture and that of the invoking process tree. 
-
-See documentation for [CMAKE_HOST_SYSTEM_PROCESSOR](https://cmake.org/cmake/help/latest/variable/CMAKE_HOST_SYSTEM_PROCESSOR.html). This results in a failure to build anything (including ITK) with the error `unknown target CPU 'apple-m1'`.
-
 Here is a very minimal example. This example works if you have all the necessary tools, including CMake and a supported compiler. The system requirements and installation steps are discussed in more detail below.
 
 ```
@@ -260,6 +254,17 @@ cmake -DCMAKE_INSTALL_PREFIX=/new/install/dir .
 make install
 ```
 
+## Compilation fails on Mac with unknown target CPU 'apple-m1' or similar
+
+CMake may incorrectly report the system architecture. 
+
+>On Apple Silicon hosts, the architecture printed by uname -m may vary based on CMake's own architecture and that of the invoking process tree. 
+
+See documentation for [CMAKE_HOST_SYSTEM_PROCESSOR](https://cmake.org/cmake/help/latest/variable/CMAKE_HOST_SYSTEM_PROCESSOR.html). This results in a failure to build anything (including ITK) with the error `unknown target CPU 'apple-m1'`.
+
+You can check your cmake architecture with `file`, eg `file /usr/local/bin/cmake`. 
+
+Possible solutions are installing an arm64 version of CMake, or manually setting the `OSX_ARCHITECTURES` variable.
 
 ## Asking for help
 
