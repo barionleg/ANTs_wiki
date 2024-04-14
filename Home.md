@@ -21,7 +21,7 @@ ANTs since 2.4.4 is available [via Conda](https://anaconda.org/aramislab/ants), 
 
 Docker images are [available on DockerHub](https://hub.docker.com/repository/docker/antsx/ants/tags).
 
-If you are using Docker Desktop, you will probably want to increase the default RAM available to docker, see the documentation for [Mac](https://docs.docker.com/desktop/settings/mac/) [Windows](https://docs.docker.com/desktop/settings/windows/) [Linux](https://docs.docker.com/desktop/settings/linux/).
+If you are using Docker Desktop, you will probably want to increase the default RAM available to docker, see the documentation for [Mac](https://docs.docker.com/desktop/settings/mac/) | [Windows](https://docs.docker.com/desktop/settings/windows/) | [Linux](https://docs.docker.com/desktop/settings/linux/).
 
 
 ### Compiling from source
