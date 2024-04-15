@@ -264,7 +264,8 @@ See documentation for [CMAKE_HOST_SYSTEM_PROCESSOR](https://cmake.org/cmake/help
 
 You can check your cmake architecture with `file`, eg `file /usr/local/bin/cmake`. 
 
-Possible solutions are installing an arm64 version of CMake, or manually setting the `OSX_ARCHITECTURES` variable.
+If the problem persists, add `-DCMAKE_OSX_ARCHITECTURES=arm64` to the cmake call.
+
 
 ## Asking for help
 
