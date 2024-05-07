@@ -6,6 +6,12 @@ The variation in NIFTI I/O comes from changes in how ITK looks for the rotation 
 
 The main difference between ITK used in ANTs >= 2.3.5 and in 2.3.4 is that ITK now prefers the sform matrix to read and write the header transform. Previously, it used the qform header fields, but this suffers from precision issues in addition to being difficult to read. 
 
+
+## NIFTI spatial-temporal units
+
+ITK had issues with reading images that don't have mm for spatial units and seconds for temporal units. These have now been fixed but the fix has not made its way into ANTs yet. We recommend pre-processing data such that its units are mm and s. ITK also used to write out data with mm and s units, but it set the xyzt_units field incorrectly. This has also been fixed and will be included in a future ANTs release.
+
+
 ## Summary of NIFTI I/O for ANTs 2.3.5 and later
 
 On read, a rotation and translation are extracted from the sform matrix if possible. Non-rigid components of the sform are not used and will not be preserved in output. The qform will be used on read if the sform is not present. 
