@@ -15,6 +15,9 @@ mkdir build install
 cd build
 cmake \
     -DCMAKE_INSTALL_PREFIX=${workingDir}/install \
+    -DBUILD_TESTING=OFF \
+    -DRUN_LONG_TESTS=OFF \
+    -DRUN_SHORT_TESTS=OFF \
     ../ANTs 2>&1 | tee cmake.log
 make -j 4 2>&1 | tee build.log
 cd ANTS-build
