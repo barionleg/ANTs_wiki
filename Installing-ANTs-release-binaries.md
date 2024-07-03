@@ -68,6 +68,12 @@ To run ANTs binaries, you will need to manually add them to the list of approved
 spctl --add /opt/ants/bin/*
 ```
 
+If this doesn't work, try
+
+```
+xattr -r -d com.apple.quarantine /opt/ants/bin/*
+```
+
 # Installing binaries (Windows)
 
 The binaries are native Windows executables, but the scripts will require the relevant interpreters (mostly bash, some Perl). 
